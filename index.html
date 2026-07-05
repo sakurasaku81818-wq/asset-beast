@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASSET BEAST v0.2</title>
+<style>
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#10131a;color:white}
+.app{max-width:480px;margin:auto;padding:18px}
+.card{background:#1c2230;border-radius:16px;padding:15px;margin:12px 0}
+button{width:100%;padding:13px;margin:6px 0;border:0;border-radius:14px;font-size:16px;font-weight:bold}
+.buy{background:#4ade80}.sell{background:#f87171}.next{background:#60a5fa}.reset{background:#fbbf24}
+.small{color:#aaa;font-size:13px}.result{line-height:1.6}
+</style>
+</head>
+<body>
+<div class="app">
+<h1>ASSET BEAST v0.2</h1>
+<p class="small">資産は、育てるもの。</p>
+
+<div class="card">
+<h2>👤 人生</h2>
+<p>年齢：<span id="age"></span>歳</p>
+<p>残り：<span id="left"></span>年</p>
+<p>現金：<span id="cash"></span>円</p>
+<p>純資産：<span id="net"></span>円</p>
+<p>年間インカム：<span id="income"></span>円</p>
+</div>
+
+<div class="card">
+<h2>🐾 保有資産</h2>
+<p>🐔 ニワトリ：<span id="chicken"></span>体</p>
+<p>🥚 ドラゴン：<span id="dragon"></span>体</p>
+<p>🛡 ゴーレム：<span id="golem"></span>体</p>
+</div>
+
+<div class="card">
+<h2>📰 ニュース</h2>
+<p id="news">人生が始まった。まずは選ぼう。</p>
+</div>
+
+<button class="buy" onclick="buy('chicken')">🐔 ニワトリを買う 50万円</button>
+<button class="buy" onclick="buy('dragon')">🥚 ドラゴンを買う 30万円</button>
+<button class="buy" onclick="buy('golem')">🛡 ゴーレムを買う 50万円</button>
+
+<button class="sell" onclick="sell('chicken')">🐔 ニワトリを売る</button>
+<button class="sell" onclick="sell('dragon')">🥚 ドラゴンを売る</button>
+<button class="sell" onclick="sell('golem')">🛡 ゴーレムを売る</button>
+
+<button class="next" onclick="nextYear()">▶ 次の年へ</button>
+<button class="reset" onclick="location.reload()">🔄 最初から</button>
+
+<div class="card result">
+<h2>結果</h2>
+<p id="result">25歳。資産家人生のスタート。</p>
+</div>
+</div>
+
+<script>
+let age=25,cash=1000000,chicken=0,dragon=0,golem=0;
+let chickenValue=500000,dragonValue=300000,golemValue=500000;
+let crashCount=0,buyInCrash=0;
+
+const newsList=[
+"AI企業への期待が高まっている。",
+"市場に過熱感がある。",
+"中央銀行が利上げを示唆。",
+"物価上昇が続いている。",
+"企業業績は堅調。"
+];
+
+const events=[
+{name:"📈 好景気",text:"成長資産に追い風。",c:1.05,d:1.2,g:1,ca:1},
+{name:"🤖 AI革命",text:"ドラゴンが大きく育った。",c:1,d:1.4,g:.95,ca:1},
+{name:"📉 暴落",text:"市場が大きく下落した。",c:.85,d:.6,g:1,ca:1,crash:true},
+{name:"🔥 インフレ",text:"現金の価値が少し目減りした。",c:1.05,d:1.05,g:.9,ca:.95},
+{name:"🏦 利上げ",text:"ドラゴンに逆風、ゴーレムに追い風。",c:.95,d:.8,g:1.1,ca:1}
+];
+
+const lifeEvents=[
+{name:"🎁 ボーナス",effect:()=>cash+=500000,text:"臨時ボーナス +50万円"},
+{name:"🚗 車の出費",effect:()=>cash-=300000,text:"車関連の出費 -30万円"},
+{name:"🏥 医療費",effect:()=>cash-=200000,text:"医療費 -20万円"},
+{name:"💼 昇給",effect:()=>cash+=200000,text:"昇給分 +20万円"},
+{name:"🏠 家の修繕",effect:()=>cash-=400000,text:"家の修繕 -40万円"}
+];
+
+function yen(n){return Math.round(n).toLocaleString();}
+function income(){return chicken*20000+golem*5000;}
+function net(){return cash+chicken*chickenValue+dragon*dragonValue+golem*golemValue;}
+
+function update(){
+document.getElementById("age").textContent=age;
+document.getElementById("left").textContent=Math.max(55-age,0);
+document.getElementById("cash").textContent=yen(cash);
+document.getElementById("net").textContent=yen(net());
+document.getElementById("income").textContent=yen(income());
+document.getElementById("chicken").textContent=chicken;
+document.getElementById("dragon").textContent=dragon;
+document.getElementById("golem").textContent=golem;
+}
+
+function price(type){
+if(type==="chicken")return chickenValue;
+if(type==="dragon")return dragonValue;
+return golemValue;
+}
+
+function buy(type){
+let p=price(type);
+if(cash<p){show("現金が足りない。");return;}
+cash-=p;
+if(type==="chicken")chicken++;
+if(type==="dragon")dragon++;
+if(type==="golem")golem++;
+show("資産を買った。あなたの選択が人生を作る。");
+update();
+}
+
+function sell(type){
+if(type==="chicken"&&chicken>0){chicken--;cash+=chickenValue;}
+else if(type==="dragon"&&dragon>0){dragon--;cash+=dragonValue;}
+else if(type==="golem"&&golem>0){golem--;cash+=golemValue;}
+else{show("売れる資産がない。");return;}
+show("資産を売却した。守ることも決断。");
+update();
+}
+
+function nextYear(){
+if(age>=55){ending();return;}
+age++;
+cash+=200000+income();
+
+let news=newsList[Math.floor(Math.random()*newsList.length)];
+let ev=events[Math.floor(Math.random()*events.length)];
+let life=lifeEvents[Math.floor(Math.random()*lifeEvents.length)];
+
+if(ev.crash)crashCount++;
+
+chickenValue*=ev.c;
+dragonValue*=ev.d;
+golemValue*=ev.g;
+cash*=ev.ca;
+
+life.effect();
+
+document.getElementById("news").textContent=news;
+
+show(ev.name+"<br>"+ev.text+"<br><br>"+
+"給料 +20万円<br>"+
+"インカム +"+yen(income())+"円<br><br>"+
+life.name+"<br>"+life.text);
+
+update();
+if(age>=55) ending();
+}
+
+function ending(){
+let title="バランス型の資産家";
+if(chicken>=dragon&&chicken>=golem) title="配当を愛した資産家";
+if(dragon>chicken&&dragon>=golem) title="未来に賭けた挑戦者";
+if(golem>chicken&&golem>dragon) title="守りを固めた堅実家";
+if(net()>=10000000) title="資産形成に成功した資産家";
+
+show("🏁 人生診断<br><br>"+
+"あなたは<br><strong>"+title+"</strong><br><br>"+
+"最終年齢："+age+"歳<br>"+
+"最終純資産："+yen(net())+"円<br>"+
+"年間インカム："+yen(income())+"円<br>"+
+"暴落経験："+crashCount+"回<br><br>"+
+"あなたの人生に、正解はない。");
+}
+
+function show(t){document.getElementById("result").innerHTML=t;}
+update();
+</script>
+</body>
+</html>
