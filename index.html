@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ASSET BEAST v0.3</title>
@@ -34,6 +35,7 @@ button{width:100%;padding:13px;margin:6px 0;border:0;border-radius:14px;font-siz
 <p>🥚 ドラゴン：<span id="dragonRate"></span>%</p>
 <p>🛡 ゴーレム：<span id="golemRate"></span>%</p>
 <p style="color:#ffd166;">🧠 <span id="styleComment"></span></p>
+<canvas id="portfolioChart"></canvas>
 </div>
 
 <div class="card">
@@ -146,6 +148,35 @@ if ((dragon * dragonValue / total) > 0.5) comment = "成長重視。未来に賭
 if ((golem * golemValue / total) > 0.5) comment = "守備重視。市場の荒波に備えています。";
 
 document.getElementById("styleComment").textContent = comment;
+if (window.portfolioChart) {
+  window.portfolioChart.destroy();
+}
+
+const ctx = document.getElementById("portfolioChart");
+
+window.portfolioChart = new Chart(ctx, {
+  type: "doughnut",
+  data: {
+    labels: ["現金", "ニワトリ", "ドラゴン", "ゴーレム"],
+    datasets: [{
+      data: [
+        cash,
+        chicken * chickenValue,
+        dragon * dragonValue,
+        golem * golemValue
+      ]
+    }]
+  },
+  options: {
+    plugins: {
+      legend: {
+        labels: {
+          color: "white"
+        }
+      }
+    }
+  }
+});
 }
 function price(type){
 if(type==="chicken")return chickenValue;
