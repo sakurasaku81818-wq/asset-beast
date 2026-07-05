@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ASSET BEAST v0.3</title>
+<title>ASSET BEAST v0.4</title>
 <style>
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#10131a;color:white}
 .app{max-width:480px;margin:auto;padding:18px}
@@ -12,12 +11,14 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,sans-serif;background
 button{width:100%;padding:13px;margin:6px 0;border:0;border-radius:14px;font-size:16px;font-weight:bold}
 .buy{background:#4ade80}.sell{background:#f87171}.next{background:#60a5fa}.reset{background:#fbbf24}
 .small{color:#aaa;font-size:13px}.result{line-height:1.6}
-canvas{max-width:260px;margin:20px auto 0;display:block;}
+#portfolioPie{width:180px;height:180px;border-radius:50%;margin:20px auto;background:conic-gradient(#fbbf24 0% 100%)}
+.legend{font-size:14px;line-height:1.8}
 </style>
 </head>
+
 <body>
 <div class="app">
-<h1>ASSET BEAST v0.3</h1>
+<h1>ASSET BEAST v0.4</h1>
 <p class="small">資産は、育てるもの。</p>
 
 <div class="card">
@@ -31,12 +32,14 @@ canvas{max-width:260px;margin:20px auto 0;display:block;}
 
 <div class="card">
 <h2>📊 ポートフォリオ</h2>
+<div class="legend">
 <p>💰 現金：<span id="cashRate"></span>%</p>
 <p>🐔 ニワトリ：<span id="chickenRate"></span>%</p>
 <p>🥚 ドラゴン：<span id="dragonRate"></span>%</p>
 <p>🛡 ゴーレム：<span id="golemRate"></span>%</p>
+</div>
 <p style="color:#ffd166;">🧠 <span id="styleComment"></span></p>
-<canvas id="portfolioChart"></canvas>
+<div id="portfolioPie"></div>
 </div>
 
 <div class="card">
@@ -48,42 +51,23 @@ canvas{max-width:260px;margin:20px auto 0;display:block;}
 
 <div class="card">
 <h2>📰 ニュース</h2>
-  <div class="card">
-<h2>📖 キャラクターガイド</h2>
-
-<p><strong>🐔 配当ニワトリ</strong><br>
-価格：50万円<br>
-毎年2万円のインカムを生み出す安定型資産。長期保有向き。</p>
-
+<p>📖 キャラクターガイド</p>
+<p><strong>🐔 配当ニワトリ</strong><br>価格：50万円<br>毎年2万円のインカムを生み出す安定型資産。</p>
 <hr>
-
-<p><strong>🥚 ドラゴンの卵</strong><br>
-価格：30万円<br>
-大きく成長する可能性を秘めた資産。好景気では強いが、暴落には弱い。</p>
-
+<p><strong>🥚 ドラゴンの卵</strong><br>価格：30万円<br>大きく成長する可能性を秘めた資産。好景気では強いが、暴落には弱い。</p>
 <hr>
-
-<p><strong>🛡 盾ゴーレム</strong><br>
-価格：50万円<br>
-守りに特化した資産。市場が荒れるほど頼りになる。</p>
-
-<p style="margin-top:15px;color:#ffd166;">
-💡 このゲームは「どの資産が一番強いか」ではなく、
-「変化する環境にどう適応するか」を楽しむゲームです。
-</p>
-</div>
-<p id="news">人生が始まった。まずは選ぼう。</p>
+<p><strong>🛡 盾ゴーレム</strong><br>価格：50万円<br>守りに特化した資産。市場が荒れるほど頼りになる。</p>
 </div>
 
 <button class="buy" onclick="buy('chicken')">🐔 ニワトリを買う 50万円</button>
-<button class="buy" onclick="buy('dragon')">🥚 ドラゴンを買う 30万円</button>
+<button class="buy" onclick="buy('dragon')">🥚 ドラゴンの卵を買う 30万円</button>
 <button class="buy" onclick="buy('golem')">🛡 ゴーレムを買う 50万円</button>
 
 <button class="sell" onclick="sell('chicken')">🐔 ニワトリを売る</button>
 <button class="sell" onclick="sell('dragon')">🥚 ドラゴンを売る</button>
 <button class="sell" onclick="sell('golem')">🛡 ゴーレムを売る</button>
 
-<button class="next" onclick="nextYear()">▶ 次の年へ</button>
+<button class="next" onclick="nextYear()">⏭ 1年進める</button>
 <button class="reset" onclick="location.reload()">🔄 最初から</button>
 
 <div class="card result">
@@ -93,22 +77,20 @@ canvas{max-width:260px;margin:20px auto 0;display:block;}
 </div>
 
 <script>
-let age=25,cash=1000000,chicken=0,dragon=0,golem=0;
-let chickenValue=500000,dragonValue=300000,golemValue=500000;
-let crashCount=0,buyInCrash=0;
-
-const newsList=[
-"AI企業への期待が高まっている。",
-"市場に過熱感がある。",
-"中央銀行が利上げを示唆。",
-"物価上昇が続いている。",
-"企業業績は堅調。"
-];
+let age=25;
+let cash=1000000;
+let chicken=0;
+let dragon=0;
+let golem=0;
+let chickenValue=500000;
+let dragonValue=300000;
+let golemValue=500000;
+let crashCount=0;
 
 const events=[
-{name:"📈 好景気",text:"成長資産に追い風。",c:1.05,d:1.2,g:1,ca:1},
+{name:"🌤 好景気",text:"成長資産に追い風。",c:1.05,d:1.2,g:1,ca:1},
 {name:"🤖 AI革命",text:"ドラゴンが大きく育った。",c:1,d:1.4,g:.95,ca:1},
-{name:"📉 暴落",text:"市場が大きく下落した。",c:.85,d:.6,g:1,ca:1,crash:true},
+{name:"📉 暴落",text:"市場が大きく下落した。",c:.85,d:.6,g:1.1,ca:1,crash:true},
 {name:"🔥 インフレ",text:"現金の価値が少し目減りした。",c:1.05,d:1.05,g:.9,ca:.95},
 {name:"🏦 利上げ",text:"ドラゴンに逆風、ゴーレムに追い風。",c:.95,d:.8,g:1.1,ca:1}
 ];
@@ -134,51 +116,34 @@ document.getElementById("income").textContent=yen(income());
 document.getElementById("chicken").textContent=chicken;
 document.getElementById("dragon").textContent=dragon;
 document.getElementById("golem").textContent=golem;
-let total = net();
 
-document.getElementById("cashRate").textContent = Math.round((cash / total) * 100);
-document.getElementById("chickenRate").textContent = Math.round((chicken * chickenValue / total) * 100);
-document.getElementById("dragonRate").textContent = Math.round((dragon * dragonValue / total) * 100);
-document.getElementById("golemRate").textContent = Math.round((golem * golemValue / total) * 100);
+let total=net();
+let cashP=Math.round((cash/total)*100);
+let chickenP=Math.round((chicken*chickenValue/total)*100);
+let dragonP=Math.round((dragon*dragonValue/total)*100);
+let golemP=Math.max(0,100-cashP-chickenP-dragonP);
 
-let comment = "バランスを見ながら育てています。";
+document.getElementById("cashRate").textContent=cashP;
+document.getElementById("chickenRate").textContent=chickenP;
+document.getElementById("dragonRate").textContent=dragonP;
+document.getElementById("golemRate").textContent=golemP;
 
-if ((cash / total) > 0.5) comment = "現金多め。チャンスを待つ慎重派です。";
-if ((chicken * chickenValue / total) > 0.5) comment = "インカム重視。配当を愛する資産家です。";
-if ((dragon * dragonValue / total) > 0.5) comment = "成長重視。未来に賭ける挑戦者です。";
-if ((golem * golemValue / total) > 0.5) comment = "守備重視。市場の荒波に備えています。";
+let comment="バランスを見ながら育てています。";
+if(cashP>50) comment="現金多め。チャンスを待つ慎重派です。";
+if(chickenP>50) comment="インカム重視。配当を愛する資産家です。";
+if(dragonP>50) comment="成長重視。未来に賭ける挑戦者です。";
+if(golemP>50) comment="守備重視。市場の荒波に備えています。";
+document.getElementById("styleComment").textContent=comment;
 
-document.getElementById("styleComment").textContent = comment;
-if (window.portfolioChart) {
-  window.portfolioChart.destroy();
+document.getElementById("portfolioPie").style.background=
+`conic-gradient(
+#fbbf24 0% ${cashP}%,
+#4ade80 ${cashP}% ${cashP+chickenP}%,
+#60a5fa ${cashP+chickenP}% ${cashP+chickenP+dragonP}%,
+#f87171 ${cashP+chickenP+dragonP}% 100%
+)`;
 }
 
-const ctx = document.getElementById("portfolioChart");
-
-window.portfolioChart = new Chart(ctx, {
-  type: "doughnut",
-  data: {
-    labels: ["現金", "ニワトリ", "ドラゴン", "ゴーレム"],
-    datasets: [{
-      data: [
-        cash,
-        chicken * chickenValue,
-        dragon * dragonValue,
-        golem * golemValue
-      ]
-    }]
-  },
-  options: {
-    plugins: {
-      legend: {
-        labels: {
-          color: "white"
-        }
-      }
-    }
-  }
-});
-}
 function price(type){
 if(type==="chicken")return chickenValue;
 if(type==="dragon")return dragonValue;
@@ -208,27 +173,23 @@ update();
 function nextYear(){
 if(age>=55){ending();return;}
 age++;
-cash+=200000+income();
+cash+=2000000+income();
 
-let news=newsList[Math.floor(Math.random()*newsList.length)];
-let ev=events[Math.floor(Math.random()*events.length)];
+let e=events[Math.floor(Math.random()*events.length)];
+chickenValue*=e.c;
+dragonValue*=e.d;
+golemValue*=e.g;
+cash*=e.ca;
+if(e.crash)crashCount++;
+
 let life=lifeEvents[Math.floor(Math.random()*lifeEvents.length)];
-
-if(ev.crash)crashCount++;
-
-chickenValue*=ev.c;
-dragonValue*=ev.d;
-golemValue*=ev.g;
-cash*=ev.ca;
-
 life.effect();
 
-document.getElementById("news").textContent=news;
-
-show(ev.name+"<br>"+ev.text+"<br><br>"+
-"給料 +20万円<br>"+
-"インカム +"+yen(income())+"円<br><br>"+
-life.name+"<br>"+life.text);
+show(
+age+"歳<br><br>"+
+e.name+"<br>"+e.text+"<br><br>"+
+life.name+"<br>"+life.text
+);
 
 update();
 if(age>=55) ending();
