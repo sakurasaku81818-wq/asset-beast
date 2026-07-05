@@ -20,6 +20,16 @@ button{width:100%;padding:13px;margin:6px 0;border:0;border-radius:14px;font-siz
 
 <div class="card">
 <h2>👤 人生</h2>
+
+<p>💰 現金：<span id="cashRate"></span>%</p>
+<p>🐔 ニワトリ：<span id="chickenRate"></span>%</p>
+<p>🥚 ドラゴン：<span id="dragonRate"></span>%</p>
+<p>🛡 ゴーレム：<span id="golemRate"></span>%</p>
+
+<p style="color:#ffd166;">
+🧠 <span id="styleComment"></span>
+</p>
+</div>
 <p>年齢：<span id="age"></span>歳</p>
 <p>残り：<span id="left"></span>年</p>
 <p>現金：<span id="cash"></span>円</p>
@@ -122,8 +132,22 @@ document.getElementById("income").textContent=yen(income());
 document.getElementById("chicken").textContent=chicken;
 document.getElementById("dragon").textContent=dragon;
 document.getElementById("golem").textContent=golem;
-}
+let total = net();
 
+document.getElementById("cashRate").textContent = Math.round((cash / total) * 100);
+document.getElementById("chickenRate").textContent = Math.round((chicken * chickenValue / total) * 100);
+document.getElementById("dragonRate").textContent = Math.round((dragon * dragonValue / total) * 100);
+document.getElementById("golemRate").textContent = Math.round((golem * golemValue / total) * 100);
+
+let comment = "バランスを見ながら育てています。";
+
+if ((cash / total) > 0.5) comment = "現金多め。チャンスを待つ慎重派です。";
+if ((chicken * chickenValue / total) > 0.5) comment = "インカム重視。配当を愛する資産家です。";
+if ((dragon * dragonValue / total) > 0.5) comment = "成長重視。未来に賭ける挑戦者です。";
+if ((golem * golemValue / total) > 0.5) comment = "守備重視。市場の荒波に備えています。";
+
+document.getElementById("styleComment").textContent = comment;
+}
 function price(type){
 if(type==="chicken")return chickenValue;
 if(type==="dragon")return dragonValue;
