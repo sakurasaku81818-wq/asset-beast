@@ -255,18 +255,94 @@ function enterPlace(place) {
 
 function renderSecurities() {
   app.innerHTML = `
-    <div class="screen shop-screen">
-      <h2>🏦 証券会社</h2>
-      <p>金融資産に投資できます。</p>
+    <div class="securities-layout">
 
-      <button id="buyStock">株を10万円買う</button>
-      <button id="buyEtf">ETFを10万円買う</button>
-      <button id="buyReit">REITを10万円買う</button>
-      <button id="buyCrypto">仮想通貨を10万円買う</button>
+      <div class="screen shop-screen">
+        <h2>🏦 証券会社</h2>
+        <p>金融資産に投資できます。</p>
 
-      <p>株：成長狙い / ETF：分散 / REIT：不動産投資 / 仮想通貨：高リスク</p>
+        <div class="asset-grid">
 
-      <button id="backTown">街へ戻る</button>
+          <div class="asset-card">
+            <h3>📈 株</h3>
+            <p class="asset-value">
+              現在：${player.stock.toLocaleString()}円
+            </p>
+
+            <div class="asset-actions">
+              <button id="buyStock">10万円買う</button>
+              <button id="sellStock">10万円売る</button>
+            </div>
+
+            <p class="asset-description">成長狙い</p>
+          </div>
+
+          <div class="asset-card">
+            <h3>📊 ETF</h3>
+            <p class="asset-value">
+              現在：${player.etf.toLocaleString()}円
+            </p>
+
+            <div class="asset-actions">
+              <button id="buyEtf">10万円買う</button>
+              <button id="sellEtf">10万円売る</button>
+            </div>
+
+            <p class="asset-description">分散投資</p>
+          </div>
+
+          <div class="asset-card">
+            <h3>🏢 REIT</h3>
+            <p class="asset-value">
+              現在：${player.reit.toLocaleString()}円
+            </p>
+
+            <div class="asset-actions">
+              <button id="buyReit">10万円買う</button>
+              <button id="sellReit">10万円売る</button>
+            </div>
+
+            <p class="asset-description">不動産投資</p>
+          </div>
+
+          <div class="asset-card">
+            <h3>₿ 仮想通貨</h3>
+            <p class="asset-value">
+              現在：${player.crypto.toLocaleString()}円
+            </p>
+
+            <div class="asset-actions">
+              <button id="buyCrypto">10万円買う</button>
+              <button id="sellCrypto">10万円売る</button>
+            </div>
+
+            <p class="asset-description">高リスク・高変動</p>
+          </div>
+
+        </div>
+
+        <button id="backTown">街へ戻る</button>
+      </div>
+
+      <div class="status-card">
+        <h3>資産状況</h3>
+
+        <p>💴 現金：${player.cash.toLocaleString()}円</p>
+        <p>📈 株：${player.stock.toLocaleString()}円</p>
+        <p>📊 ETF：${player.etf.toLocaleString()}円</p>
+        <p>🏢 REIT：${player.reit.toLocaleString()}円</p>
+        <p>₿ 仮想通貨：${player.crypto.toLocaleString()}円</p>
+
+        <hr>
+
+        <p>
+          <strong>
+            総資産：
+            ${(player.cash + player.stock + player.etf + player.reit + player.crypto).toLocaleString()}円
+          </strong>
+        </p>
+      </div>
+
     </div>
   `
 
@@ -274,6 +350,12 @@ function renderSecurities() {
   document.querySelector('#buyEtf').onclick = () => buyAsset('etf')
   document.querySelector('#buyReit').onclick = () => buyAsset('reit')
   document.querySelector('#buyCrypto').onclick = () => buyAsset('crypto')
+
+  document.querySelector('#sellStock').onclick = () => sellAsset('stock')
+  document.querySelector('#sellEtf').onclick = () => sellAsset('etf')
+  document.querySelector('#sellReit').onclick = () => sellAsset('reit')
+  document.querySelector('#sellCrypto').onclick = () => sellAsset('crypto')
+
   document.querySelector('#backTown').onclick = renderTown
 }
 
@@ -288,7 +370,48 @@ function buyAsset(type) {
   player.log = '10万円分の資産を購入した。'
   renderSecurities()
 }
+function sellAsset(type) {
+  if (player[type] < 100000) {
+    alert('売れる資産が足りない')
+    return
+  }
+  function updateMarket() {
+  const rates = {
+    stock: randomRate(-10, 15),
+    etf: randomRate(-5, 8),
+    reit: randomRate(-4, 6),
+    crypto: randomRate(-20, 25)
+  }
 
+  player.stock = applyRate(player.stock, rates.stock)
+  player.etf = applyRate(player.etf, rates.etf)
+  player.reit = applyRate(player.reit, rates.reit)
+  player.crypto = applyRate(player.crypto, rates.crypto)
+
+  player.log =
+    `市場変動：株 ${formatRate(rates.stock)} / ` +
+    `ETF ${formatRate(rates.etf)} / ` +
+    `REIT ${formatRate(rates.reit)} / ` +
+    `仮想通貨 ${formatRate(rates.crypto)}`
+}
+
+function randomRate(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+function applyRate(amount, rate) {
+  return Math.max(0, Math.round(amount * (1 + rate / 100)))
+}
+
+function formatRate(rate) {
+  return `${rate >= 0 ? '+' : ''}${rate}%`
+}
+
+  player.cash += 100000
+  player[type] -= 100000
+  player.log = '10万円分の資産を売却した。'
+  renderSecurities()
+}
 function renderRealEstate() {
   app.innerHTML = `
     <div class="screen shop-screen">
@@ -385,7 +508,7 @@ function nextMonth() {
   player.job.income += lifeEvent.income
 
   player.month += 1
-
+  updateMarket()
   if (player.month > 12) {
     player.month = 1
     player.age += 1
@@ -531,7 +654,27 @@ function getQuote() {
 
   return quotes[Math.floor(Math.random() * quotes.length)]
 }
+function updateMarket() {
+  player.stock = Math.max(
+    0,
+    Math.round(player.stock * (0.95 + Math.random() * 0.10))
+  )
 
+  player.etf = Math.max(
+    0,
+    Math.round(player.etf * (0.98 + Math.random() * 0.04))
+  )
+
+  player.reit = Math.max(
+    0,
+    Math.round(player.reit * (0.99 + Math.random() * 0.02))
+  )
+
+  player.crypto = Math.max(
+    0,
+    Math.round(player.crypto * (0.80 + Math.random() * 0.40))
+  )
+}
 function renderEnding() {
   app.innerHTML = `
     <div class="screen title-screen">

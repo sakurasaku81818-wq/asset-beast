@@ -87,21 +87,97 @@
       ${n.log}<br>
       📰 ${n.news}<br>
       操作：WASD / 矢印キーで移動
-    `)}function g(e){e===`securities`&&_(),e===`realestate`&&y(),e===`home`&&S(),e===`work`&&b(),e===`school`&&x()}function _(){t.innerHTML=`
-    <div class="screen shop-screen">
-      <h2>🏦 証券会社</h2>
-      <p>金融資産に投資できます。</p>
+    `)}function g(e){e===`securities`&&_(),e===`realestate`&&b(),e===`home`&&C(),e===`work`&&x(),e===`school`&&S()}function _(){t.innerHTML=`
+    <div class="securities-layout">
 
-      <button id="buyStock">株を10万円買う</button>
-      <button id="buyEtf">ETFを10万円買う</button>
-      <button id="buyReit">REITを10万円買う</button>
-      <button id="buyCrypto">仮想通貨を10万円買う</button>
+      <div class="screen shop-screen">
+        <h2>🏦 証券会社</h2>
+        <p>金融資産に投資できます。</p>
 
-      <p>株：成長狙い / ETF：分散 / REIT：不動産投資 / 仮想通貨：高リスク</p>
+        <div class="asset-grid">
 
-      <button id="backTown">街へ戻る</button>
+          <div class="asset-card">
+            <h3>📈 株</h3>
+            <p class="asset-value">
+              現在：${n.stock.toLocaleString()}円
+            </p>
+
+            <div class="asset-actions">
+              <button id="buyStock">10万円買う</button>
+              <button id="sellStock">10万円売る</button>
+            </div>
+
+            <p class="asset-description">成長狙い</p>
+          </div>
+
+          <div class="asset-card">
+            <h3>📊 ETF</h3>
+            <p class="asset-value">
+              現在：${n.etf.toLocaleString()}円
+            </p>
+
+            <div class="asset-actions">
+              <button id="buyEtf">10万円買う</button>
+              <button id="sellEtf">10万円売る</button>
+            </div>
+
+            <p class="asset-description">分散投資</p>
+          </div>
+
+          <div class="asset-card">
+            <h3>🏢 REIT</h3>
+            <p class="asset-value">
+              現在：${n.reit.toLocaleString()}円
+            </p>
+
+            <div class="asset-actions">
+              <button id="buyReit">10万円買う</button>
+              <button id="sellReit">10万円売る</button>
+            </div>
+
+            <p class="asset-description">不動産投資</p>
+          </div>
+
+          <div class="asset-card">
+            <h3>₿ 仮想通貨</h3>
+            <p class="asset-value">
+              現在：${n.crypto.toLocaleString()}円
+            </p>
+
+            <div class="asset-actions">
+              <button id="buyCrypto">10万円買う</button>
+              <button id="sellCrypto">10万円売る</button>
+            </div>
+
+            <p class="asset-description">高リスク・高変動</p>
+          </div>
+
+        </div>
+
+        <button id="backTown">街へ戻る</button>
+      </div>
+
+      <div class="status-card">
+        <h3>資産状況</h3>
+
+        <p>💴 現金：${n.cash.toLocaleString()}円</p>
+        <p>📈 株：${n.stock.toLocaleString()}円</p>
+        <p>📊 ETF：${n.etf.toLocaleString()}円</p>
+        <p>🏢 REIT：${n.reit.toLocaleString()}円</p>
+        <p>₿ 仮想通貨：${n.crypto.toLocaleString()}円</p>
+
+        <hr>
+
+        <p>
+          <strong>
+            総資産：
+            ${(n.cash+n.stock+n.etf+n.reit+n.crypto).toLocaleString()}円
+          </strong>
+        </p>
+      </div>
+
     </div>
-  `,document.querySelector(`#buyStock`).onclick=()=>v(`stock`),document.querySelector(`#buyEtf`).onclick=()=>v(`etf`),document.querySelector(`#buyReit`).onclick=()=>v(`reit`),document.querySelector(`#buyCrypto`).onclick=()=>v(`crypto`),document.querySelector(`#backTown`).onclick=p}function v(e){if(n.cash<1e5){alert(`現金が足りない`);return}n.cash-=1e5,n[e]+=1e5,n.log=`10万円分の資産を購入した。`,_()}function y(){t.innerHTML=`
+  `,document.querySelector(`#buyStock`).onclick=()=>v(`stock`),document.querySelector(`#buyEtf`).onclick=()=>v(`etf`),document.querySelector(`#buyReit`).onclick=()=>v(`reit`),document.querySelector(`#buyCrypto`).onclick=()=>v(`crypto`),document.querySelector(`#sellStock`).onclick=()=>y(`stock`),document.querySelector(`#sellEtf`).onclick=()=>y(`etf`),document.querySelector(`#sellReit`).onclick=()=>y(`reit`),document.querySelector(`#sellCrypto`).onclick=()=>y(`crypto`),document.querySelector(`#backTown`).onclick=p}function v(e){if(n.cash<1e5){alert(`現金が足りない`);return}n.cash-=1e5,n[e]+=1e5,n.log=`10万円分の資産を購入した。`,_()}function y(e){if(n[e]<1e5){alert(`売れる資産が足りない`);return}n.cash+=1e5,n[e]-=1e5,n.log=`10万円分の資産を売却した。`,_()}function b(){t.innerHTML=`
     <div class="screen shop-screen">
       <h2>🏠 不動産屋</h2>
       <p>家・マンション・アパートを購入できます。</p>
@@ -114,14 +190,14 @@
 
       <button id="backTown">街へ戻る</button>
     </div>
-  `,document.querySelector(`#backTown`).onclick=p}function b(){t.innerHTML=`
+  `,document.querySelector(`#backTown`).onclick=p}function x(){t.innerHTML=`
     <div class="screen">
       <h2>🏢 仕事</h2>
       <p>${n.job.name}として働いている。</p>
       <p>月収：${s(n.job.income*n.region.salaryRate)}</p>
       <button id="backTown">街へ戻る</button>
     </div>
-  `,document.querySelector(`#backTown`).onclick=p}function x(){t.innerHTML=`
+  `,document.querySelector(`#backTown`).onclick=p}function S(){t.innerHTML=`
     <div class="screen">
       <h2>🎓 学校</h2>
       <p>ここでは将来、資格やスキルを学べる。</p>
@@ -139,18 +215,18 @@
 
       <button id="backTown">街へ戻る</button>
     </div>
-  `,document.querySelector(`#studyFP`).onclick=w,document.querySelector(`#backTown`).onclick=p}function S(){t.innerHTML=`
+  `,document.querySelector(`#studyFP`).onclick=T,document.querySelector(`#backTown`).onclick=p}function C(){t.innerHTML=`
     <div class="screen">
       <h2>🏡 自宅</h2>
       <p>家で休むと1ヶ月が進みます。</p>
       <button id="nextMonth">寝る / 次の月へ</button>
       <button id="backTown">街へ戻る</button>
     </div>
-  `,document.querySelector(`#nextMonth`).onclick=C,document.querySelector(`#backTown`).onclick=p}function C(){let e=n.job.income*n.region.salaryRate,t=n.house.cost*n.region.costRate+7e4,r=n.stock*.002+n.etf*.0015+n.reit*.003,i=E(),a=D(),o=O();if(n.cash+=e+r,n.cash-=t,n.stock*=1+T(-.05,.08)+i.stock,n.etf*=1+T(-.03,.05)+i.etf,n.reit*=1+T(-.02,.04)+i.reit,n.crypto*=1+T(-.15,.2)+i.crypto,n.cash+=a.cash,n.job.income+=a.income,n.month+=1,n.month>12&&(n.month=1,n.age+=1),n.news=i.text,n.log=`
+  `,document.querySelector(`#nextMonth`).onclick=w,document.querySelector(`#backTown`).onclick=p}function w(){let e=n.job.income*n.region.salaryRate,t=n.house.cost*n.region.costRate+7e4,r=n.stock*.002+n.etf*.0015+n.reit*.003,i=D(),a=O(),o=k();if(n.cash+=e+r,n.cash-=t,n.stock*=1+E(-.05,.08)+i.stock,n.etf*=1+E(-.03,.05)+i.etf,n.reit*=1+E(-.02,.04)+i.reit,n.crypto*=1+E(-.15,.2)+i.crypto,n.cash+=a.cash,n.job.income+=a.income,n.month+=1,A(),n.month>12&&(n.month=1,n.age+=1),n.news=i.text,n.log=`
     給料 ${s(e)} / 生活費 ${s(t)} / 配当 ${s(r)}。<br>
     ${a.text}<br>
     格言：${o}
-  `,n.age>=50){k();return}p()}function w(){let r=e[Math.floor(Math.random()*e.length)];t.innerHTML=`
+  `,n.age>=50){j();return}p()}function T(){let r=e[Math.floor(Math.random()*e.length)];t.innerHTML=`
     <div class="screen">
       <h2>🎓 FPクイズ</h2>
       <p>所持金：${s(n.cash)}</p>
@@ -177,7 +253,7 @@ FP経験値：${n.fpExp} / 100
 
 ${r.explanation}`)):alert(`❌ 不正解
 
-${r.explanation}`),x()}}),document.querySelector(`#backSchool`).onclick=x}function T(e,t){return Math.random()*(t-e)+e}function E(){let e=[{text:`AI投資ブーム。株式市場に追い風。`,stock:.06,etf:.02,reit:0,crypto:.03},{text:`金利上昇。不動産とREITに逆風。`,stock:-.01,etf:-.01,reit:-.06,crypto:-.02},{text:`地政学リスクが高まる。市場全体が下落。`,stock:-.05,etf:-.03,reit:-.02,crypto:-.08},{text:`世界景気が回復。市場全体が上昇。`,stock:.05,etf:.03,reit:.02,crypto:.04},{text:`仮想通貨市場が急騰。`,stock:0,etf:0,reit:0,crypto:.15},{text:`大きなニュースはなかった。`,stock:0,etf:0,reit:0,crypto:0}];return e[Math.floor(Math.random()*e.length)]}function D(){let e=[{text:`昇進した。月収が1万円上がった。`,cash:0,income:1e4},{text:`ボーナス20万円を受け取った。`,cash:2e5,income:0},{text:`医療費5万円を支払った。`,cash:-5e4,income:0},{text:`副業収入3万円が入った。`,cash:3e4,income:0},{text:`特に何も起こらなかった。`,cash:0,income:0}];return e[Math.floor(Math.random()*e.length)]}function O(){let e=`時間を味方につけた者が、最後に勝つ。.複利は世界で最も強力な力の一つ。.卵は一つのカゴに盛るな。.安い時に恐れず、高い時に浮かれない。.投資はマラソン。短距離走ではない。.暴落は優良資産のバーゲンセール。.現金は守り、投資は攻め。.感情は投資の最大の敵。.利益は我慢した人に訪れる。.最悪なのは何もしないこと。.市場は短期では投票機、長期では計量機。.未来は誰にも読めない。だから分散する。.毎月積み立てることが最大の武器。.価格ではなく価値を見極めよう。.リスクとは値動きではなく、理解不足である。.お金にも働いてもらおう。.収入より支出の管理が重要。.資産形成は生活習慣で決まる。.今日の浪費は未来の資産を減らす。.焦って売買すると手数料だけが増える。.暴騰より継続が強い。.人生最大の投資は自分への投資。.知識は最高の資産。.借金は使い方次第で武器にもなる。.配当は小さな給料日。.長期投資は時間との共同作業。.チャンスは悲観の中に生まれる。.相場を当てるより、生き残ることが大切。.市場から退場しない人が勝者になる。.資産家はお金のためではなく、自由のために投資する。`.split(`.`);return e[Math.floor(Math.random()*e.length)]}function k(){t.innerHTML=`
+${r.explanation}`),S()}}),document.querySelector(`#backSchool`).onclick=S}function E(e,t){return Math.random()*(t-e)+e}function D(){let e=[{text:`AI投資ブーム。株式市場に追い風。`,stock:.06,etf:.02,reit:0,crypto:.03},{text:`金利上昇。不動産とREITに逆風。`,stock:-.01,etf:-.01,reit:-.06,crypto:-.02},{text:`地政学リスクが高まる。市場全体が下落。`,stock:-.05,etf:-.03,reit:-.02,crypto:-.08},{text:`世界景気が回復。市場全体が上昇。`,stock:.05,etf:.03,reit:.02,crypto:.04},{text:`仮想通貨市場が急騰。`,stock:0,etf:0,reit:0,crypto:.15},{text:`大きなニュースはなかった。`,stock:0,etf:0,reit:0,crypto:0}];return e[Math.floor(Math.random()*e.length)]}function O(){let e=[{text:`昇進した。月収が1万円上がった。`,cash:0,income:1e4},{text:`ボーナス20万円を受け取った。`,cash:2e5,income:0},{text:`医療費5万円を支払った。`,cash:-5e4,income:0},{text:`副業収入3万円が入った。`,cash:3e4,income:0},{text:`特に何も起こらなかった。`,cash:0,income:0}];return e[Math.floor(Math.random()*e.length)]}function k(){let e=`時間を味方につけた者が、最後に勝つ。.複利は世界で最も強力な力の一つ。.卵は一つのカゴに盛るな。.安い時に恐れず、高い時に浮かれない。.投資はマラソン。短距離走ではない。.暴落は優良資産のバーゲンセール。.現金は守り、投資は攻め。.感情は投資の最大の敵。.利益は我慢した人に訪れる。.最悪なのは何もしないこと。.市場は短期では投票機、長期では計量機。.未来は誰にも読めない。だから分散する。.毎月積み立てることが最大の武器。.価格ではなく価値を見極めよう。.リスクとは値動きではなく、理解不足である。.お金にも働いてもらおう。.収入より支出の管理が重要。.資産形成は生活習慣で決まる。.今日の浪費は未来の資産を減らす。.焦って売買すると手数料だけが増える。.暴騰より継続が強い。.人生最大の投資は自分への投資。.知識は最高の資産。.借金は使い方次第で武器にもなる。.配当は小さな給料日。.長期投資は時間との共同作業。.チャンスは悲観の中に生まれる。.相場を当てるより、生き残ることが大切。.市場から退場しない人が勝者になる。.資産家はお金のためではなく、自由のために投資する。`.split(`.`);return e[Math.floor(Math.random()*e.length)]}function A(){n.stock=Math.max(0,Math.round(n.stock*(.95+Math.random()*.1))),n.etf=Math.max(0,Math.round(n.etf*(.98+Math.random()*.04))),n.reit=Math.max(0,Math.round(n.reit*(.99+Math.random()*.02))),n.crypto=Math.max(0,Math.round(n.crypto*(.8+Math.random()*.4)))}function j(){t.innerHTML=`
     <div class="screen title-screen">
       <h1>結果発表</h1>
       <p>あなたの総資産</p>

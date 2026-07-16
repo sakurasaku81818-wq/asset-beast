@@ -161,3 +161,118 @@ button:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
+.securities-layout {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 32px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.securities-main {
+  flex: 1;
+  max-width: 760px;
+  text-align: center;
+}
+
+.status-card {
+  width: 240px;
+  padding: 14px 16px;
+  background: rgba(0, 0, 0, 0.65);
+  border-radius: 14px;
+  color: white;
+  text-align: left;
+  flex-shrink: 0;
+}
+
+.status-card h3 {
+  text-align: center;
+  margin: 0 0 10px;
+  font-size: 20px;
+}
+
+.status-card p {
+  margin: 5px 0;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.status-card hr {
+  margin: 10px 0;
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+@media (max-width: 800px) {
+  .securities-layout {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .status-card {
+    width: min(260px, 85vw);
+    order: -1;
+  }
+}
+.asset-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
+  gap: 18px;
+  width: 100%;
+  max-width: 620px;
+  margin: 24px auto;
+}
+
+.asset-card {
+  padding: 18px;
+  background: rgba(0, 0, 0, 0.34);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 16px;
+  text-align: center;
+}
+
+.asset-card h3 {
+  margin: 0 0 10px;
+  font-size: 22px;
+}
+
+.asset-value {
+  margin: 0 0 14px;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.asset-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.asset-actions button {
+  min-width: 105px;
+  margin: 0;
+  padding: 10px 12px;
+}
+
+.asset-description {
+  margin: 12px 0 0;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+@media (max-width: 800px) {
+  .asset-grid {
+    grid-template-columns: 1fr;
+    max-width: 340px;
+  }
+
+  .asset-actions {
+    flex-direction: column;
+  }
+
+  .asset-actions button {
+    width: 100%;
+  }
+}
