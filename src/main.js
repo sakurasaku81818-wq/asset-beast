@@ -20,6 +20,12 @@ let player = {
   news: '平和な1日だった。'
 }
 
+const data = localStorage.getItem("assetBeastSave")
+
+if (data) {
+  Object.assign(player, JSON.parse(data))
+}
+
 let currentPlace = null
 
 const jobs = [
@@ -45,6 +51,9 @@ const houses = [
 function yen(n) {
   return Math.floor(n).toLocaleString() + '円'
 }
+function man(n) {
+  return (Math.floor(n / 10000)).toLocaleString() + "万円"
+}
 
 function totalAssets() {
   return player.cash + player.stock + player.etf + player.reit + player.crypto
@@ -55,11 +64,45 @@ function renderTitle() {
     <div class="screen title-screen">
       <h1>AssetBeast</h1>
       <p>人生を選び、<br>お金を学び、<br>資産家になる。</p>
+      
       <button id="startBtn">GAME START</button>
+
+      ${localStorage.getItem("assetBeastSave")
+  ? '<button id="continueGame">続きから</button>'
+  : ''}
     </div>
   `
 
-  document.querySelector('#startBtn').onclick = renderJobSelect
+  document.querySelector('#startBtn').onclick = newGame
+
+const continueBtn = document.querySelector('#continueGame')
+
+if (continueBtn) {
+  continueBtn.onclick = loadGame
+}
+  
+}
+function newGame() {
+  localStorage.removeItem("assetBeastSave")
+
+  player = {
+    age: 20,
+    month: 1,
+    job: null,
+    region: null,
+    house: null,
+    cash: 300000,
+    fpExp: 0,
+    fpLevel: 1,
+    stock: 0,
+    etf: 0,
+    reit: 0,
+    crypto: 0,
+    log: "AssetBeastの人生が始まった。",
+    news: "平和な1日だった。"
+  }
+
+  renderJobSelect()
 }
 
 function renderJobSelect() {
@@ -137,13 +180,25 @@ function renderHouseSelect() {
       renderTown()
     }
   })
-
+ 
   document.querySelector('#back').onclick = renderRegionSelect
 }
 
-function renderTown() {
+ function renderTown() {
   app.innerHTML = `
-    <div class="game-wrap ${player.region.style}">
+  <div class="mobile-controls">
+  <button id="moveUp">▲</button>
+
+  <div>
+    <button id="moveLeft">◀</button>
+    <button id="moveDown">▼</button>
+    <button id="moveRight">▶</button>
+  </div>
+
+  <button id="enterButton">入る</button>
+</div>
+   
+   <div class="game-wrap ${player.region.style}">
       <div class="status">
         <h2>${player.region.name}の街</h2>
         <p>${player.age}歳 ${player.month}ヶ月目</p>
@@ -160,7 +215,7 @@ function renderTown() {
       </div>
 
       <div id="town">
-        <div id="player"></div>
+        <div id="player">🏃</div>
 
         <div class="building work" data-place="work"><div class="roof"></div><span>仕事</span></div>
         <div class="building securities" data-place="securities"><div class="roof"></div><span>証券会社</span></div>
@@ -189,7 +244,8 @@ function setupTown() {
   playerEl.style.left = x + 'px'
   playerEl.style.top = y + 'px'
 
-  document.onkeydown = e => {
+  
+ document.onkeydown = e => {
     if (e.key === 'e' && currentPlace) {
       enterPlace(currentPlace)
       return
@@ -213,8 +269,31 @@ function setupTown() {
 
     checkBuilding(x, y)
   }
-}
+   const pressKey = key => {
+    document.dispatchEvent(
+      new KeyboardEvent('keydown', { key })
+    )
+  }
 
+  document.querySelector('#moveUp').onclick =
+    () => pressKey('ArrowUp')
+
+  document.querySelector('#moveDown').onclick =
+    () => pressKey('ArrowDown')
+
+  document.querySelector('#moveLeft').onclick =
+    () => pressKey('ArrowLeft')
+
+  document.querySelector('#moveRight').onclick =
+    () => pressKey('ArrowRight')
+    document.querySelector('#enterButton').onclick = () => {
+  if (currentPlace) {
+    enterPlace(currentPlace)
+  } else {
+    alert("建物の近くまで移動してください")
+  }
+}
+}
 function checkBuilding(x, y) {
   currentPlace = null
 
@@ -327,18 +406,18 @@ function renderSecurities() {
       <div class="status-card">
         <h3>資産状況</h3>
 
-        <p>💴 現金：${player.cash.toLocaleString()}円</p>
-        <p>📈 株：${player.stock.toLocaleString()}円</p>
-        <p>📊 ETF：${player.etf.toLocaleString()}円</p>
-        <p>🏢 REIT：${player.reit.toLocaleString()}円</p>
-        <p>₿ 仮想通貨：${player.crypto.toLocaleString()}円</p>
+        <p>💴 現金：${yen(player.cash)}</p>
+        <p>📈 株：${yen(player.stock)}</p>
+        <p>📊 ETF：${yen(player.etf)}</p>
+        <p>🏢 REIT：${yen(player.reit)}</p>
+        <p>₿ 仮想通貨：${yen(player.crypto)}</p>
 
         <hr>
 
         <p>
           <strong>
             総資産：
-            ${(player.cash + player.stock + player.etf + player.reit + player.crypto).toLocaleString()}円
+            ${yen(totalAssets())}
           </strong>
         </p>
       </div>
@@ -413,22 +492,76 @@ function formatRate(rate) {
   renderSecurities()
 }
 function renderRealEstate() {
+  const properties = [
+  { name: "戸建て", price: 30000000, rentIncome: 80000 },
+  { name: "マンション", price: 45000000, rentIncome: 120000 },
+  { name: "アパート", price: 80000000, rentIncome: 250000 }
+]
+
+  const propertyCards = properties.map((property, index) => {
+    const canBuy = player.cash >= property.price
+    const alreadyOwned = player.house?.name === property.name
+
+    return `
+      <div class="card">
+        <h3>${property.name}</h3>
+        <p>価格：${man(property.price)}</p>
+　　　　　<p>家賃収入：月${property.rentIncome.toLocaleString()}円</p>
+
+        <button
+          class="buyProperty"
+          data-index="${index}"
+          ${!canBuy || alreadyOwned ? "disabled" : ""}
+        >
+          ${
+            alreadyOwned
+              ? "所有中"
+              : canBuy
+                ? "購入する"
+                : "資金不足"
+          }
+        </button>
+      </div>
+    `
+  }).join("")
+
   app.innerHTML = `
     <div class="screen shop-screen">
       <h2>🏠 不動産屋</h2>
       <p>家・マンション・アパートを購入できます。</p>
 
       <div class="card-list">
-        <div class="card"><h3>戸建て</h3><p>3,000万円</p><button disabled>資金不足</button></div>
-        <div class="card"><h3>マンション</h3><p>4,500万円</p><button disabled>資金不足</button></div>
-        <div class="card"><h3>アパート</h3><p>8,000万円</p><button disabled>資金不足</button></div>
+        ${propertyCards}
       </div>
 
       <button id="backTown">街へ戻る</button>
     </div>
   `
 
-  document.querySelector('#backTown').onclick = renderTown
+  document.querySelectorAll(".buyProperty").forEach(button => {
+    button.onclick = () => {
+      const property = properties[Number(button.dataset.index)]
+
+      if (player.cash < property.price) {
+        alert("資金が足りません")
+        return
+      }
+
+      player.cash -= property.price
+
+      player.house = {
+        name: property.name,
+        cost: 0
+      }
+
+      player.log = `${property.name}を${yen(property.price)}で購入した。`
+
+      alert(`${property.name}を購入しました！`)
+      renderTown()
+    }
+  })
+
+  document.querySelector("#backTown").onclick = renderTown
 }
 
 function renderWork() {
@@ -474,16 +607,24 @@ function renderHome() {
     <div class="screen">
       <h2>🏡 自宅</h2>
       <p>家で休むと1ヶ月が進みます。</p>
-      <button id="nextMonth">寝る / 次の月へ</button>
+      <button id="nextMonth">💾 寝る（保存）</button>
+      <button id="nextMonthNoSave">⏭️ 寝る（保存しない）</button>
+      <button id="quitGame">🚪 ゲーム終了</button>
       <button id="backTown">街へ戻る</button>
     </div>
   `
 
-  document.querySelector('#nextMonth').onclick = nextMonth
+  document.querySelector('#nextMonth').onclick = () => nextMonth(true)
+  document.querySelector('#nextMonthNoSave').onclick = () => nextMonth(false)
+  document.querySelector('#quitGame').onclick = quitGame
   document.querySelector('#backTown').onclick = renderTown
 }
-
-function nextMonth() {
+function quitGame() {
+  if (confirm("保存してタイトルへ戻りますか？")) {
+    renderTitle()
+  }
+}
+function nextMonth(shouldSave = true) {
   const salary = player.job.income * player.region.salaryRate
   const livingCost = player.house.cost * player.region.costRate + 70000
 
@@ -492,11 +633,12 @@ function nextMonth() {
     player.etf * 0.0015 +
     player.reit * 0.003
 
+  const rentIncome = player.house?.rentIncome || 0
   const news = getMonthlyNews()
   const lifeEvent = getLifeEvent()
   const quote = getQuote()
 
-  player.cash += salary + dividend
+  player.cash += salary + dividend + rentIncome
   player.cash -= livingCost
 
   player.stock *= 1 + randomRate(-0.05, 0.08) + news.stock
@@ -509,15 +651,18 @@ function nextMonth() {
 
   player.month += 1
   updateMarket()
+
+  const randomEvent = getRandomEvent()
+
   if (player.month > 12) {
     player.month = 1
     player.age += 1
   }
 
-  player.news = news.text
+  player.news = randomEvent ? randomEvent.text : news.text
 
   player.log = `
-    給料 ${yen(salary)} / 生活費 ${yen(livingCost)} / 配当 ${yen(dividend)}。<br>
+    給料 ${yen(salary)} / 生活費 ${yen(livingCost)} / 配当 ${yen(dividend)} / 家賃 ${yen(rentIncome)}。
     ${lifeEvent.text}<br>
     格言：${quote}
   `
@@ -526,24 +671,32 @@ function nextMonth() {
     renderEnding()
     return
   }
-
+ if (shouldSave) {
+  saveGame()
+}
   renderTown()
 }
 
 function showFPQuiz() {
   const quiz = fpQuiz[Math.floor(Math.random() * fpQuiz.length)]
 
+  const shuffledChoices = quiz.choices
+  .map((choice, originalIndex) => ({
+    choice,
+    originalIndex
+  }))
+  .sort(() => Math.random() - 0.5)
   app.innerHTML = `
     <div class="screen">
       <h2>🎓 FPクイズ</h2>
       <p>所持金：${yen(player.cash)}</p>
       <p>${quiz.question}</p>
 
-      ${quiz.choices.map((choice, i) => `
-        <button class="quizBtn" data-i="${i}">
-          ${choice}
-        </button>
-      `).join('')}
+     ${shuffledChoices.map(item => `
+  <button class="quizBtn" data-i="${item.originalIndex}">
+    ${item.choice}
+  </button>
+`).join('')}
 
       <br><br>
 
@@ -686,5 +839,156 @@ function renderEnding() {
     </div>
   `
 }
+function saveGame() {
+  localStorage.setItem("assetBeastSave", JSON.stringify(player))
+  alert("ゲームを保存しました！")
+}
 
+function loadGame() {
+  const data = localStorage.getItem("assetBeastSave")
+
+  if (!data) {
+    alert("セーブデータがありません。")
+    return
+  }
+
+  Object.assign(player, JSON.parse(data))
+
+  renderTown()
+
+  alert("ゲームをロードしました！")
+}
+function getRandomEvent() {
+  // 毎月30％の確率でイベント発生
+  if (Math.random() > 0.3) {
+    return null
+  }
+
+  // 誰にでも起こる生活イベント
+  const lifeEvents = [
+    {
+      text: "🎉 臨時ボーナス！現金が100,000円増えた。",
+      effect: () => {
+        player.cash += 100000
+      }
+    },
+    {
+      text: "💸 急な出費が発生。現金が50,000円減った。",
+      effect: () => {
+        player.cash = Math.max(0, player.cash - 50000)
+      }
+    },
+    {
+      text: "📱 スマホが故障した。修理費20,000円を支払った。",
+      effect: () => {
+        player.cash = Math.max(0, player.cash - 20000)
+      }
+    },
+    {
+      text: "🎁 お祝い金をもらった。現金が30,000円増えた。",
+      effect: () => {
+        player.cash += 30000
+      }
+    },
+    {
+      text: "🏥 医療費50,000円を支払った。",
+      effect: () => {
+        player.cash = Math.max(0, player.cash - 50000)
+      }
+    },
+    {
+      text: "🎓 FPの知識が身についた！経験値が20増えた。",
+      effect: () => {
+        player.fpExp += 20
+      }
+    }
+  ]
+
+  // 株を持っている場合だけ追加
+  const stockEvents = player.stock > 0
+    ? [
+        {
+          text: "📈 好決算が発表された。株資産が10％増えた。",
+          effect: () => {
+            player.stock *= 1.1
+          }
+        },
+        {
+          text: "📉 株式市場が下落。株資産が10％減った。",
+          effect: () => {
+            player.stock *= 0.9
+          }
+        }
+      ]
+    : []
+
+  // ETFを持っている場合だけ追加
+  const etfEvents = player.etf > 0
+    ? [
+        {
+          text: "🌍 世界経済が好調。ETF資産が7％増えた。",
+          effect: () => {
+            player.etf *= 1.07
+          }
+        },
+        {
+          text: "📉 世界市場が調整。ETF資産が5％減った。",
+          effect: () => {
+            player.etf *= 0.95
+          }
+        }
+      ]
+    : []
+
+  // REITを持っている場合だけ追加
+  const reitEvents = player.reit > 0
+    ? [
+        {
+          text: "🏢 不動産市況が改善。REIT資産が8％増えた。",
+          effect: () => {
+            player.reit *= 1.08
+          }
+        },
+        {
+          text: "🏚️ 空室率が上昇。REIT資産が6％減った。",
+          effect: () => {
+            player.reit *= 0.94
+          }
+        }
+      ]
+    : []
+
+  // 仮想通貨を持っている場合だけ追加
+  const cryptoEvents = player.crypto > 0
+    ? [
+        {
+          text: "🚀 仮想通貨が急騰！資産が20％増えた。",
+          effect: () => {
+            player.crypto *= 1.2
+          }
+        },
+        {
+          text: "💥 仮想通貨が暴落！資産が25％減った。",
+          effect: () => {
+            player.crypto *= 0.75
+          }
+        }
+      ]
+    : []
+
+  const events = [
+    ...lifeEvents,
+    ...stockEvents,
+    ...etfEvents,
+    ...reitEvents,
+    ...cryptoEvents
+  ]
+
+  const selectedEvent =
+    events[Math.floor(Math.random() * events.length)]
+
+  selectedEvent.effect()
+
+  return selectedEvent
+}
 renderTitle()
