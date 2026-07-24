@@ -82,8 +82,10 @@
 
       <div class="message">
         ${n.log}<br>
-        📰 ${n.news}<br>
-        操作：WASD / 矢印キーで移動
+    　　 📰 ${n.news}<br>
+        
+　　　　　操作：PC → WASD・矢印キー<br>
+　　　　　　　　スマホ → タップ・スワイプ
       </div>
     </div>
   `,_()}function _(){let e=document.querySelector(`#player`),t=40,n=40;e.style.left=t+`px`,e.style.top=n+`px`,document.onkeydown=r=>{if(r.key===`e`&&i){y(i);return}let a=t,o=n;(r.key===`ArrowRight`||r.key===`d`)&&(a+=40),(r.key===`ArrowLeft`||r.key===`a`)&&(a-=40),(r.key===`ArrowDown`||r.key===`s`)&&(o+=40),(r.key===`ArrowUp`||r.key===`w`)&&(o-=40),!(a<0||a>520||o<0||o>360)&&(t=a,n=o,e.style.left=t+`px`,e.style.top=n+`px`,v(t,n))};let r=e=>{document.dispatchEvent(new KeyboardEvent(`keydown`,{key:e}))},a=document.querySelector(`.game-wrap`),o=0,s=0;a.style.touchAction=`none`,a.addEventListener(`touchstart`,e=>{o=e.changedTouches[0].clientX,s=e.changedTouches[0].clientY},{passive:!0}),a.addEventListener(`touchend`,e=>{if(e.target.closest(`button`))return;let t=e.changedTouches[0].clientX,n=e.changedTouches[0].clientY,a=t-o,c=n-s;if(Math.abs(a)<40&&Math.abs(c)<40){i&&y(i);return}r(Math.abs(a)>Math.abs(c)?a>0?`ArrowRight`:`ArrowLeft`:c>0?`ArrowDown`:`ArrowUp`)})}function v(e,t){i=null,document.querySelectorAll(`.building`).forEach(n=>{let r=n.offsetLeft,a=n.offsetTop;Math.abs(e-r)<=40&&Math.abs(t-a)<=40&&(i=n.dataset.place)});let r=document.querySelector(`.message`);r&&(i?r.innerHTML=`

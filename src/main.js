@@ -218,8 +218,10 @@ function renderHouseSelect() {
 
       <div class="message">
         ${player.log}<br>
-        📰 ${player.news}<br>
-        操作：WASD / 矢印キーで移動
+    　　 📰 ${player.news}<br>
+        
+　　　　　操作：PC → WASD・矢印キー<br>
+　　　　　　　　スマホ → タップ・スワイプ
       </div>
     </div>
   `
