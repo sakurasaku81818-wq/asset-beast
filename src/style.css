@@ -111,6 +111,16 @@ button {
   #player {
     font-size: 44px;
   }
+
+  #town {
+    margin: 16px auto;
+  }
+  
+  .building {
+    width: 104px;
+    height: 66px;
+    font-size: 18px;
+  }
 }
 
 .building {
