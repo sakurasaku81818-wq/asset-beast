@@ -186,16 +186,8 @@ function renderHouseSelect() {
 
  function renderTown() {
   app.innerHTML = `
-  <div class="mobile-controls">
-  <button id="moveUp">▲</button>
-
-  <div>
-    <button id="moveLeft">◀</button>
-    <button id="moveDown">▼</button>
-    <button id="moveRight">▶</button>
-  </div>
-
-  <button id="enterButton">入る</button>
+ <div class="mobile-controls">
+  <p>スワイプで移動・タップで入る</p>
 </div>
    
    <div class="game-wrap ${player.region.style}">
@@ -275,24 +267,46 @@ function setupTown() {
     )
   }
 
-  document.querySelector('#moveUp').onclick =
-    () => pressKey('ArrowUp')
+ const swipeArea = document.querySelector('.game-wrap')
 
-  document.querySelector('#moveDown').onclick =
-    () => pressKey('ArrowDown')
+let touchStartX = 0
+let touchStartY = 0
 
-  document.querySelector('#moveLeft').onclick =
-    () => pressKey('ArrowLeft')
+swipeArea.style.touchAction = 'none'
 
-  document.querySelector('#moveRight').onclick =
-    () => pressKey('ArrowRight')
-    document.querySelector('#enterButton').onclick = () => {
-  if (currentPlace) {
-    enterPlace(currentPlace)
-  } else {
-    alert("建物の近くまで移動してください")
+swipeArea.addEventListener('touchstart', e => {
+  touchStartX = e.changedTouches[0].clientX
+  touchStartY = e.changedTouches[0].clientY
+}, { passive: true })
+
+swipeArea.addEventListener('touchend', e => {
+  if (e.target.closest('button')) return
+
+  const touchEndX = e.changedTouches[0].clientX
+  const touchEndY = e.changedTouches[0].clientY
+
+  const diffX = touchEndX - touchStartX
+  const diffY = touchEndY - touchStartY
+
+  const swipeDistance = 40
+
+  // 小さな動きはタップ扱い
+  if (
+    Math.abs(diffX) < swipeDistance &&
+    Math.abs(diffY) < swipeDistance
+  ) {
+    if (currentPlace) {
+      enterPlace(currentPlace)
+    }
+    return
   }
-}
+
+  if (Math.abs(diffX) > Math.abs(diffY)) {
+    pressKey(diffX > 0 ? 'ArrowRight' : 'ArrowLeft')
+  } else {
+    pressKey(diffY > 0 ? 'ArrowDown' : 'ArrowUp')
+  }
+})
 }
 function checkBuilding(x, y) {
   currentPlace = null
