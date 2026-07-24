@@ -100,11 +100,17 @@ button {
   position: absolute;
   width: 32px;
   height: 32px;
-  font-size: 28px;
+  font-size: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 3;
+}
+  
+  @media (max-width: 768px) {
+  #player {
+    font-size: 44px;
+  }
 }
 
 .building {
