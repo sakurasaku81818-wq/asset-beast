@@ -401,7 +401,7 @@ button:disabled {
 
   .message {
     width: 100%;
-    margin: 10px auto 0;
+    margin: 6px auto 0;
     padding: 12px;
     box-sizing: border-box;
     font-size: 14px;
@@ -443,8 +443,8 @@ button:disabled {
   }
   #town {
     width: 92vw;
-    height: 260px;
-    margin: 10px auto;
+    height: 220px;
+    margin: 8px auto;
     overflow: hidden;
 }
   @media (max-width: 768px) {
