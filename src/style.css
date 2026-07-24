@@ -401,6 +401,9 @@ button:disabled {
     box-sizing: border-box;
     font-size: 15px;
     line-height: 1.5;
+    max-height: 130px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .mobile-controls {
