@@ -357,7 +357,7 @@ button:disabled {
   }
 #town {
   width: 92vw;
-  height: 300px;
+  height: 260px;
   margin: 10px auto;
   overflow: hidden;
 }
@@ -389,7 +389,7 @@ button:disabled {
   }
 
   .building {
-    transform: scale(0.82);
+    transform: scale(0.72);
     transform-origin: center;
   }
 
@@ -441,7 +441,12 @@ button:disabled {
     font-size: 16px;
     margin-top: 4px;
   }
-  
+  #town {
+    width: 92vw;
+    height: 260px;
+    margin: 10px auto;
+    overflow: hidden;
+}
   @media (max-width: 768px) {
   #town {
     margin: 16px auto;
