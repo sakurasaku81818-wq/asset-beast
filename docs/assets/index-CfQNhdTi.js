@@ -49,7 +49,32 @@
       </div>
       <button id="back">← 地域を選び直す</button>
     </div>
-  `,document.querySelectorAll(`[data-i]`).forEach(e=>{e.onclick=()=>{n.house=s[e.dataset.i],g()}}),document.querySelector(`#back`).onclick=m}function g(){t.innerHTML=`
+  `,document.querySelectorAll(`[data-i]`).forEach(e=>{e.onclick=()=>{n.house=s[e.dataset.i],g()}}),document.querySelector(`#back`).onclick=m}function g(){let e=[[`T`,`T`,`T`,`T`,`T`,`T`,`T`,`T`,`T`],[`T`,`G`,`G`,`R`,`R`,`R`,`G`,`F`,`T`],[`T`,`W`,`G`,`R`,`S`,`R`,`G`,`G`,`T`],[`T`,`R`,`R`,`R`,`R`,`R`,`R`,`R`,`T`],[`T`,`H`,`G`,`R`,`E`,`R`,`G`,`K`,`T`],[`T`,`F`,`G`,`R`,`R`,`R`,`F`,`G`,`T`],[`T`,`T`,`T`,`T`,`T`,`T`,`T`,`T`,`T`]].map((e,t)=>e.map((e,n)=>{let r=`data-x="${n}" data-y="${t}"`;return e===`T`?`<div class="map-tile tree" ${r}>🌳</div>`:e===`F`?`<div class="map-tile flower" ${r}>🌼</div>`:e===`R`?`<div class="map-tile road" ${r}></div>`:e===`W`?`
+            <div class="map-tile building work" data-place="work" ${r}>
+              <div class="roof"></div>
+              <span>💼仕事</span>
+            </div>
+          `:e===`S`?`
+            <div class="map-tile building securities" data-place="securities" ${r}>
+              <div class="roof"></div>
+              <span>📈証券会社</span>
+            </div>
+          `:e===`E`?`
+            <div class="map-tile building realestate" data-place="realestate" ${r}>
+              <div class="roof"></div>
+              <span>🏢不動産</span>
+            </div>
+          `:e===`H`?`
+            <div class="map-tile building home" data-place="home" ${r}>
+              <div class="roof"></div>
+              <span>🏠自宅</span>
+            </div>
+          `:e===`K`?`
+            <div class="map-tile building school" data-place="school" ${r}>
+              <div class="roof"></div>
+              <span>🎓学校</span>
+            </div>
+          `:`<div class="map-tile grass" ${r}></div>`}).join(``)).join(``);t.innerHTML=`
  <div class="mobile-controls">
   <p>スワイプで移動・タップで入る</p>
 </div>
@@ -70,14 +95,11 @@
         <p>総資産：${c(u())}</p>
       </div>
 
-      <div id="town">
-        <div id="player">🏃</div>
-
-        <div class="building work" data-place="work"><div class="roof"></div><span>仕事</span></div>
-        <div class="building securities" data-place="securities"><div class="roof"></div><span>証券会社</span></div>
-        <div class="building realestate" data-place="realestate"><div class="roof"></div><span>不動産屋</span></div>
-        <div class="building home" data-place="home"><div class="roof"></div><span>自宅</span></div>
-        <div class="building school" data-place="school"><div class="roof"></div><span>学校</span></div>
+     
+<div id="town" class="town-grid">
+  ${e}
+  <div id="player">🚶</div>
+</div>
       </div>
 
       <div class="message">
@@ -88,7 +110,7 @@
 　　　　　　　　スマホ → タップ・スワイプ
       </div>
     </div>
-  `,_()}function _(){let e=document.querySelector(`#player`),t=40,n=40;e.style.left=t+`px`,e.style.top=n+`px`,document.onkeydown=r=>{if(r.key===`e`&&i){y(i);return}let a=t,o=n;(r.key===`ArrowRight`||r.key===`d`)&&(a+=40),(r.key===`ArrowLeft`||r.key===`a`)&&(a-=40),(r.key===`ArrowDown`||r.key===`s`)&&(o+=40),(r.key===`ArrowUp`||r.key===`w`)&&(o-=40),!(a<0||a>520||o<0||o>360)&&(t=a,n=o,e.style.left=t+`px`,e.style.top=n+`px`,v(t,n))};let r=e=>{document.dispatchEvent(new KeyboardEvent(`keydown`,{key:e}))},a=document.querySelector(`.game-wrap`),o=0,s=0;a.style.touchAction=`none`,a.addEventListener(`touchstart`,e=>{o=e.changedTouches[0].clientX,s=e.changedTouches[0].clientY},{passive:!0}),a.addEventListener(`touchend`,e=>{if(e.target.closest(`button`))return;let t=e.changedTouches[0].clientX,n=e.changedTouches[0].clientY,a=t-o,c=n-s;if(Math.abs(a)<40&&Math.abs(c)<40){i&&y(i);return}r(Math.abs(a)>Math.abs(c)?a>0?`ArrowRight`:`ArrowLeft`:c>0?`ArrowDown`:`ArrowUp`)})}function v(e,t){i=null,document.querySelectorAll(`.building`).forEach(n=>{let r=n.offsetLeft,a=n.offsetTop;Math.abs(e-r)<=40&&Math.abs(t-a)<=40&&(i=n.dataset.place)});let r=document.querySelector(`.message`);r&&(i?r.innerHTML=`
+  `,_()}function _(){let e=document.querySelector(`#player`),t=document.querySelector(`#town`),n=1,r=1;function a(){let i=t.clientWidth/9,a=t.clientHeight/7,o=n*i+i/2-e.offsetWidth/2,s=r*a+a/2-e.offsetHeight/2;e.style.left=o+`px`,e.style.top=s+`px`}a(),document.onkeydown=t=>{if(t.key===`e`&&i){y(i);return}let o=n,s=r;(t.key===`ArrowRight`||t.key===`d`)&&(o+=1),(t.key===`ArrowLeft`||t.key===`a`)&&--o,(t.key===`ArrowDown`||t.key===`s`)&&(s+=1),(t.key===`ArrowUp`||t.key===`w`)&&--s,!(o<0||o>=9||s<0||s>=7)&&(n=o,r=s,a(),v(e.offsetLeft,e.offsetTop))};let o=e=>{document.dispatchEvent(new KeyboardEvent(`keydown`,{key:e}))},s=document.querySelector(`.game-wrap`),c=0,l=0;s.style.touchAction=`none`,s.addEventListener(`touchstart`,e=>{c=e.changedTouches[0].clientX,l=e.changedTouches[0].clientY},{passive:!0}),s.addEventListener(`touchend`,e=>{if(e.target.closest(`button`))return;let t=e.changedTouches[0].clientX,n=e.changedTouches[0].clientY,r=t-c,a=n-l;if(Math.abs(r)<40&&Math.abs(a)<40){i&&y(i);return}o(Math.abs(r)>Math.abs(a)?r>0?`ArrowRight`:`ArrowLeft`:a>0?`ArrowDown`:`ArrowUp`)})}function v(e,t){i=null,document.querySelectorAll(`.building`).forEach(n=>{let r=n.offsetLeft,a=n.offsetTop;Math.abs(e-r)<=40&&Math.abs(t-a)<=40&&(i=n.dataset.place)});let r=document.querySelector(`.message`);r&&(i?r.innerHTML=`
       ${n.log}<br>
       📰 ${n.news}<br>
       Eキー：施設に入る

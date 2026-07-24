@@ -185,6 +185,85 @@ function renderHouseSelect() {
 }
 
  function renderTown() {
+ const townMap = [
+  ["T", "T", "T", "T", "T", "T", "T", "T", "T"],
+  ["T", "G", "G", "R", "R", "R", "G", "F", "T"],
+  ["T", "W", "G", "R", "S", "R", "G", "G", "T"],
+  ["T", "R", "R", "R", "R", "R", "R", "R", "T"],
+  ["T", "H", "G", "R", "E", "R", "G", "K", "T"],
+  ["T", "F", "G", "R", "R", "R", "F", "G", "T"],
+  ["T", "T", "T", "T", "T", "T", "T", "T", "T"],
+]
+
+const townHtml = townMap
+  .map((row, y) =>
+    row
+      .map((tile, x) => {
+        const position = `data-x="${x}" data-y="${y}"`
+
+        if (tile === "T") {
+          return `<div class="map-tile tree" ${position}>🌳</div>`
+        }
+
+        if (tile === "F") {
+          return `<div class="map-tile flower" ${position}>🌼</div>`
+        }
+
+        if (tile === "R") {
+          return `<div class="map-tile road" ${position}></div>`
+        }
+
+        if (tile === "W") {
+          return `
+            <div class="map-tile building work" data-place="work" ${position}>
+              <div class="roof"></div>
+              <span>💼仕事</span>
+            </div>
+          `
+        }
+
+        if (tile === "S") {
+          return `
+            <div class="map-tile building securities" data-place="securities" ${position}>
+              <div class="roof"></div>
+              <span>📈証券会社</span>
+            </div>
+          `
+        }
+
+        if (tile === "E") {
+          return `
+            <div class="map-tile building realestate" data-place="realestate" ${position}>
+              <div class="roof"></div>
+              <span>🏢不動産</span>
+            </div>
+          `
+        }
+
+        if (tile === "H") {
+          return `
+            <div class="map-tile building home" data-place="home" ${position}>
+              <div class="roof"></div>
+              <span>🏠自宅</span>
+            </div>
+          `
+        }
+
+        if (tile === "K") {
+          return `
+            <div class="map-tile building school" data-place="school" ${position}>
+              <div class="roof"></div>
+              <span>🎓学校</span>
+            </div>
+          `
+        }
+
+        return `<div class="map-tile grass" ${position}></div>`
+      })
+      .join("")
+  )
+  .join("")
+
   app.innerHTML = `
  <div class="mobile-controls">
   <p>スワイプで移動・タップで入る</p>
@@ -206,14 +285,11 @@ function renderHouseSelect() {
         <p>総資産：${yen(totalAssets())}</p>
       </div>
 
-      <div id="town">
-        <div id="player">🏃</div>
-
-        <div class="building work" data-place="work"><div class="roof"></div><span>仕事</span></div>
-        <div class="building securities" data-place="securities"><div class="roof"></div><span>証券会社</span></div>
-        <div class="building realestate" data-place="realestate"><div class="roof"></div><span>不動産屋</span></div>
-        <div class="building home" data-place="home"><div class="roof"></div><span>自宅</span></div>
-        <div class="building school" data-place="school"><div class="roof"></div><span>学校</span></div>
+     
+<div id="town" class="town-grid">
+  ${townHtml}
+  <div id="player">🚶</div>
+</div>
       </div>
 
       <div class="message">
@@ -230,39 +306,64 @@ function renderHouseSelect() {
 }
 
 function setupTown() {
-  const playerEl = document.querySelector('#player')
-  let x = 40
-  let y = 40
-  const step = 40
+ const playerEl = document.querySelector('#player')
+const townEl = document.querySelector('#town')
 
-  playerEl.style.left = x + 'px'
-  playerEl.style.top = y + 'px'
+const mapCols = 9
+const mapRows = 7
 
-  
- document.onkeydown = e => {
-    if (e.key === 'e' && currentPlace) {
-      enterPlace(currentPlace)
-      return
-    }
+let playerX = 1
+let playerY = 1
 
-    let nextX = x
-    let nextY = y
+function updatePlayerPosition() {
+  const tileWidth = townEl.clientWidth / mapCols
+  const tileHeight = townEl.clientHeight / mapRows
 
-    if (e.key === 'ArrowRight' || e.key === 'd') nextX += step
-    if (e.key === 'ArrowLeft' || e.key === 'a') nextX -= step
-    if (e.key === 'ArrowDown' || e.key === 's') nextY += step
-    if (e.key === 'ArrowUp' || e.key === 'w') nextY -= step
+  const pixelX =
+    playerX * tileWidth + tileWidth / 2 - playerEl.offsetWidth / 2
 
-    if (nextX < 0 || nextX > 520 || nextY < 0 || nextY > 360) return
+  const pixelY =
+    playerY * tileHeight + tileHeight / 2 - playerEl.offsetHeight / 2
 
-    x = nextX
-    y = nextY
+  playerEl.style.left = pixelX + 'px'
+  playerEl.style.top = pixelY + 'px'
+}
 
-    playerEl.style.left = x + 'px'
-    playerEl.style.top = y + 'px'
+updatePlayerPosition()
 
-    checkBuilding(x, y)
+document.onkeydown = e => {
+  if (e.key === 'e' && currentPlace) {
+    enterPlace(currentPlace)
+    return
   }
+
+  let nextX = playerX
+  let nextY = playerY
+
+  if (e.key === 'ArrowRight' || e.key === 'd') nextX += 1
+  if (e.key === 'ArrowLeft' || e.key === 'a') nextX -= 1
+  if (e.key === 'ArrowDown' || e.key === 's') nextY += 1
+  if (e.key === 'ArrowUp' || e.key === 'w') nextY -= 1
+
+  if (
+    nextX < 0 ||
+    nextX >= mapCols ||
+    nextY < 0 ||
+    nextY >= mapRows
+  ) {
+    return
+  }
+
+  playerX = nextX
+  playerY = nextY
+
+  updatePlayerPosition()
+
+  checkBuilding(
+    playerEl.offsetLeft,
+    playerEl.offsetTop
+  )
+}
    const pressKey = key => {
     document.dispatchEvent(
       new KeyboardEvent('keydown', { key })
