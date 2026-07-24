@@ -121,6 +121,17 @@ button {
     height: 66px;
     font-size: 18px;
   }
+  .status {
+  width: calc(100% - 24px);
+  left: 12px;
+  right: 12px;
+  top: 12px;
+  padding: 12px;
+ }
+ .status p {
+  margin: 4px 0;
+  font-size: 15px;
+ }
 }
 
 .building {
