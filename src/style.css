@@ -486,3 +486,11 @@ button:disabled {
   z-index: 2;
 }
 }
+@media (max-width: 768px) {
+  #town {
+    width: 92vw;
+    height: auto;
+    aspect-ratio: 9 / 7;
+    margin: 16px auto;
+  }
+}
