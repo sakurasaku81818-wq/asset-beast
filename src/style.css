@@ -369,17 +369,27 @@ button:disabled {
     box-sizing: border-box;
   }
 
-  .status {
-    position: relative;
-    width: calc(100% - 24px);
-    max-width: none;
-    margin: 0 auto 12px;
-    padding: 14px;
-    box-sizing: border-box;
-    font-size: 14px;
-    line-height: 1.4;
-    z-index: 5;
-  }
+.status {
+  position: relative;
+  width: calc(100% - 24px);
+  max-width: none;
+  margin: 0 auto 8px;
+  padding: 10px 14px;
+  box-sizing: border-box;
+  font-size: 13px;
+  line-height: 1.25;
+  border-radius: 14px;
+  z-index: 5;
+}
+.status p {
+  margin: 3px 0;
+  font-size: 13px;
+}
+
+.status h2 {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
 
   #player {
     width: 28px;
