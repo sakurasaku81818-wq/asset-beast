@@ -476,4 +476,13 @@ button:disabled {
 #player {
   z-index: 2;
 }
+@media (max-width: 600px) {
+  #town {
+    width: 360px !important;
+    height: 264px !important;
+    max-width: 90vw !important;
+    margin: 8px auto !important;
+    overflow: hidden !important;
+  }
+}
 }
