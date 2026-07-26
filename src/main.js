@@ -290,7 +290,9 @@ const townHtml = townMap
      
 <div id="town" class="town-grid">
   ${townHtml}
-  <div id="player">🚶</div>
+ <div id="player">
+  <img src="${import.meta.env.BASE_URL}player.png" alt="player">
+</div>
 </div>
       </div>
 
