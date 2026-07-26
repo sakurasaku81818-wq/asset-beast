@@ -86,10 +86,12 @@
         <p>職業：${n.job.name}</p>
         <p>住居：${n.house.name}</p>
         <hr>
-        <p>現金：${c(n.cash)}</p>
-        <p>株：${c(n.stock)}</p>
-        <p>ETF：${c(n.etf)}</p>
-        <p>REIT：${c(n.reit)}</p>
+        <p>現金：${c(n.cash)} 
+             株：${c(n.stock)}
+        </p>
+        <p>ETF：${c(n.etf)} 
+           REIT：${c(n.reit)}
+        </p>
         <p>仮想通貨：${c(n.crypto)}</p>
         <hr>
         <p>総資産：${c(u())}</p>

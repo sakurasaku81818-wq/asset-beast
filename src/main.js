@@ -276,10 +276,12 @@ const townHtml = townMap
         <p>職業：${player.job.name}</p>
         <p>住居：${player.house.name}</p>
         <hr>
-        <p>現金：${yen(player.cash)}</p>
-        <p>株：${yen(player.stock)}</p>
-        <p>ETF：${yen(player.etf)}</p>
-        <p>REIT：${yen(player.reit)}</p>
+        <p>現金：${yen(player.cash)} 
+             株：${yen(player.stock)}
+        </p>
+        <p>ETF：${yen(player.etf)} 
+           REIT：${yen(player.reit)}
+        </p>
         <p>仮想通貨：${yen(player.crypto)}</p>
         <hr>
         <p>総資産：${yen(totalAssets())}</p>
