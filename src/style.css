@@ -356,10 +356,12 @@ button:disabled {
     overflow-x: hidden;
   }
 #town {
-  width: 90vw;
-  height: 200px;
-  margin: 8px auto;
-  overflow: hidden;
+    width: 92vw;
+    height: 360px;
+    margin: 8px auto;
+    overflow: hidden;
+    transform: scale(0.8);
+    transform-origin: top center;
 }
   .game-wrap {
     width: 100%;
