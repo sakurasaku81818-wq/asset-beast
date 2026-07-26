@@ -394,9 +394,9 @@ button:disabled {
 }
 
   #player {
-    width: 48px;
-    height: 48px;
-    font-size: 44px;
+    width: 52px;
+    height: 52px;
+    font-size: 48px;
   }
 
   .message {
