@@ -442,8 +442,8 @@ button:disabled {
     margin-top: 4px;
   }
   #town {
-    width: 92vw;
-    height: 220px;
+    width: 90vw;
+    height: 180px;
     margin: 8px auto;
     overflow: hidden;
 }
