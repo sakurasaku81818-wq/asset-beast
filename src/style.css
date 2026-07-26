@@ -357,8 +357,8 @@ button:disabled {
   }
 #town {
   width: 100%;
-  max-width: 360px;
-  height: 360px;
+  max-width: 400px;
+  height: 400px;
   margin: 8px auto;
   overflow: hidden;
 }
@@ -392,9 +392,9 @@ button:disabled {
 }
 
   #player {
-    width: 28px;
-    height: 28px;
-    font-size: 24px;
+    width: 36px;
+    height: 36px;
+    font-size: 32px;
   }
 
   .message {
