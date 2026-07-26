@@ -356,9 +356,9 @@ button:disabled {
     overflow-x: hidden;
   }
 #town {
-  width: 92vw;
-  height: 260px;
-  margin: 10px auto;
+  width: 90vw;
+  height: 200px;
+  margin: 8px auto;
   overflow: hidden;
 }
   .game-wrap {
@@ -449,7 +449,7 @@ button:disabled {
 }
   @media (max-width: 768px) {
   #town {
-    margin: 16px auto;
+    margin: 8px auto;
   }
 }
 #town::before {
