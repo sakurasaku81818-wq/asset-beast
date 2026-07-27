@@ -160,7 +160,7 @@ function renderTown() {
       </div>
 
       <div id="town">
-        <div id="player"></div>
+        <div id="player" aria-label="クマプロ"></div>
 
         <div class="building work" data-place="work"><div class="roof"></div><span>仕事</span></div>
         <div class="building securities" data-place="securities"><div class="roof"></div><span>証券会社</span></div>
