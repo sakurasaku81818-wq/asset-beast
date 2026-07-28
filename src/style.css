@@ -98,20 +98,16 @@ button {
 
 /* クマプロ */
 #player {
+  position: absolute;
   width: 96px;
   height: 96px;
 
   background-image: url("/player.png");
   background-repeat: no-repeat;
-
-  /* 横6コマ・縦3列 */
   background-size: 600% 300%;
   background-position: 0% 0%;
 
   image-rendering: pixelated;
-
-  /* 既存の移動処理が効くようにする */
-  position: absolute;
   z-index: 10;
 
   animation: kumaWalk 0.9s steps(5) infinite;
@@ -131,8 +127,15 @@ button {
 /* スマホ */
 @media (max-width: 600px) {
   #player {
-    width: 82px;
-    height: 82px;
+    width: 64px;
+    height: 64px;
+
+    background-image: url("/player.png");
+    background-repeat: no-repeat;
+    background-size: 600% 300%;
+    background-position: 0% 0%;
+
+    image-rendering: pixelated;
   }
 }
 
@@ -191,19 +194,4 @@ button {
 button:disabled {
   opacity: 0.45;
   cursor: not-allowed;
-}
-/* クマプロ */
-#player {
-  position: absolute;
-
-  width: 96px;
-  height: 96px;
-
-  background-image: url("/player.png");
-  background-repeat: no-repeat;
-  background-size: 600% 300%;
-
-  background-position: 0 0;
-
-  image-rendering: pixelated;
 }
