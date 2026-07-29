@@ -231,25 +231,48 @@ function setupTown() {
   { passive: false }
 )
 
+let touchStartX = 0
+let touchStartY = 0
+let touchMoved = false
+
+townEl.addEventListener(
+  'touchstart',
+  e => {
+    const touch = e.touches[0]
+
+    touchStartX = touch.clientX
+    touchStartY = touch.clientY
+    touchMoved = false
+  },
+  { passive: true }
+)
+
+townEl.addEventListener(
+  'touchmove',
+  e => {
+    const touch = e.touches[0]
+
+    const moveX = touch.clientX - touchStartX
+    const moveY = touch.clientY - touchStartY
+
+    if (Math.abs(moveX) > 15 || Math.abs(moveY) > 15) {
+      touchMoved = true
+      e.preventDefault()
+    }
+  },
+  { passive: false }
+)
+
 townEl.addEventListener(
   'touchend',
   e => {
-    e.preventDefault()
-
     const touch = e.changedTouches[0]
-    const diffX = touch.clientX - touchStartX
-    const diffY = touch.clientY - touchStartY
 
     let nextX = x
     let nextY = y
 
-    const minSwipe = 20
-
-    // 短い動きは「タップ」
-    if (
-      Math.abs(diffX) < minSwipe &&
-      Math.abs(diffY) < minSwipe
-    ) {
+    if (!touchMoved) {
+      // タップした場所と、熊プロの画面上の位置を比較
       const playerRect = playerEl.getBoundingClientRect()
 
       const playerCenterX =
@@ -265,13 +288,16 @@ townEl.addEventListener(
       } else {
         nextY += tapDiffY > 0 ? step : -step
       }
-    }
-
-    // 20px以上の動きは「スワイプ」
-    else if (Math.abs(diffX) > Math.abs(diffY)) {
-      nextX += diffX > 0 ? step : -step
     } else {
-      nextY += diffY > 0 ? step : -step
+      // スワイプ
+      const diffX = touch.clientX - touchStartX
+      const diffY = touch.clientY - touchStartY
+
+      if (Math.abs(diffX) > Math.abs(diffY)) {
+        nextX += diffX > 0 ? step : -step
+      } else {
+        nextY += diffY > 0 ? step : -step
+      }
     }
 
     if (
@@ -289,7 +315,7 @@ townEl.addEventListener(
 
     checkBuilding(x, y)
   },
-  { passive: false }
+  { passive: true }
 )
   }
 }
