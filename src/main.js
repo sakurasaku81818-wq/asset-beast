@@ -219,39 +219,79 @@ function setupTown() {
     let touchStartX = 0
     let touchStartY = 0
 
-    townEl.addEventListener('touchstart', e => {
-      const touch = e.touches[0]
-      touchStartX = touch.clientX
-      touchStartY = touch.clientY
-    })
+    townEl.addEventListener(
+  'touchstart',
+  e => {
+    e.preventDefault()
 
-    townEl.addEventListener('touchend', e => {
-      const touch = e.changedTouches[0]
+    const touch = e.touches[0]
+    touchStartX = touch.clientX
+    touchStartY = touch.clientY
+  },
+  { passive: false }
+)
 
-      const diffX = touch.clientX - touchStartX
-      const diffY = touch.clientY - touchStartY
+townEl.addEventListener(
+  'touchmove',
+  e => {
+    e.preventDefault()
+  },
+  { passive: false }
+)
 
-      let nextX = x
-      let nextY = y
+townEl.addEventListener(
+  'touchend',
+  e => {
+    e.preventDefault()
 
-      if (Math.abs(diffX) > Math.abs(diffY)) {
-        if (diffX > 0) nextX += step
-        if (diffX < 0) nextX -= step
+    const touch = e.changedTouches[0]
+
+    const diffX = touch.clientX - touchStartX
+    const diffY = touch.clientY - touchStartY
+
+    let nextX = x
+    let nextY = y
+
+    const minSwipe = 20
+
+    if (
+      Math.abs(diffX) < minSwipe &&
+      Math.abs(diffY) < minSwipe
+    ) {
+      const rect = townEl.getBoundingClientRect()
+
+      const tapX = touch.clientX - rect.left
+      const tapY = touch.clientY - rect.top
+
+      const playerCenterX = x + playerEl.offsetWidth / 2
+      const playerCenterY = y + playerEl.offsetHeight / 2
+
+      const tapDiffX = tapX - playerCenterX
+      const tapDiffY = tapY - playerCenterY
+
+      if (Math.abs(tapDiffX) > Math.abs(tapDiffY)) {
+        nextX += tapDiffX > 0 ? step : -step
       } else {
-        if (diffY > 0) nextY += step
-        if (diffY < 0) nextY -= step
+        nextY += tapDiffY > 0 ? step : -step
       }
+    } else if (Math.abs(diffX) > Math.abs(diffY)) {
+      nextX += diffX > 0 ? step : -step
+    } else {
+      nextY += diffY > 0 ? step : -step
+    }
 
-      if (nextX < 0 || nextX > 520 || nextY < 0 || nextY > 360) return
+    if (nextX < 0 || nextX > 520 || nextY < 0 || nextY > 360) return
 
-      x = nextX
-      y = nextY
+    x = nextX
+    y = nextY
 
-      playerEl.style.left = x + 'px'
-      playerEl.style.top = y + 'px'
+    playerEl.style.left = x + 'px'
+    playerEl.style.top = y + 'px'
 
-      checkBuilding(x, y)
-    })
+    checkBuilding(x, y)
+  },
+  { passive: false }
+)
   }
 }
 

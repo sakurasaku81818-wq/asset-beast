@@ -138,6 +138,10 @@ button {
     image-rendering: pixelated;
   }
 }
+#town {
+  touch-action: none;
+  overscroll-behavior: contain;
+}
 
 .building {
   position: absolute;
