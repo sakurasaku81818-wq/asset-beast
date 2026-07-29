@@ -79,14 +79,14 @@
         操作：WASD / 矢印キーで移動
       </div>
     </div>
-  `,m()}function m(){let e=document.querySelector(`#player`),t=40,n=40;e.style.left=t+`px`,e.style.top=n+`px`,document.onkeydown=i=>{if(i.key===`e`&&r){g(r);return}let a=t,o=n;(i.key===`ArrowRight`||i.key===`d`)&&(a+=40),(i.key===`ArrowLeft`||i.key===`a`)&&(a-=40),(i.key===`ArrowDown`||i.key===`s`)&&(o+=40),(i.key===`ArrowUp`||i.key===`w`)&&(o-=40),!(a<0||a>520||o<0||o>360)&&(t=a,n=o,e.style.left=t+`px`,e.style.top=n+`px`,h(t,n))}}function h(e,t){r=null,document.querySelectorAll(`.building`).forEach(n=>{let i=n.offsetLeft,a=n.offsetTop;Math.abs(e-i)<=40&&Math.abs(t-a)<=40&&(r=n.dataset.place)});let i=document.querySelector(`.message`);i&&(r?i.innerHTML=`
+  `,m()}function m(){let e=document.querySelector(`#player`),t=40,n=40;e.style.left=t+`px`,e.style.top=n+`px`,document.onkeydown=i=>{if(i.key===`e`&&r){g(r);return}let a=t,o=n;(i.key===`ArrowRight`||i.key===`d`)&&(a+=40),(i.key===`ArrowLeft`||i.key===`a`)&&(a-=40),(i.key===`ArrowDown`||i.key===`s`)&&(o+=40),(i.key===`ArrowUp`||i.key===`w`)&&(o-=40),!(a<0||a>520||o<0||o>360)&&(t=a,n=o,e.style.left=t+`px`,e.style.top=n+`px`,h(t,n))};let i=document.querySelector(`#town`);if(i){let r=0,a=0;i.addEventListener(`touchstart`,e=>{let t=e.touches[0];r=t.clientX,a=t.clientY}),i.addEventListener(`touchend`,i=>{let o=i.changedTouches[0],s=o.clientX-r,c=o.clientY-a,l=t,u=n;Math.abs(s)>Math.abs(c)?(s>0&&(l+=40),s<0&&(l-=40)):(c>0&&(u+=40),c<0&&(u-=40)),!(l<0||l>520||u<0||u>360)&&(t=l,n=u,e.style.left=t+`px`,e.style.top=n+`px`,h(t,n))})}}function h(e,t){r=null,document.querySelectorAll(`.building`).forEach(n=>{let i=n.offsetLeft,a=n.offsetTop;Math.abs(e-i)<=40&&Math.abs(t-a)<=40&&(r=n.dataset.place)});let i=document.querySelector(`.message`);i&&(r?i.innerHTML=`
       ${n.log}<br>
       📰 ${n.news}<br>
       Eキー：施設に入る
     `:i.innerHTML=`
       ${n.log}<br>
       📰 ${n.news}<br>
-      操作：WASD / 矢印キーで移動
+      操作：タップ・スワイプで移動
     `)}function g(e){e===`securities`&&_(),e===`realestate`&&y(),e===`home`&&S(),e===`work`&&b(),e===`school`&&x()}function _(){t.innerHTML=`
     <div class="screen shop-screen">
       <h2>🏦 証券会社</h2>
