@@ -232,20 +232,11 @@ function setupTown() {
 )
 
 townEl.addEventListener(
-  'touchmove',
-  e => {
-    e.preventDefault()
-  },
-  { passive: false }
-)
-
-townEl.addEventListener(
   'touchend',
   e => {
     e.preventDefault()
 
     const touch = e.changedTouches[0]
-
     const diffX = touch.clientX - touchStartX
     const diffY = touch.clientY - touchStartY
 
@@ -254,33 +245,41 @@ townEl.addEventListener(
 
     const minSwipe = 20
 
+    // 短い動きは「タップ」
     if (
       Math.abs(diffX) < minSwipe &&
       Math.abs(diffY) < minSwipe
     ) {
-      const rect = townEl.getBoundingClientRect()
+      const playerRect = playerEl.getBoundingClientRect()
 
-      const tapX = touch.clientX - rect.left
-      const tapY = touch.clientY - rect.top
+      const playerCenterX =
+        playerRect.left + playerRect.width / 2
+      const playerCenterY =
+        playerRect.top + playerRect.height / 2
 
-      const playerCenterX = x + playerEl.offsetWidth / 2
-      const playerCenterY = y + playerEl.offsetHeight / 2
-
-      const tapDiffX = tapX - playerCenterX
-      const tapDiffY = tapY - playerCenterY
+      const tapDiffX = touch.clientX - playerCenterX
+      const tapDiffY = touch.clientY - playerCenterY
 
       if (Math.abs(tapDiffX) > Math.abs(tapDiffY)) {
         nextX += tapDiffX > 0 ? step : -step
       } else {
         nextY += tapDiffY > 0 ? step : -step
       }
-    } else if (Math.abs(diffX) > Math.abs(diffY)) {
+    }
+
+    // 20px以上の動きは「スワイプ」
+    else if (Math.abs(diffX) > Math.abs(diffY)) {
       nextX += diffX > 0 ? step : -step
     } else {
       nextY += diffY > 0 ? step : -step
     }
 
-    if (nextX < 0 || nextX > 520 || nextY < 0 || nextY > 360) return
+    if (
+      nextX < 0 ||
+      nextX > 520 ||
+      nextY < 0 ||
+      nextY > 360
+    ) return
 
     x = nextX
     y = nextY
