@@ -218,22 +218,7 @@ function setupTown() {
   if (townEl) {
     let touchStartX = 0
     let touchStartY = 0
-
-    townEl.addEventListener(
-  'touchstart',
-  e => {
-    e.preventDefault()
-
-    const touch = e.touches[0]
-    touchStartX = touch.clientX
-    touchStartY = touch.clientY
-  },
-  { passive: false }
-)
-
-let touchStartX = 0
-let touchStartY = 0
-let touchMoved = false
+    let touchMoved = false
 
 townEl.addEventListener(
   'touchstart',
@@ -267,7 +252,12 @@ townEl.addEventListener(
   'touchend',
   e => {
     const touch = e.changedTouches[0]
-
+    // 施設の近くでタップしたら入る
+    if (!touchMoved && currentPlace) {
+    enterPlace(currentPlace)
+    return
+    }
+    
     let nextX = x
     let nextY = y
 
@@ -346,6 +336,7 @@ function checkBuilding(x, y) {
       ${player.log}<br>
       📰 ${player.news}<br>
       操作：タップ・スワイプで移動
+      施設の近くでタップして入る
     `
   }
 }

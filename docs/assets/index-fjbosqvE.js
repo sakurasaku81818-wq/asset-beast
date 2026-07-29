@@ -79,7 +79,7 @@
         操作：WASD / 矢印キーで移動
       </div>
     </div>
-  `,m()}function m(){let e=document.querySelector(`#player`),t=40,n=40;e.style.left=t+`px`,e.style.top=n+`px`,document.onkeydown=i=>{if(i.key===`e`&&r){g(r);return}let a=t,o=n;(i.key===`ArrowRight`||i.key===`d`)&&(a+=40),(i.key===`ArrowLeft`||i.key===`a`)&&(a-=40),(i.key===`ArrowDown`||i.key===`s`)&&(o+=40),(i.key===`ArrowUp`||i.key===`w`)&&(o-=40),!(a<0||a>520||o<0||o>360)&&(t=a,n=o,e.style.left=t+`px`,e.style.top=n+`px`,h(t,n))};let i=document.querySelector(`#town`);if(i){let r=0,a=0;i.addEventListener(`touchstart`,e=>{e.preventDefault();let t=e.touches[0];r=t.clientX,a=t.clientY},{passive:!1}),i.addEventListener(`touchend`,i=>{i.preventDefault();let o=i.changedTouches[0],s=o.clientX-r,c=o.clientY-a,l=t,u=n;if(Math.abs(s)<20&&Math.abs(c)<20){let t=e.getBoundingClientRect(),n=t.left+t.width/2,r=t.top+t.height/2,i=o.clientX-n,a=o.clientY-r;Math.abs(i)>Math.abs(a)?l+=i>0?40:-40:u+=a>0?40:-40}else Math.abs(s)>Math.abs(c)?l+=s>0?40:-40:u+=c>0?40:-40;l<0||l>520||u<0||u>360||(t=l,n=u,e.style.left=t+`px`,e.style.top=n+`px`,h(t,n))},{passive:!1})}}function h(e,t){r=null,document.querySelectorAll(`.building`).forEach(n=>{let i=n.offsetLeft,a=n.offsetTop;Math.abs(e-i)<=40&&Math.abs(t-a)<=40&&(r=n.dataset.place)});let i=document.querySelector(`.message`);i&&(r?i.innerHTML=`
+  `,m()}function m(){let e=document.querySelector(`#player`),t=40,n=40;e.style.left=t+`px`,e.style.top=n+`px`,document.onkeydown=i=>{if(i.key===`e`&&r){g(r);return}let a=t,o=n;(i.key===`ArrowRight`||i.key===`d`)&&(a+=40),(i.key===`ArrowLeft`||i.key===`a`)&&(a-=40),(i.key===`ArrowDown`||i.key===`s`)&&(o+=40),(i.key===`ArrowUp`||i.key===`w`)&&(o-=40),!(a<0||a>520||o<0||o>360)&&(t=a,n=o,e.style.left=t+`px`,e.style.top=n+`px`,h(t,n))};let i=document.querySelector(`#town`);if(i){let a=0,o=0,s=!1;i.addEventListener(`touchstart`,e=>{let t=e.touches[0];a=t.clientX,o=t.clientY,s=!1},{passive:!0}),i.addEventListener(`touchmove`,e=>{let t=e.touches[0],n=t.clientX-a,r=t.clientY-o;(Math.abs(n)>15||Math.abs(r)>15)&&(s=!0,e.preventDefault())},{passive:!1}),i.addEventListener(`touchend`,i=>{let c=i.changedTouches[0];if(!s&&r){g(r);return}let l=t,u=n;if(s){let e=c.clientX-a,t=c.clientY-o;Math.abs(e)>Math.abs(t)?l+=e>0?40:-40:u+=t>0?40:-40}else{let t=e.getBoundingClientRect(),n=t.left+t.width/2,r=t.top+t.height/2,i=c.clientX-n,a=c.clientY-r;Math.abs(i)>Math.abs(a)?l+=i>0?40:-40:u+=a>0?40:-40}l<0||l>520||u<0||u>360||(t=l,n=u,e.style.left=t+`px`,e.style.top=n+`px`,h(t,n))},{passive:!0})}}function h(e,t){r=null,document.querySelectorAll(`.building`).forEach(n=>{let i=n.offsetLeft,a=n.offsetTop;Math.abs(e-i)<=40&&Math.abs(t-a)<=40&&(r=n.dataset.place)});let i=document.querySelector(`.message`);i&&(r?i.innerHTML=`
       ${n.log}<br>
       📰 ${n.news}<br>
       Eキー：施設に入る
@@ -87,6 +87,7 @@
       ${n.log}<br>
       📰 ${n.news}<br>
       操作：タップ・スワイプで移動
+      施設の近くでタップして入る
     `)}function g(e){e===`securities`&&_(),e===`realestate`&&y(),e===`home`&&S(),e===`work`&&b(),e===`school`&&x()}function _(){t.innerHTML=`
     <div class="screen shop-screen">
       <h2>🏦 証券会社</h2>
