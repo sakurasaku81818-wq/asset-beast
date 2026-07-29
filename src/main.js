@@ -213,6 +213,46 @@ function setupTown() {
 
     checkBuilding(x, y)
   }
+   const townEl = document.querySelector('#town')
+
+  if (townEl) {
+    let touchStartX = 0
+    let touchStartY = 0
+
+    townEl.addEventListener('touchstart', e => {
+      const touch = e.touches[0]
+      touchStartX = touch.clientX
+      touchStartY = touch.clientY
+    })
+
+    townEl.addEventListener('touchend', e => {
+      const touch = e.changedTouches[0]
+
+      const diffX = touch.clientX - touchStartX
+      const diffY = touch.clientY - touchStartY
+
+      let nextX = x
+      let nextY = y
+
+      if (Math.abs(diffX) > Math.abs(diffY)) {
+        if (diffX > 0) nextX += step
+        if (diffX < 0) nextX -= step
+      } else {
+        if (diffY > 0) nextY += step
+        if (diffY < 0) nextY -= step
+      }
+
+      if (nextX < 0 || nextX > 520 || nextY < 0 || nextY > 360) return
+
+      x = nextX
+      y = nextY
+
+      playerEl.style.left = x + 'px'
+      playerEl.style.top = y + 'px'
+
+      checkBuilding(x, y)
+    })
+  }
 }
 
 function checkBuilding(x, y) {
@@ -240,7 +280,7 @@ function checkBuilding(x, y) {
     message.innerHTML = `
       ${player.log}<br>
       📰 ${player.news}<br>
-      操作：WASD / 矢印キーで移動
+      操作：タップ・スワイプで移動
     `
   }
 }
