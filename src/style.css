@@ -137,6 +137,34 @@ button {
 
     image-rendering: pixelated;
   }
+  .message {
+    width: calc(100% - 24px);
+    margin: 12px;
+    padding: 10px;
+    font-size: 14px;
+  } 
+   .status {
+    top: 12px;
+    right: 12px;
+    width: 190px;
+    padding: 10px;
+    border-radius: 12px;
+    font-size: 12px;
+  }
+
+  .status h2 {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+
+  .status p {
+    margin: 2px 0;
+    line-height: 1.25;
+  }
+
+  .status hr {
+    margin: 6px 0;
+  }
 }
 #town {
   touch-action: none;

@@ -252,11 +252,11 @@ townEl.addEventListener(
   'touchend',
   e => {
     const touch = e.changedTouches[0]
+
+    checkBuilding(x, y)
+    
     // 施設の近くでタップしたら入る
-    if (!touchMoved && currentPlace) {
-    enterPlace(currentPlace)
-    return
-    }
+  
     
     let nextX = x
     let nextY = y
@@ -304,6 +304,10 @@ townEl.addEventListener(
     playerEl.style.top = y + 'px'
 
     checkBuilding(x, y)
+    if (!touchMoved && currentPlace) {
+      enterPlace(currentPlace)
+      return
+    }
   },
   { passive: true }
 )
