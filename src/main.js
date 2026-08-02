@@ -144,20 +144,52 @@ function renderHouseSelect() {
 function renderTown() {
   app.innerHTML = `
     <div class="game-wrap ${player.region.style}">
-      <div class="status">
-        <h2>${player.region.name}の街</h2>
-        <p>${player.age}歳 ${player.month}ヶ月目</p>
-        <p>職業：${player.job.name}</p>
-        <p>住居：${player.house.name}</p>
-        <hr>
-        <p>現金：${yen(player.cash)}</p>
-        <p>株：${yen(player.stock)}</p>
-        <p>ETF：${yen(player.etf)}</p>
-        <p>REIT：${yen(player.reit)}</p>
-        <p>仮想通貨：${yen(player.crypto)}</p>
-        <hr>
-        <p>総資産：${yen(totalAssets())}</p>
-      </div>
+    <div class="status">
+  <div class="status-top">
+    <div class="status-avatar"></div>
+
+    <div class="status-info">
+      <h2>${player.region.name}の街</h2>
+      <p>
+        ${player.age}歳 ${player.month}ヶ月目 /
+        ${player.job.name} /
+        ${player.house.name}
+      </p>
+    </div>
+  </div>
+
+  <div class="asset-row">
+    <div>
+      <span>現金</span>
+      <strong>${yen(player.cash)}</strong>
+    </div>
+
+    <div>
+      <span>株</span>
+      <strong>${yen(player.stock)}</strong>
+    </div>
+
+    <div>
+      <span>ETF</span>
+      <strong>${yen(player.etf)}</strong>
+    </div>
+
+    <div>
+      <span>REIT</span>
+      <strong>${yen(player.reit)}</strong>
+    </div>
+
+    <div>
+      <span>仮想通貨</span>
+      <strong>${yen(player.crypto)}</strong>
+    </div>
+
+    <div>
+      <span>総資産</span>
+      <strong>${yen(totalAssets())}</strong>
+    </div>
+  </div>
+</div>
 
       <div id="town">
         <div id="player" aria-label="クマプロ"></div>

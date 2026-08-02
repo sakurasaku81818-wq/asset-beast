@@ -66,7 +66,55 @@ button {
   border-radius: 16px;
   z-index: 10;
 }
+.status-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+}
 
+.status-avatar {
+  width: 56px;
+  height: 56px;
+  background: url("/player.png") no-repeat;
+  background-size: 600% 300%;
+  background-position: 0 0;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+
+.status-info h2 {
+  margin: 0;
+}
+
+.status-info p {
+  margin: 4px 0 0;
+}
+
+.asset-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.asset-row > div {
+  flex: 1;
+  min-width: 70px;
+}
+
+.asset-row span {
+  display: block;
+  font-size: 12px;
+  color: #bbb;
+}
+
+.asset-row strong {
+  display: block;
+  margin-top: 2px;
+  color: #f5d76e;
+  font-size: 15px;
+}
 .status p {
   margin: 6px 0;
 }
@@ -168,6 +216,28 @@ button {
   .status hr {
     margin: 6px 0;
   }
+  .status-top {
+  gap: 10px;
+}
+
+.status-avatar {
+  width: 48px;
+  height: 48px;
+}
+
+.asset-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.asset-row span {
+  font-size: 11px;
+}
+
+.asset-row strong {
+  font-size: 13px;
+}
 }
 #town {
   touch-action: none;

@@ -48,20 +48,52 @@
     </div>
   `,document.querySelectorAll(`[data-i]`).forEach(e=>{e.onclick=()=>{n.house=o[e.dataset.i],p()}}),document.querySelector(`#back`).onclick=d}function p(){t.innerHTML=`
     <div class="game-wrap ${n.region.style}">
-      <div class="status">
-        <h2>${n.region.name}の街</h2>
-        <p>${n.age}歳 ${n.month}ヶ月目</p>
-        <p>職業：${n.job.name}</p>
-        <p>住居：${n.house.name}</p>
-        <hr>
-        <p>現金：${s(n.cash)}</p>
-        <p>株：${s(n.stock)}</p>
-        <p>ETF：${s(n.etf)}</p>
-        <p>REIT：${s(n.reit)}</p>
-        <p>仮想通貨：${s(n.crypto)}</p>
-        <hr>
-        <p>総資産：${s(c())}</p>
-      </div>
+    <div class="status">
+  <div class="status-top">
+    <div class="status-avatar"></div>
+
+    <div class="status-info">
+      <h2>${n.region.name}の街</h2>
+      <p>
+        ${n.age}歳 ${n.month}ヶ月目 /
+        ${n.job.name} /
+        ${n.house.name}
+      </p>
+    </div>
+  </div>
+
+  <div class="asset-row">
+    <div>
+      <span>現金</span>
+      <strong>${s(n.cash)}</strong>
+    </div>
+
+    <div>
+      <span>株</span>
+      <strong>${s(n.stock)}</strong>
+    </div>
+
+    <div>
+      <span>ETF</span>
+      <strong>${s(n.etf)}</strong>
+    </div>
+
+    <div>
+      <span>REIT</span>
+      <strong>${s(n.reit)}</strong>
+    </div>
+
+    <div>
+      <span>仮想通貨</span>
+      <strong>${s(n.crypto)}</strong>
+    </div>
+
+    <div>
+      <span>総資産</span>
+      <strong>${s(c())}</strong>
+    </div>
+  </div>
+</div>
 
       <div id="town">
         <div id="player" aria-label="クマプロ"></div>
