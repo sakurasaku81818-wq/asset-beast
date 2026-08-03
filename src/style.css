@@ -473,3 +473,24 @@ button:disabled {
     white-space: normal;
   }
 }
+.command-bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 12px;
+}
+
+.command-bar button {
+  flex: 1;
+  padding: 10px 4px;
+  border: none;
+  border-radius: 12px;
+  background: #222;
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.command-bar button:active {
+  transform: scale(0.96);
+}

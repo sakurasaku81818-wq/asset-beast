@@ -200,7 +200,16 @@ function renderTown() {
         <div class="building home" data-place="home"><div class="roof"></div><span>自宅</span></div>
         <div class="building school" data-place="school"><div class="roof"></div><span>学校</span></div>
       </div>
-
+   
+      <div class="command-bar">
+        <button onclick="enterPlace('work')">💼<br>仕事</button>
+        <button onclick="enterPlace('securities')">📈<br>証券会社</button>
+        <button onclick="enterPlace('realestate')">🏢<br>不動産</button>
+        <button onclick="enterPlace('home')">🏠<br>自宅</button>
+        <button onclick="enterPlace('school')">🎓<br>学校</button>
+        <button onclick="nextMonth()">⏭️<br>次の月</button>
+      </div>
+      
       <div class="message">
         ${player.log}<br>
         📰 ${player.news}<br>
