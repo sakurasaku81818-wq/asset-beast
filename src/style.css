@@ -300,3 +300,176 @@ button:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
+/* =========================
+   スマホ完成版レイアウト
+========================= */
+@media (max-width: 600px) {
+  html,
+  body {
+    width: 100%;
+    margin: 0;
+    overflow-x: hidden;
+  }
+
+  .game-wrap {
+    width: 100%;
+    min-height: 100vh;
+    padding: 10px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  /* ① 上部ステータス */
+  .status {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: 100%;
+    max-width: none;
+    margin: 0 0 10px;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 14px;
+  }
+
+  .status-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .status-avatar {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+  }
+
+  .status-info {
+    min-width: 0;
+  }
+
+  .status-info h2 {
+    margin: 0;
+    font-size: 20px;
+    line-height: 1.1;
+  }
+
+  .status-info p {
+    margin: 4px 0 0;
+    font-size: 12px;
+    line-height: 1.3;
+    white-space: normal;
+  }
+
+  .asset-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .asset-row > div {
+    min-width: 0;
+  }
+
+  .asset-row span {
+    display: block;
+    font-size: 10px;
+    line-height: 1.2;
+  }
+
+  .asset-row strong {
+    display: block;
+    margin-top: 2px;
+    font-size: 13px;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  /* ② マップ */
+  #town {
+    position: relative;
+    width: 100%;
+    height: 430px;
+    margin: 0 auto 10px;
+    overflow: hidden;
+    border-radius: 12px;
+    box-sizing: border-box;
+    touch-action: none;
+    overscroll-behavior: contain;
+    background-size: 34px 34px;
+  }
+
+  .building {
+    width: 76px;
+    height: 50px;
+    font-size: 13px;
+  }
+
+  .work {
+    left: 7%;
+    top: 18%;
+  }
+
+  .securities {
+    left: 58%;
+    top: 18%;
+  }
+
+  .realestate {
+    left: 66%;
+    top: 49%;
+  }
+
+  .home {
+    left: 7%;
+    top: 69%;
+  }
+
+  .school {
+    left: 58%;
+    top: 69%;
+  }
+
+  #player {
+    width: 48px;
+    height: 48px;
+  }
+
+  /* ③ ログ */
+  .message {
+    width: 100%;
+    margin: 0 0 10px;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.35;
+  }
+
+  .message p {
+    margin: 3px 0;
+  }
+
+  /* ④ 下部コマンド */
+  .commands,
+  .command-buttons,
+  .town-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 5px;
+    margin: 0;
+  }
+
+  .commands button,
+  .command-buttons button,
+  .town-actions button {
+    min-width: 0;
+    padding: 8px 2px;
+    border-radius: 10px;
+    font-size: 10px;
+    line-height: 1.2;
+    white-space: normal;
+  }
+}
