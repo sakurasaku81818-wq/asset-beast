@@ -147,8 +147,8 @@ button {
 /* クマプロ */
 #player {
   position: absolute;
-  width: 96px;
-  height: 96px;
+  width: 64px;
+  height: 64px;
 
   background-image: url("/player.png");
   background-repeat: no-repeat;
@@ -493,4 +493,137 @@ button:disabled {
 
 .command-bar button:active {
   transform: scale(0.96);
+}
+/* =========================
+   建物画像
+========================= */
+
+.building {
+  position: absolute;
+  width: 135px;
+  height: 125px;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  box-shadow: none;
+  overflow: visible;
+}
+
+/* 元の白い箱や屋根・文字を消す */
+.building .roof,
+.building span {
+  display: none;
+}
+
+/* 建物ごとの画像・サイズ */
+
+.building.work {
+  background-image: url("/asset-beast/work.png");
+}
+
+.building.securities {
+  background-image: url("/asset-beast/securities.png");
+  width: 145px;
+  height: 135px;
+}
+
+.building.realestate {
+  background-image: url("/asset-beast/realestate.png");
+  width: 145px;
+  height: 135px;
+}
+
+.building.home {
+  background-image: url("/asset-beast/home.png");
+}
+
+.building.school {
+  background-image: url("/asset-beast/school.png");
+  width: 150px;
+  height: 140px;
+}
+
+/* PC配置：背景の空き区画の中央を基準にする */
+
+.building {
+  transform: translate(-50%, -50%);
+}
+
+.building.work {
+  width: 125px;
+  height: 125px;
+  left: 16%;
+  top: 32%;
+}
+
+.building.securities {
+  width: 120px;
+  height: 125px;
+  left: 52%;
+  top: 12%;
+}
+
+.building.realestate {
+  width: 125px;
+  height: 105px;
+  left: 87%;
+  top: 32%;
+}
+
+.building.home {
+  width: 145px;
+  height: 115px;
+  left: 15%;
+  top: 62%;
+}
+
+.building.school {
+  width: 140px;
+  height: 110px;
+  left: 87%;
+  top: 62%;
+}
+
+/* スマホ配置 */
+@media (max-width: 600px) {
+  .building {
+    width: 105px;
+    height: 92px;
+  }
+
+  .work {
+    left: 15%;
+    top: 43%;
+  }
+
+  .securities {
+    left: 50%;
+    top: 18%;
+  }
+
+  .realestate {
+    left: 82%;
+    top: 43%;
+  }
+
+  .home {
+    left: 19%;
+    top: 79%;
+  }
+
+  .school {
+    left: 81%;
+    top: 79%;
+  }
+}
+/* ===== マップ背景 ===== */
+
+#town {
+  background-image: url("/asset-beast/map.png");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
 }
