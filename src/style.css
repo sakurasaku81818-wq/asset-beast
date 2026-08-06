@@ -261,12 +261,11 @@ button:disabled {
   .game-wrap {
     width: 100%;
     min-height: 100vh;
-    padding: 10px;
+    padding: 24px 10px 10px;
     box-sizing: border-box;
     overflow-x: hidden;
   }
 
-  /* ① 上部ステータス */
   /* ① 上部ステータス */
 .status {
   position: relative;
@@ -348,36 +347,6 @@ button:disabled {
   background-size: 100% 100%;
 }
 
-  .building {
-    width: 76px;
-    height: 50px;
-    font-size: 13px;
-  }
-
-  .work {
-    left: 7%;
-    top: 18%;
-  }
-
-  .securities {
-    left: 58%;
-    top: 18%;
-  }
-
-  .realestate {
-    left: 66%;
-    top: 49%;
-  }
-
-  .home {
-    left: 7%;
-    top: 69%;
-  }
-
-  .school {
-    left: 58%;
-    top: 69%;
-  }
 
   #player {
     width: 48px;
@@ -542,8 +511,8 @@ button:disabled {
 /* スマホ配置 */
 @media (max-width: 600px) {
   .building {
-    width: 100px;
-    height: 88px;
+    width: 110px;
+    height: 96px;
   }
 
   .work {
