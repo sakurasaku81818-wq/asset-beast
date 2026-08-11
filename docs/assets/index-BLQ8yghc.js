@@ -48,52 +48,20 @@
     </div>
   `,document.querySelectorAll(`[data-i]`).forEach(e=>{e.onclick=()=>{n.house=o[e.dataset.i],p()}}),document.querySelector(`#back`).onclick=d}function p(){t.innerHTML=`
     <div class="game-wrap ${n.region.style}">
-    <div class="status">
-  <div class="status-top">
-    <div class="status-avatar"></div>
-
-    <div class="status-info">
-      <h2>${n.region.name}の街</h2>
-      <p>
-        ${n.age}歳 ${n.month}ヶ月目 /
-        ${n.job.name} /
-        ${n.house.name}
-      </p>
-    </div>
-  </div>
-
-  <div class="asset-row">
-    <div>
-      <span>現金</span>
-      <strong>${s(n.cash)}</strong>
-    </div>
-
-    <div>
-      <span>株</span>
-      <strong>${s(n.stock)}</strong>
-    </div>
-
-    <div>
-      <span>ETF</span>
-      <strong>${s(n.etf)}</strong>
-    </div>
-
-    <div>
-      <span>REIT</span>
-      <strong>${s(n.reit)}</strong>
-    </div>
-
-    <div>
-      <span>仮想通貨</span>
-      <strong>${s(n.crypto)}</strong>
-    </div>
-
-    <div>
-      <span>総資産</span>
-      <strong>${s(c())}</strong>
-    </div>
-  </div>
-</div>
+      <div class="status">
+        <h2>${n.region.name}の街</h2>
+        <p>${n.age}歳 ${n.month}ヶ月目</p>
+        <p>職業：${n.job.name}</p>
+        <p>住居：${n.house.name}</p>
+        <hr>
+        <p>現金：${s(n.cash)}</p>
+        <p>株：${s(n.stock)}</p>
+        <p>ETF：${s(n.etf)}</p>
+        <p>REIT：${s(n.reit)}</p>
+        <p>仮想通貨：${s(n.crypto)}</p>
+        <hr>
+        <p>総資産：${s(c())}</p>
+      </div>
 
       <div id="town">
         <div id="player" aria-label="クマプロ"></div>
@@ -104,31 +72,21 @@
         <div class="building home" data-place="home"><div class="roof"></div><span>自宅</span></div>
         <div class="building school" data-place="school"><div class="roof"></div><span>学校</span></div>
       </div>
-   
-      <div class="command-bar">
-        <button onclick="enterPlace('work')">💼<br>仕事</button>
-        <button onclick="enterPlace('securities')">📈<br>証券会社</button>
-        <button onclick="enterPlace('realestate')">🏢<br>不動産</button>
-        <button onclick="enterPlace('home')">🏠<br>自宅</button>
-        <button onclick="enterPlace('school')">🎓<br>学校</button>
-        <button onclick="nextMonth()">⏭️<br>次の月</button>
-      </div>
-      
+
       <div class="message">
         ${n.log}<br>
         📰 ${n.news}<br>
         操作：WASD / 矢印キーで移動
       </div>
     </div>
-  `,m()}function m(){let e=document.querySelector(`#player`),t=40,n=40;e.style.left=t+`px`,e.style.top=n+`px`,document.onkeydown=i=>{if(i.key===`e`&&r){g(r);return}let a=t,o=n;(i.key===`ArrowRight`||i.key===`d`)&&(a+=40),(i.key===`ArrowLeft`||i.key===`a`)&&(a-=40),(i.key===`ArrowDown`||i.key===`s`)&&(o+=40),(i.key===`ArrowUp`||i.key===`w`)&&(o-=40),!(a<0||a>520||o<0||o>360)&&(t=a,n=o,e.style.left=t+`px`,e.style.top=n+`px`,h(t,n))};let i=document.querySelector(`#town`);if(i){let a=0,o=0,s=!1;i.addEventListener(`touchstart`,e=>{let t=e.touches[0];a=t.clientX,o=t.clientY,s=!1},{passive:!0}),i.addEventListener(`touchmove`,e=>{let t=e.touches[0],n=t.clientX-a,r=t.clientY-o;(Math.abs(n)>15||Math.abs(r)>15)&&(s=!0,e.preventDefault())},{passive:!1}),i.addEventListener(`touchend`,i=>{let c=i.changedTouches[0];h(t,n);let l=t,u=n;if(s){let e=c.clientX-a,t=c.clientY-o;Math.abs(e)>Math.abs(t)?l+=e>0?40:-40:u+=t>0?40:-40}else{let t=e.getBoundingClientRect(),n=t.left+t.width/2,r=t.top+t.height/2,i=c.clientX-n,a=c.clientY-r;Math.abs(i)>Math.abs(a)?l+=i>0?40:-40:u+=a>0?40:-40}if(!(l<0||l>520||u<0||u>360)&&(t=l,n=u,e.style.left=t+`px`,e.style.top=n+`px`,h(t,n),!s&&r)){g(r);return}},{passive:!0})}}function h(e,t){r=null,document.querySelectorAll(`.building`).forEach(n=>{let i=n.offsetLeft,a=n.offsetTop;Math.abs(e-i)<=40&&Math.abs(t-a)<=40&&(r=n.dataset.place)});let i=document.querySelector(`.message`);i&&(r?i.innerHTML=`
+  `,m()}function m(){let e=document.querySelector(`#player`),t=40,n=40;e.style.left=t+`px`,e.style.top=n+`px`,document.onkeydown=i=>{if(i.key===`e`&&r){g(r);return}let a=t,o=n;(i.key===`ArrowRight`||i.key===`d`)&&(a+=40),(i.key===`ArrowLeft`||i.key===`a`)&&(a-=40),(i.key===`ArrowDown`||i.key===`s`)&&(o+=40),(i.key===`ArrowUp`||i.key===`w`)&&(o-=40),!(a<0||a>520||o<0||o>360)&&(t=a,n=o,e.style.left=t+`px`,e.style.top=n+`px`,h(t,n))}}function h(e,t){r=null,document.querySelectorAll(`.building`).forEach(n=>{let i=n.offsetLeft,a=n.offsetTop;Math.abs(e-i)<=40&&Math.abs(t-a)<=40&&(r=n.dataset.place)});let i=document.querySelector(`.message`);i&&(r?i.innerHTML=`
       ${n.log}<br>
       📰 ${n.news}<br>
       Eキー：施設に入る
     `:i.innerHTML=`
       ${n.log}<br>
       📰 ${n.news}<br>
-      操作：タップ・スワイプで移動
-      施設の近くでタップして入る
+      操作：WASD / 矢印キーで移動
     `)}function g(e){e===`securities`&&_(),e===`realestate`&&y(),e===`home`&&S(),e===`work`&&b(),e===`school`&&x()}function _(){t.innerHTML=`
     <div class="screen shop-screen">
       <h2>🏦 証券会社</h2>

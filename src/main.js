@@ -201,30 +201,47 @@ function renderTown() {
         <div class="building school" data-place="school"><div class="roof"></div><span>学校</span></div>
       </div>
    
-      <div class="command-bar">
-        <button onclick="enterPlace('work')">💼<br>仕事</button>
-        <button onclick="enterPlace('securities')">📈<br>証券会社</button>
-        <button onclick="enterPlace('realestate')">🏢<br>不動産</button>
-        <button onclick="enterPlace('home')">🏠<br>自宅</button>
-        <button onclick="enterPlace('school')">🎓<br>学校</button>
-        <button onclick="nextMonth()">⏭️<br>次の月</button>
-      </div>
-      
-      <div class="message">
-        ${player.log}<br>
-        📰 ${player.news}<br>
-        操作：WASD / 矢印キーで移動
-      </div>
+    <div class="game-panel">
+
+<div class="message">
+  ${player.log}<br>
+  🔑 操作：タップ・スワイプで移動 / 施設の近くでタップ
+</div>
+
+  <div class="command-bar">
+    <button onclick="enterPlace('work')">💼<br>仕事</button>
+    <button onclick="enterPlace('securities')">📈<br>証券会社</button>
+    <button onclick="enterPlace('realestate')">🏢<br>不動産</button>
+    <button onclick="enterPlace('home')">🏠<br>自宅</button>
+    <button onclick="enterPlace('school')">🎓<br>学校</button>
+    <button onclick="nextMonth()">⏩<br>次の月</button>
+  </div>
+
+</div>
     </div>
   `
 
   setupTown()
 }
 
+function isRoad(x, y) {
+  // 横方向の道路
+  const horizontalRoad =
+    y >= 120 &&
+    y <= 240
+
+  // 縦方向の道路
+  const verticalRoad =
+    x >= 200 &&
+    x <= 360
+
+  return horizontalRoad || verticalRoad
+}
+
 function setupTown() {
   const playerEl = document.querySelector('#player')
-  let x = 40
-  let y = 40
+  let x = 240
+  let y =320
   const step = 40
 
   playerEl.style.left = x + 'px'
@@ -245,6 +262,8 @@ function setupTown() {
     if (e.key === 'ArrowUp' || e.key === 'w') nextY -= step
 
     if (nextX < 0 || nextX > 520 || nextY < 0 || nextY > 360) return
+
+    if (!isRoad(nextX, nextY)) return
 
     x = nextX
     y = nextY
@@ -331,15 +350,17 @@ townEl.addEventListener(
       }
     }
 
-    if (
-      nextX < 0 ||
-      nextX > 520 ||
-      nextY < 0 ||
-      nextY > 360
-    ) return
+   if (
+    nextX < 0 ||
+    nextX > 520 ||
+    nextY < 0 ||
+    nextY > 360
+   ) return
 
-    x = nextX
-    y = nextY
+   if (!isRoad(nextX, nextY)) return
+
+   x = nextX
+   y = nextY
 
     playerEl.style.left = x + 'px'
     playerEl.style.top = y + 'px'
@@ -393,6 +414,7 @@ function enterPlace(place) {
   if (place === 'work') renderWork()
   if (place === 'school') renderSchool()
 }
+window.enterPlace = enterPlace
 
 function renderSecurities() {
   app.innerHTML = `
@@ -535,10 +557,10 @@ function nextMonth() {
   player.news = news.text
 
   player.log = `
-    給料 ${yen(salary)} / 生活費 ${yen(livingCost)} / 配当 ${yen(dividend)}。<br>
-    ${lifeEvent.text}<br>
-    格言：${quote}
-  `
+💰 給料 ${yen(salary)} / 生活費 ${yen(livingCost)} / 配当 ${yen(dividend)}<br>
+💬 格言：${quote}<br>
+📰 ${lifeEvent.text}
+`
 
   if (player.age >= 50) {
     renderEnding()
@@ -547,6 +569,7 @@ function nextMonth() {
 
   renderTown()
 }
+window.nextMonth = nextMonth
 
 function showFPQuiz() {
   const quiz = fpQuiz[Math.floor(Math.random() * fpQuiz.length)]
