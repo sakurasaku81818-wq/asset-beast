@@ -156,7 +156,7 @@
 
       <button id="backTown">街へ戻る</button>
     </div>
-  `,document.querySelector(`#buyStock`).onclick=()=>x(`stock`),document.querySelector(`#sellStock`).onclick=()=>S(`stock`),document.querySelector(`#buyEtf`).onclick=()=>x(`etf`),document.querySelector(`#sellEtf`).onclick=()=>S(`etf`),document.querySelector(`#buyReit`).onclick=()=>x(`reit`),document.querySelector(`#sellReit`).onclick=()=>S(`reit`),document.querySelector(`#buyCrypto`).onclick=()=>x(`crypto`),document.querySelector(`#sellCrypto`).onclick=()=>S(`crypto`)}function x(e){if(n.cash<1e5){alert(`現金が足りない`);return}n.cash-=1e5,n[e]+=1e5,n.log=`10万円分の資産を購入した。`,b()}function S(e){let t=1e5;if(n[e]<t){alert(`保有額が足りません`);return}n[e]-=t,n.cash+=t,n.log=`${{stock:`株`,etf:`ETF`,reit:`REIT`,crypto:`仮想通貨`}[e]}を10万円売却しました。`,b()}function C(){t.innerHTML=`
+  `,document.querySelector(`#buyStock`).onclick=()=>x(`stock`),document.querySelector(`#sellStock`).onclick=()=>S(`stock`),document.querySelector(`#buyEtf`).onclick=()=>x(`etf`),document.querySelector(`#sellEtf`).onclick=()=>S(`etf`),document.querySelector(`#buyReit`).onclick=()=>x(`reit`),document.querySelector(`#sellReit`).onclick=()=>S(`reit`),document.querySelector(`#buyCrypto`).onclick=()=>x(`crypto`),document.querySelector(`#sellCrypto`).onclick=()=>S(`crypto`),document.querySelector(`#backTown`).onclick=h}function x(e){if(n.cash<1e5){alert(`現金が足りない`);return}n.cash-=1e5,n[e]+=1e5,n.log=`10万円分の資産を購入した。`,b()}function S(e){let t=1e5;if(n[e]<t){alert(`保有額が足りません`);return}n[e]-=t,n.cash+=t,n.log=`${{stock:`株`,etf:`ETF`,reit:`REIT`,crypto:`仮想通貨`}[e]}を10万円売却しました。`,b()}function C(){t.innerHTML=`
     <div class="screen shop-screen">
       <h2>🏠 不動産屋</h2>
       <p>家・マンション・アパートを購入できます。</p>

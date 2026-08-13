@@ -484,6 +484,7 @@ function renderSecurities() {
 
       document.querySelector('#buyCrypto').onclick = () => buyAsset('crypto')
       document.querySelector('#sellCrypto').onclick = () => sellAsset('crypto')
+      document.querySelector('#backTown').onclick = renderTown
 }
 
 function buyAsset(type) {
