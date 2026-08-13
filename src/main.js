@@ -50,9 +50,20 @@ function totalAssets() {
   return player.cash + player.stock + player.etf + player.reit + player.crypto
 }
 function saveGame() {
-  localStorage.setItem('assetBeastSave', JSON.stringify(player))
-  alert('ゲームを保存しました！')
+  try {
+    alert('保存ボタンが押されました')
+
+    const saveData = JSON.stringify(player)
+    localStorage.setItem('assetBeastSave', saveData)
+
+    alert('ゲームを保存しました！')
+  } catch (error) {
+    alert('保存エラー：' + error.message)
+    console.error(error)
+  }
 }
+
+window.saveGame = saveGame
 function loadGame() {
   const savedData = localStorage.getItem('assetBeastSave')
 
