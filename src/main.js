@@ -91,6 +91,8 @@ function renderTitle() {
   document.querySelector('#continueBtn').onclick = loadGame
 }
 
+window.renderTitle = renderTitle
+
 function renderJobSelect() {
   app.innerHTML = `
     <div class="screen">
@@ -245,6 +247,7 @@ function renderTown() {
     <button onclick="enterPlace('school')">🎓<br>学校</button>
     <button onclick="nextMonth()">⏩<br>次の月</button>
     <button onclick="saveGame()">💾<br>保存</button>
+    <button onclick="renderTitle()">🚪<br>終了</button>
   </div>
 
 </div>

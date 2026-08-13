@@ -5,7 +5,7 @@
       <button id="startBtn">GAME START</button>
       <button id="continueBtn">続きから</button>
     </div>
-  `,document.querySelector(`#startBtn`).onclick=f,document.querySelector(`#continueBtn`).onclick=u}function f(){t.innerHTML=`
+  `,document.querySelector(`#startBtn`).onclick=f,document.querySelector(`#continueBtn`).onclick=u}window.renderTitle=d;function f(){t.innerHTML=`
     <div class="screen">
       <h2>職業を選ぶ</h2>
       <div class="card-list">
@@ -121,6 +121,7 @@
     <button onclick="enterPlace('school')">🎓<br>学校</button>
     <button onclick="nextMonth()">⏩<br>次の月</button>
     <button onclick="saveGame()">💾<br>保存</button>
+    <button onclick="renderTitle()">🚪<br>終了</button>
   </div>
 
 </div>
