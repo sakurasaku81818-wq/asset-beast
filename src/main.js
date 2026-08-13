@@ -456,9 +456,16 @@ function renderSecurities() {
       <p>金融資産に投資できます。</p>
 
       <button id="buyStock">株を10万円買う</button>
+      <button id="sellStock">株を10万円売る</button>
+
       <button id="buyEtf">ETFを10万円買う</button>
+      <button id="sellEtf">ETFを10万円売る</button>
+
       <button id="buyReit">REITを10万円買う</button>
+      <button id="sellReit">REITを10万円売る</button>
+
       <button id="buyCrypto">仮想通貨を10万円買う</button>
+      <button id="sellCrypto">仮想通貨を10万円売る</button>
 
       <p>株：成長狙い / ETF：分散 / REIT：不動産投資 / 仮想通貨：高リスク</p>
 
@@ -466,11 +473,17 @@ function renderSecurities() {
     </div>
   `
 
-  document.querySelector('#buyStock').onclick = () => buyAsset('stock')
-  document.querySelector('#buyEtf').onclick = () => buyAsset('etf')
-  document.querySelector('#buyReit').onclick = () => buyAsset('reit')
-  document.querySelector('#buyCrypto').onclick = () => buyAsset('crypto')
-  document.querySelector('#backTown').onclick = renderTown
+      document.querySelector('#buyStock').onclick = () => buyAsset('stock')
+      document.querySelector('#sellStock').onclick = () => sellAsset('stock')
+
+      document.querySelector('#buyEtf').onclick = () => buyAsset('etf') 
+      document.querySelector('#sellEtf').onclick = () => sellAsset('etf')
+
+      document.querySelector('#buyReit').onclick = () => buyAsset('reit')
+      document.querySelector('#sellReit').onclick = () => sellAsset('reit')
+
+      document.querySelector('#buyCrypto').onclick = () => buyAsset('crypto')
+      document.querySelector('#sellCrypto').onclick = () => sellAsset('crypto')
 }
 
 function buyAsset(type) {
@@ -484,7 +497,28 @@ function buyAsset(type) {
   player.log = '10万円分の資産を購入した。'
   renderSecurities()
 }
+function sellAsset(type) {
+  const amount = 100000
 
+  if (player[type] < amount) {
+    alert('保有額が足りません')
+    return
+  }
+
+  player[type] -= amount
+  player.cash += amount
+
+  const names = {
+    stock: '株',
+    etf: 'ETF',
+    reit: 'REIT',
+    crypto: '仮想通貨'
+  }
+
+  player.log = `${names[type]}を10万円売却しました。`
+
+  renderSecurities()
+}
 function renderRealEstate() {
   app.innerHTML = `
     <div class="screen shop-screen">
