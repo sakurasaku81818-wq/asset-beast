@@ -1,6 +1,16 @@
 import { fpQuiz } from './date/fpQuiz.js'
 import './style.css'
 
+const bgm = new Audio('/asset-beast/Town-bgm.mp3')
+bgm.loop = true
+bgm.volume = 0.25
+
+function startBgm() {
+  bgm.play().catch(() => {})
+}
+
+document.addEventListener('pointerdown', startBgm, { once: true })
+
 const app = document.querySelector('#app')
 
 let player = {
