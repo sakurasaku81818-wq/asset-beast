@@ -16,6 +16,8 @@ let player = {
   etf: 0,
   reit: 0,
   crypto: 0,
+  propertyValue: 0,
+  propertyType: null,
   log: 'AssetBeastの人生が始まった。',
   news: '平和な1日だった。'
 }
@@ -47,7 +49,12 @@ function yen(n) {
 }
 
 function totalAssets() {
-  return player.cash + player.stock + player.etf + player.reit + player.crypto
+  return player.cash
+    + player.stock
+    + player.etf
+    + player.reit
+    + player.crypto
+    + (player.propertyValue || 0)
 }
 function saveGame() {
   try {
@@ -213,6 +220,11 @@ function renderTown() {
     <div>
       <span>仮想通貨</span>
       <strong>${yen(player.crypto)}</strong>
+    </div>
+
+    <div>
+      <span>不動産</span>
+      <strong>${yen(player.propertyValue || 0)}</strong>
     </div>
 
     <div>
@@ -577,8 +589,16 @@ function buyProperty(name, price) {
   }
 
   player.cash -= price
-  player.house = { name: name }
-  player.log = `${name}を購入しました。`
+
+ player.house = {
+  name: name,
+  purchasePrice: price,
+  cost: 0
+}
+
+  player.propertyValue = price
+
+  player.log = `${name}を${yen(price)}で購入しました。`
 
   renderTown()
 }
@@ -642,6 +662,29 @@ function nextMonth() {
     player.stock * 0.002 +
     player.etf * 0.0015 +
     player.reit * 0.003
+    
+// 不動産価格の変動
+if (player.propertyValue > 0 && player.house) {
+
+  if (player.house.name === '戸建て') {
+    // 戸建て：毎月0.3%ずつ下落
+    player.propertyValue *= 0.997
+  }
+
+  if (player.house.name === 'マンション') {
+    // マンション：-0.2%〜+0.5%
+    const rate = 0.998 + Math.random() * 0.007
+    player.propertyValue *= rate
+  }
+
+  if (player.house.name === 'アパート') {
+    // アパート：-0.5%〜+0.8%
+    const rate = 0.995 + Math.random() * 0.013
+    player.propertyValue *= rate
+  }
+
+  player.propertyValue = Math.floor(player.propertyValue)
+}
 
   const news = getMonthlyNews()
   const lifeEvent = getLifeEvent()
