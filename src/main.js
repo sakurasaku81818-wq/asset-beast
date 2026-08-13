@@ -527,9 +527,29 @@ function renderRealEstate() {
       <p>家・マンション・アパートを購入できます。</p>
 
       <div class="card-list">
-        <div class="card"><h3>戸建て</h3><p>3,000万円</p><button disabled>資金不足</button></div>
-        <div class="card"><h3>マンション</h3><p>4,500万円</p><button disabled>資金不足</button></div>
-        <div class="card"><h3>アパート</h3><p>8,000万円</p><button disabled>資金不足</button></div>
+        <div class="card">
+  <h3>戸建て</h3>
+  <p>3,000万円</p>
+  <button id="buyHouse" ${player.cash < 30000000 ? 'disabled' : ''}>
+    ${player.cash < 30000000 ? '資金不足' : '購入'}
+  </button>
+</div>
+
+<div class="card">
+  <h3>マンション</h3>
+  <p>4,500万円</p>
+  <button id="buyMansion" ${player.cash < 45000000 ? 'disabled' : ''}>
+    ${player.cash < 45000000 ? '資金不足' : '購入'}
+  </button>
+</div>
+
+<div class="card">
+  <h3>アパート</h3>
+  <p>8,000万円</p>
+  <button id="buyApartment" ${player.cash < 80000000 ? 'disabled' : ''}>
+    ${player.cash < 80000000 ? '資金不足' : '購入'}
+  </button>
+</div>
       </div>
 
       <button id="backTown">街へ戻る</button>
@@ -537,8 +557,31 @@ function renderRealEstate() {
   `
 
   document.querySelector('#backTown').onclick = renderTown
+
+if (document.querySelector('#buyHouse')) {
+  document.querySelector('#buyHouse').onclick = () => buyProperty('戸建て', 30000000)
 }
 
+if (document.querySelector('#buyMansion')) {
+  document.querySelector('#buyMansion').onclick = () => buyProperty('マンション', 45000000)
+}
+
+if (document.querySelector('#buyApartment')) {
+  document.querySelector('#buyApartment').onclick = () => buyProperty('アパート', 80000000)
+}
+}
+function buyProperty(name, price) {
+  if (player.cash < price) {
+    alert('資金が足りません')
+    return
+  }
+
+  player.cash -= price
+  player.house = { name: name }
+  player.log = `${name}を購入しました。`
+
+  renderTown()
+}
 function renderWork() {
   app.innerHTML = `
     <div class="screen">

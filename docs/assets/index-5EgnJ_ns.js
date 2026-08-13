@@ -135,7 +135,7 @@
       📰 ${n.news}<br>
       操作：タップ・スワイプで移動
       施設の近くでタップして入る
-    `)}function y(e){e===`securities`&&b(),e===`realestate`&&C(),e===`home`&&E(),e===`work`&&w(),e===`school`&&T()}window.enterPlace=y;function b(){t.innerHTML=`
+    `)}function y(e){e===`securities`&&b(),e===`realestate`&&C(),e===`home`&&D(),e===`work`&&T(),e===`school`&&E()}window.enterPlace=y;function b(){t.innerHTML=`
     <div class="screen shop-screen">
       <h2>🏦 証券会社</h2>
       <p>金融資産に投資できます。</p>
@@ -162,21 +162,41 @@
       <p>家・マンション・アパートを購入できます。</p>
 
       <div class="card-list">
-        <div class="card"><h3>戸建て</h3><p>3,000万円</p><button disabled>資金不足</button></div>
-        <div class="card"><h3>マンション</h3><p>4,500万円</p><button disabled>資金不足</button></div>
-        <div class="card"><h3>アパート</h3><p>8,000万円</p><button disabled>資金不足</button></div>
+        <div class="card">
+  <h3>戸建て</h3>
+  <p>3,000万円</p>
+  <button id="buyHouse" ${n.cash<3e7?`disabled`:``}>
+    ${n.cash<3e7?`資金不足`:`購入`}
+  </button>
+</div>
+
+<div class="card">
+  <h3>マンション</h3>
+  <p>4,500万円</p>
+  <button id="buyMansion" ${n.cash<45e6?`disabled`:``}>
+    ${n.cash<45e6?`資金不足`:`購入`}
+  </button>
+</div>
+
+<div class="card">
+  <h3>アパート</h3>
+  <p>8,000万円</p>
+  <button id="buyApartment" ${n.cash<8e7?`disabled`:``}>
+    ${n.cash<8e7?`資金不足`:`購入`}
+  </button>
+</div>
       </div>
 
       <button id="backTown">街へ戻る</button>
     </div>
-  `,document.querySelector(`#backTown`).onclick=h}function w(){t.innerHTML=`
+  `,document.querySelector(`#backTown`).onclick=h,document.querySelector(`#buyHouse`)&&(document.querySelector(`#buyHouse`).onclick=()=>w(`戸建て`,3e7)),document.querySelector(`#buyMansion`)&&(document.querySelector(`#buyMansion`).onclick=()=>w(`マンション`,45e6)),document.querySelector(`#buyApartment`)&&(document.querySelector(`#buyApartment`).onclick=()=>w(`アパート`,8e7))}function w(e,t){if(n.cash<t){alert(`資金が足りません`);return}n.cash-=t,n.house={name:e},n.log=`${e}を購入しました。`,h()}function T(){t.innerHTML=`
     <div class="screen">
       <h2>🏢 仕事</h2>
       <p>${n.job.name}として働いている。</p>
       <p>月収：${s(n.job.income*n.region.salaryRate)}</p>
       <button id="backTown">街へ戻る</button>
     </div>
-  `,document.querySelector(`#backTown`).onclick=h}function T(){t.innerHTML=`
+  `,document.querySelector(`#backTown`).onclick=h}function E(){t.innerHTML=`
     <div class="screen">
       <h2>🎓 学校</h2>
       <p>ここでは将来、資格やスキルを学べる。</p>
@@ -194,18 +214,18 @@
 
       <button id="backTown">街へ戻る</button>
     </div>
-  `,document.querySelector(`#studyFP`).onclick=O,document.querySelector(`#backTown`).onclick=h}function E(){t.innerHTML=`
+  `,document.querySelector(`#studyFP`).onclick=k,document.querySelector(`#backTown`).onclick=h}function D(){t.innerHTML=`
     <div class="screen">
       <h2>🏡 自宅</h2>
       <p>家で休むと1ヶ月が進みます。</p>
       <button id="nextMonth">寝る / 次の月へ</button>
       <button id="backTown">街へ戻る</button>
     </div>
-  `,document.querySelector(`#nextMonth`).onclick=D,document.querySelector(`#backTown`).onclick=h}function D(){let e=n.job.income*n.region.salaryRate,t=n.house.cost*n.region.costRate+7e4,r=n.stock*.002+n.etf*.0015+n.reit*.003,i=A(),a=j(),o=M();if(n.cash+=e+r,n.cash-=t,n.stock*=1+k(-.05,.08)+i.stock,n.etf*=1+k(-.03,.05)+i.etf,n.reit*=1+k(-.02,.04)+i.reit,n.crypto*=1+k(-.15,.2)+i.crypto,n.cash+=a.cash,n.job.income+=a.income,n.month+=1,n.month>12&&(n.month=1,n.age+=1),n.news=i.text,n.log=`
+  `,document.querySelector(`#nextMonth`).onclick=O,document.querySelector(`#backTown`).onclick=h}function O(){let e=n.job.income*n.region.salaryRate,t=n.house.cost*n.region.costRate+7e4,r=n.stock*.002+n.etf*.0015+n.reit*.003,i=j(),a=M(),o=N();if(n.cash+=e+r,n.cash-=t,n.stock*=1+A(-.05,.08)+i.stock,n.etf*=1+A(-.03,.05)+i.etf,n.reit*=1+A(-.02,.04)+i.reit,n.crypto*=1+A(-.15,.2)+i.crypto,n.cash+=a.cash,n.job.income+=a.income,n.month+=1,n.month>12&&(n.month=1,n.age+=1),n.news=i.text,n.log=`
 💰 給料 ${s(e)} / 生活費 ${s(t)} / 配当 ${s(r)}<br>
 💬 格言：${o}<br>
 📰 ${a.text}
-`,n.age>=50){N();return}h()}window.nextMonth=D;function O(){let r=e[Math.floor(Math.random()*e.length)];t.innerHTML=`
+`,n.age>=50){P();return}h()}window.nextMonth=O;function k(){let r=e[Math.floor(Math.random()*e.length)];t.innerHTML=`
     <div class="screen">
       <h2>🎓 FPクイズ</h2>
       <p>所持金：${s(n.cash)}</p>
@@ -232,7 +252,7 @@ FP経験値：${n.fpExp} / 100
 
 ${r.explanation}`)):alert(`❌ 不正解
 
-${r.explanation}`),T()}}),document.querySelector(`#backSchool`).onclick=T}function k(e,t){return Math.random()*(t-e)+e}function A(){let e=[{text:`AI投資ブーム。株式市場に追い風。`,stock:.06,etf:.02,reit:0,crypto:.03},{text:`金利上昇。不動産とREITに逆風。`,stock:-.01,etf:-.01,reit:-.06,crypto:-.02},{text:`地政学リスクが高まる。市場全体が下落。`,stock:-.05,etf:-.03,reit:-.02,crypto:-.08},{text:`世界景気が回復。市場全体が上昇。`,stock:.05,etf:.03,reit:.02,crypto:.04},{text:`仮想通貨市場が急騰。`,stock:0,etf:0,reit:0,crypto:.15},{text:`大きなニュースはなかった。`,stock:0,etf:0,reit:0,crypto:0}];return e[Math.floor(Math.random()*e.length)]}function j(){let e=[{text:`昇進した。月収が1万円上がった。`,cash:0,income:1e4},{text:`ボーナス20万円を受け取った。`,cash:2e5,income:0},{text:`医療費5万円を支払った。`,cash:-5e4,income:0},{text:`副業収入3万円が入った。`,cash:3e4,income:0},{text:`特に何も起こらなかった。`,cash:0,income:0}];return e[Math.floor(Math.random()*e.length)]}function M(){let e=`時間を味方につけた者が、最後に勝つ。.複利は世界で最も強力な力の一つ。.卵は一つのカゴに盛るな。.安い時に恐れず、高い時に浮かれない。.投資はマラソン。短距離走ではない。.暴落は優良資産のバーゲンセール。.現金は守り、投資は攻め。.感情は投資の最大の敵。.利益は我慢した人に訪れる。.最悪なのは何もしないこと。.市場は短期では投票機、長期では計量機。.未来は誰にも読めない。だから分散する。.毎月積み立てることが最大の武器。.価格ではなく価値を見極めよう。.リスクとは値動きではなく、理解不足である。.お金にも働いてもらおう。.収入より支出の管理が重要。.資産形成は生活習慣で決まる。.今日の浪費は未来の資産を減らす。.焦って売買すると手数料だけが増える。.暴騰より継続が強い。.人生最大の投資は自分への投資。.知識は最高の資産。.借金は使い方次第で武器にもなる。.配当は小さな給料日。.長期投資は時間との共同作業。.チャンスは悲観の中に生まれる。.相場を当てるより、生き残ることが大切。.市場から退場しない人が勝者になる。.資産家はお金のためではなく、自由のために投資する。`.split(`.`);return e[Math.floor(Math.random()*e.length)]}function N(){t.innerHTML=`
+${r.explanation}`),E()}}),document.querySelector(`#backSchool`).onclick=E}function A(e,t){return Math.random()*(t-e)+e}function j(){let e=[{text:`AI投資ブーム。株式市場に追い風。`,stock:.06,etf:.02,reit:0,crypto:.03},{text:`金利上昇。不動産とREITに逆風。`,stock:-.01,etf:-.01,reit:-.06,crypto:-.02},{text:`地政学リスクが高まる。市場全体が下落。`,stock:-.05,etf:-.03,reit:-.02,crypto:-.08},{text:`世界景気が回復。市場全体が上昇。`,stock:.05,etf:.03,reit:.02,crypto:.04},{text:`仮想通貨市場が急騰。`,stock:0,etf:0,reit:0,crypto:.15},{text:`大きなニュースはなかった。`,stock:0,etf:0,reit:0,crypto:0}];return e[Math.floor(Math.random()*e.length)]}function M(){let e=[{text:`昇進した。月収が1万円上がった。`,cash:0,income:1e4},{text:`ボーナス20万円を受け取った。`,cash:2e5,income:0},{text:`医療費5万円を支払った。`,cash:-5e4,income:0},{text:`副業収入3万円が入った。`,cash:3e4,income:0},{text:`特に何も起こらなかった。`,cash:0,income:0}];return e[Math.floor(Math.random()*e.length)]}function N(){let e=`時間を味方につけた者が、最後に勝つ。.複利は世界で最も強力な力の一つ。.卵は一つのカゴに盛るな。.安い時に恐れず、高い時に浮かれない。.投資はマラソン。短距離走ではない。.暴落は優良資産のバーゲンセール。.現金は守り、投資は攻め。.感情は投資の最大の敵。.利益は我慢した人に訪れる。.最悪なのは何もしないこと。.市場は短期では投票機、長期では計量機。.未来は誰にも読めない。だから分散する。.毎月積み立てることが最大の武器。.価格ではなく価値を見極めよう。.リスクとは値動きではなく、理解不足である。.お金にも働いてもらおう。.収入より支出の管理が重要。.資産形成は生活習慣で決まる。.今日の浪費は未来の資産を減らす。.焦って売買すると手数料だけが増える。.暴騰より継続が強い。.人生最大の投資は自分への投資。.知識は最高の資産。.借金は使い方次第で武器にもなる。.配当は小さな給料日。.長期投資は時間との共同作業。.チャンスは悲観の中に生まれる。.相場を当てるより、生き残ることが大切。.市場から退場しない人が勝者になる。.資産家はお金のためではなく、自由のために投資する。`.split(`.`);return e[Math.floor(Math.random()*e.length)]}function P(){t.innerHTML=`
     <div class="screen title-screen">
       <h1>結果発表</h1>
       <p>あなたの総資産</p>
