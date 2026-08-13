@@ -88,6 +88,7 @@ function renderTitle() {
   `
 
   document.querySelector('#startBtn').onclick = renderJobSelect
+  document.querySelector('#continueBtn').onclick = loadGame
 }
 
 function renderJobSelect() {
