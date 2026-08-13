@@ -49,13 +49,30 @@ function yen(n) {
 function totalAssets() {
   return player.cash + player.stock + player.etf + player.reit + player.crypto
 }
+function saveGame() {
+  localStorage.setItem('assetBeastSave', JSON.stringify(player))
+  alert('ゲームを保存しました！')
+}
+function loadGame() {
+  const savedData = localStorage.getItem('assetBeastSave')
 
+  if (!savedData) {
+    alert('セーブデータがありません')
+    return
+  }
+
+  const data = JSON.parse(savedData)
+  Object.assign(player, data)
+
+  renderTown()
+}
 function renderTitle() {
   app.innerHTML = `
     <div class="screen title-screen">
       <h1>AssetBeast</h1>
       <p>人生を選び、<br>お金を学び、<br>資産家になる。</p>
       <button id="startBtn">GAME START</button>
+      <button id="continueBtn">続きから</button>
     </div>
   `
 
@@ -215,6 +232,7 @@ function renderTown() {
     <button onclick="enterPlace('home')">🏠<br>自宅</button>
     <button onclick="enterPlace('school')">🎓<br>学校</button>
     <button onclick="nextMonth()">⏩<br>次の月</button>
+    <button onclick="saveGame()">💾<br>保存</button>
   </div>
 
 </div>
