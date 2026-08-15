@@ -11,6 +11,20 @@ function startBgm() {
 
 document.addEventListener('pointerdown', startBgm, { once: true })
 
+let bgmOn = true
+
+function toggleBgm() {
+  bgmOn = !bgmOn
+
+  if (bgmOn) {
+    bgm.play().catch(() => {})
+  } else {
+    bgm.pause()
+  }
+}
+
+window.toggleBgm = toggleBgm
+
 const app = document.querySelector('#app')
 
 let player = {
@@ -269,6 +283,7 @@ function renderTown() {
     <button onclick="enterPlace('school')">🎓<br>学校</button>
     <button onclick="nextMonth()">⏩<br>次の月</button>
     <button onclick="saveGame()">💾<br>保存</button>
+    <button id="bgmBtn" onclick="toggleBgm()">🔊<br>BGM</button>
     <button onclick="renderTitle()">🚪<br>終了</button>
   </div>
 
