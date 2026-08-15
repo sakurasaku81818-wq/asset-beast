@@ -842,13 +842,45 @@ function randomRate(min, max) {
 
 function getMonthlyNews() {
   const newsList = [
-    { text: 'AI投資ブーム。株式市場に追い風。', stock: 0.06, etf: 0.02, reit: 0, crypto: 0.03 },
-    { text: '金利上昇。不動産とREITに逆風。', stock: -0.01, etf: -0.01, reit: -0.06, crypto: -0.02 },
-    { text: '地政学リスクが高まる。市場全体が下落。', stock: -0.05, etf: -0.03, reit: -0.02, crypto: -0.08 },
-    { text: '世界景気が回復。市場全体が上昇。', stock: 0.05, etf: 0.03, reit: 0.02, crypto: 0.04 },
-    { text: '仮想通貨市場が急騰。', stock: 0, etf: 0, reit: 0, crypto: 0.15 },
-    { text: '大きなニュースはなかった。', stock: 0, etf: 0, reit: 0, crypto: 0 }
-  ]
+  { text: '🤖 AI投資ブーム。関連企業に資金が流入。', stock: 0.06, etf: 0.02, reit: 0, crypto: 0.03 },
+  { text: '💾 半導体需要が急増。関連株が上昇。', stock: 0.05, etf: 0.03, reit: 0, crypto: 0.01 },
+  { text: '💱 急激な円安で輸入物価が上昇。', stock: -0.02, etf: -0.01, reit: -0.01, crypto: 0.02 },
+  { text: '💴 円高が進み、輸入コストが低下。', stock: 0.02, etf: 0.01, reit: 0.01, crypto: -0.01 },
+
+  { text: '🛢 原油価格が急騰。企業コストが上昇。', stock: -0.04, etf: -0.02, reit: -0.02, crypto: -0.01 },
+  { text: '☀️ 太陽光発電への大型投資が発表された。', stock: 0.03, etf: 0.02, reit: 0.01, crypto: 0 },
+  { text: '⚛️ 原子力発電所の再稼働が決定。', stock: 0.03, etf: 0.01, reit: 0, crypto: 0 },
+  { text: '⚡ エネルギー価格が大幅に低下。', stock: 0.04, etf: 0.03, reit: 0.02, crypto: 0.01 },
+
+  { text: '🌾 小麦の不作で食料価格が上昇。', stock: -0.02, etf: -0.01, reit: 0, crypto: 0 },
+  { text: '🍚 米が豊作。食品価格が安定した。', stock: 0.01, etf: 0.01, reit: 0, crypto: 0 },
+  { text: '🐟 記録的な豊漁。食品関連企業に追い風。', stock: 0.02, etf: 0.01, reit: 0, crypto: 0 },
+
+  { text: '🚀 民間ロケットの打ち上げに成功。', stock: 0.04, etf: 0.02, reit: 0, crypto: 0.02 },
+  { text: '🛰 次世代衛星通信サービスが開始された。', stock: 0.04, etf: 0.02, reit: 0, crypto: 0.01 },
+
+  { text: '🌪 大型台風が都市部を直撃。', stock: -0.04, etf: -0.03, reit: -0.06, crypto: -0.01 },
+  { text: '🌊 大規模洪水が発生。インフラ被害が拡大。', stock: -0.05, etf: -0.03, reit: -0.07, crypto: -0.02 },
+  { text: '❄️ 記録的寒波で物流が混乱。', stock: -0.03, etf: -0.02, reit: -0.01, crypto: 0 },
+
+  { text: '🏗 巨額のインフラ投資計画が発表された。', stock: 0.05, etf: 0.03, reit: 0.04, crypto: 0 },
+  { text: '🚄 新しい高速鉄道計画が始動。', stock: 0.03, etf: 0.02, reit: 0.03, crypto: 0 },
+
+  { text: '🎬 世界的大ヒット映画が誕生。', stock: 0.02, etf: 0.01, reit: 0, crypto: 0.01 },
+  { text: '📺 動画配信サービスの利用者が急増。', stock: 0.03, etf: 0.02, reit: 0, crypto: 0.01 },
+
+  { text: '🗳 選挙結果を受け市場に不透明感が広がる。', stock: -0.03, etf: -0.02, reit: -0.01, crypto: 0.01 },
+  { text: '🏛 新政権が大型経済対策を発表。', stock: 0.05, etf: 0.03, reit: 0.02, crypto: 0.02 },
+
+  { text: '⚔️ 地域紛争が激化。世界市場が不安定に。', stock: -0.06, etf: -0.04, reit: -0.03, crypto: -0.05 },
+  { text: '🕊 停戦合意が成立。市場に安心感が広がる。', stock: 0.05, etf: 0.03, reit: 0.02, crypto: 0.03 },
+
+  { text: '₿ 仮想通貨の税制改革が発表された。', stock: 0.01, etf: 0.01, reit: 0, crypto: 0.10 },
+  { text: '🚫 仮想通貨規制が強化された。', stock: 0, etf: 0, reit: 0, crypto: -0.12 },
+
+  { text: '🌍 世界景気が回復。市場全体が上昇。', stock: 0.05, etf: 0.03, reit: 0.02, crypto: 0.04 },
+  { text: '😐 大きなニュースはなかった。', stock: 0, etf: 0, reit: 0, crypto: 0 }
+]
 
   return newsList[Math.floor(Math.random() * newsList.length)]
 }
