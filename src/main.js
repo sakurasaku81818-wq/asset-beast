@@ -275,7 +275,8 @@ function renderTown() {
     <div class="game-panel">
 
 <div class="message">
-  ${player.log}<br>
+${player.news}<br>  
+${player.log}<br>
   🔑 操作：タップ・スワイプで移動 / 施設の近くでタップ
 </div>
 

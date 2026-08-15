@@ -114,7 +114,8 @@
     <div class="game-panel">
 
 <div class="message">
-  ${o.log}<br>
+${o.news}<br>  
+${o.log}<br>
   🔑 操作：タップ・スワイプで移動 / 施設の近くでタップ
 </div>
 
