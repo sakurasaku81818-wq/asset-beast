@@ -843,45 +843,194 @@ function randomRate(min, max) {
 
 function getMonthlyNews() {
   const newsList = [
-  { text: '🤖 AI投資ブーム。関連企業に資金が流入。', stock: 0.06, etf: 0.02, reit: 0, crypto: 0.03 },
-  { text: '💾 半導体需要が急増。関連株が上昇。', stock: 0.05, etf: 0.03, reit: 0, crypto: 0.01 },
-  { text: '💱 急激な円安で輸入物価が上昇。', stock: -0.02, etf: -0.01, reit: -0.01, crypto: 0.02 },
-  { text: '💴 円高が進み、輸入コストが低下。', stock: 0.02, etf: 0.01, reit: 0.01, crypto: -0.01 },
+    // 🤖 AI・半導体・テクノロジー
+    { text: '🤖 AI投資ブーム。半導体需要が急増。', stock: 0.06, etf: 0.03, reit: 0, crypto: 0.04 },
+    { text: '💻 半導体不足が深刻化。製造業に影響。', stock: -0.03, etf: -0.02, reit: 0, crypto: 0.01 },
+    { text: '🧠 新型AIサービスが世界的に普及。', stock: 0.05, etf: 0.03, reit: 0, crypto: 0.03 },
+    { text: '📱 大手IT企業の業績が市場予想を上回る。', stock: 0.04, etf: 0.02, reit: 0, crypto: 0.02 },
 
-  { text: '🛢 原油価格が急騰。企業コストが上昇。', stock: -0.04, etf: -0.02, reit: -0.02, crypto: -0.01 },
-  { text: '☀️ 太陽光発電への大型投資が発表された。', stock: 0.03, etf: 0.02, reit: 0.01, crypto: 0 },
-  { text: '⚛️ 原子力発電所の再稼働が決定。', stock: 0.03, etf: 0.01, reit: 0, crypto: 0 },
-  { text: '⚡ エネルギー価格が大幅に低下。', stock: 0.04, etf: 0.03, reit: 0.02, crypto: 0.01 },
+    // 💱 経済・為替
+    { text: '💴 円高が急速に進行。輸出企業に逆風。', stock: -0.04, etf: -0.02, reit: 0.01, crypto: -0.02 },
+    { text: '💵 円安が進行。輸出企業の業績期待が高まる。', stock: 0.04, etf: 0.02, reit: -0.01, crypto: 0.02 },
+    { text: '🏦 中央銀行が利上げを発表。', stock: -0.04, etf: -0.02, reit: -0.05, crypto: -0.05 },
+    { text: '💰 金利引き下げ。市場に資金が流入。', stock: 0.04, etf: 0.03, reit: 0.04, crypto: 0.05 },
 
-  { text: '🌾 小麦の不作で食料価格が上昇。', stock: -0.02, etf: -0.01, reit: 0, crypto: 0 },
-  { text: '🍚 米が豊作。食品価格が安定した。', stock: 0.01, etf: 0.01, reit: 0, crypto: 0 },
-  { text: '🐟 記録的な豊漁。食品関連企業に追い風。', stock: 0.02, etf: 0.01, reit: 0, crypto: 0 },
+    // 🌾 食料・農業
+    { text: '🌾 小麦が世界的な不作。食料価格が上昇。', stock: -0.02, etf: -0.01, reit: 0, crypto: 0 },
+    { text: '🍚 米が豊作。食品価格が安定。', stock: 0.01, etf: 0.01, reit: 0, crypto: 0 },
+    { text: '🌱 大豆価格が急騰。食品企業のコスト増。', stock: -0.02, etf: -0.01, reit: 0, crypto: 0 },
+    { text: '🐟 漁獲量が大幅に減少。水産物価格が上昇。', stock: -0.01, etf: 0, reit: 0, crypto: 0 },
 
-  { text: '🚀 民間ロケットの打ち上げに成功。', stock: 0.04, etf: 0.02, reit: 0, crypto: 0.02 },
-  { text: '🛰 次世代衛星通信サービスが開始された。', stock: 0.04, etf: 0.02, reit: 0, crypto: 0.01 },
+    // ⚡ エネルギー
+    { text: '🛢️ 原油価格が急騰。世界経済に警戒感。', stock: -0.04, etf: -0.02, reit: -0.01, crypto: -0.02 },
+    { text: '🛢️ 原油価格が下落。企業コスト低下への期待。', stock: 0.03, etf: 0.02, reit: 0.01, crypto: 0.01 },
+    { text: '☀️ 太陽光発電への大型投資が決定。', stock: 0.03, etf: 0.02, reit: 0.01, crypto: 0 },
+    { text: '☢️ 原子力発電所の再稼働が決定。', stock: 0.02, etf: 0.01, reit: 0, crypto: 0 },
+    { text: '💧 水力発電設備への大型投資が始まる。', stock: 0.02, etf: 0.01, reit: 0.01, crypto: 0 },
 
-  { text: '🌪 大型台風が都市部を直撃。', stock: -0.04, etf: -0.03, reit: -0.06, crypto: -0.01 },
-  { text: '🌊 大規模洪水が発生。インフラ被害が拡大。', stock: -0.05, etf: -0.03, reit: -0.07, crypto: -0.02 },
-  { text: '❄️ 記録的寒波で物流が混乱。', stock: -0.03, etf: -0.02, reit: -0.01, crypto: 0 },
+    // 🌎 災害・気候
+    { text: '🌪️ 大型台風が上陸。物流と企業活動に影響。', stock: -0.04, etf: -0.02, reit: -0.03, crypto: -0.01 },
+    { text: '🌧️ 記録的大雨。各地で河川が氾濫。', stock: -0.03, etf: -0.02, reit: -0.04, crypto: 0 },
+    { text: '❄️ 強烈な寒波が到来。エネルギー需要が急増。', stock: -0.01, etf: 0, reit: -0.01, crypto: 0 },
+    { text: '🌍 大規模地震が発生。市場に警戒感。', stock: -0.07, etf: -0.04, reit: -0.08, crypto: -0.03 },
+    { text: '🏔️ 豪雨による土砂崩れ。インフラに被害。', stock: -0.03, etf: -0.02, reit: -0.03, crypto: 0 },
 
-  { text: '🏗 巨額のインフラ投資計画が発表された。', stock: 0.05, etf: 0.03, reit: 0.04, crypto: 0 },
-  { text: '🚄 新しい高速鉄道計画が始動。', stock: 0.03, etf: 0.02, reit: 0.03, crypto: 0 },
+    // 🚀 宇宙
+    { text: '🚀 民間ロケットの打ち上げに成功。', stock: 0.04, etf: 0.02, reit: 0, crypto: 0.02 },
+    { text: '🛰️ 次世代通信衛星の運用が開始。', stock: 0.03, etf: 0.02, reit: 0, crypto: 0.01 },
+    { text: '☄️ 巨大彗星の観測に成功。宇宙産業への関心が高まる。', stock: 0.01, etf: 0.01, reit: 0, crypto: 0.01 },
 
-  { text: '🎬 世界的大ヒット映画が誕生。', stock: 0.02, etf: 0.01, reit: 0, crypto: 0.01 },
-  { text: '📺 動画配信サービスの利用者が急増。', stock: 0.03, etf: 0.02, reit: 0, crypto: 0.01 },
+    // 🌐 政治・国際
+    { text: '🗳️ 大統領選挙が終了。市場に安心感が広がる。', stock: 0.03, etf: 0.02, reit: 0.01, crypto: 0.02 },
+    { text: '⚔️ 国際紛争が激化。世界市場が急落。', stock: -0.08, etf: -0.05, reit: -0.03, crypto: -0.07 },
+    { text: '🕊️ 停戦合意が成立。市場に安心感が広がる。', stock: 0.06, etf: 0.04, reit: 0.02, crypto: 0.04 },
+    { text: '🚨 大都市でテロ事件。市場に警戒感。', stock: -0.06, etf: -0.03, reit: -0.03, crypto: -0.04 },
 
-  { text: '🗳 選挙結果を受け市場に不透明感が広がる。', stock: -0.03, etf: -0.02, reit: -0.01, crypto: 0.01 },
-  { text: '🏛 新政権が大型経済対策を発表。', stock: 0.05, etf: 0.03, reit: 0.02, crypto: 0.02 },
+    // 🏙️ 社会・生活
+    { text: '🚄 高速鉄道の大型インフラ計画が発表。', stock: 0.03, etf: 0.02, reit: 0.03, crypto: 0 },
+    { text: '👴 高齢化が加速。医療・介護需要が拡大。', stock: 0.01, etf: 0.01, reit: 0.01, crypto: 0 },
+    { text: '👶 出生数が回復。将来の消費拡大に期待。', stock: 0.02, etf: 0.01, reit: 0.02, crypto: 0 },
+    { text: '🎬 国産映画が世界的大ヒット。', stock: 0.02, etf: 0.01, reit: 0, crypto: 0.01 },
+    { text: '📺 動画配信サービスの利用者が急増。', stock: 0.03, etf: 0.02, reit: 0, crypto: 0.02 },
+    { text: '🚽 節水型住宅設備が大ヒット。', stock: 0.01, etf: 0.01, reit: 0.01, crypto: 0 },
+    { text: '🏠 住宅需要が急増。不動産市場が活況。', stock: 0.02, etf: 0.01, reit: 0.05, crypto: 0 },
 
-  { text: '⚔️ 地域紛争が激化。世界市場が不安定に。', stock: -0.06, etf: -0.04, reit: -0.03, crypto: -0.05 },
-  { text: '🕊 停戦合意が成立。市場に安心感が広がる。', stock: 0.05, etf: 0.03, reit: 0.02, crypto: 0.03 },
+    // 🪙 仮想通貨
+    { text: '🪙 仮想通貨の税制改革が発表。投資家の期待が高まる。', stock: 0.01, etf: 0.01, reit: 0, crypto: 0.12 },
+    { text: '₿ 仮想通貨ETFへの資金流入が急増。', stock: 0.01, etf: 0.02, reit: 0, crypto: 0.10 },
+    { text: '🔒 大手暗号資産取引所でセキュリティ問題。', stock: -0.01, etf: 0, reit: 0, crypto: -0.15 },
 
-  { text: '₿ 仮想通貨の税制改革が発表された。', stock: 0.01, etf: 0.01, reit: 0, crypto: 0.10 },
-  { text: '🚫 仮想通貨規制が強化された。', stock: 0, etf: 0, reit: 0, crypto: -0.12 },
+    // 🏆 スポーツ・文化
+    { text: '🏆 世界的スポーツ大会が開幕。消費が活発化。', stock: 0.02, etf: 0.01, reit: 0.02, crypto: 0.01 },
+    { text: '🎌 日本代表が世界大会で優勝。国内消費が盛り上がる。', stock: 0.02, etf: 0.01, reit: 0.01, crypto: 0 },
+       // 🏪 小売・消費
+    { text: '🛒 大手スーパーが全国的な値下げを発表。消費が活発化。', stock: 0.02, etf: 0.01, reit: 0.01, crypto: 0 },
+    { text: '🛍️ 個人消費が急減。小売企業の業績懸念が広がる。', stock: -0.03, etf: -0.02, reit: -0.01, crypto: -0.01 },
+    { text: '🍳 家庭料理ブーム。食品関連企業の売上が伸びる。', stock: 0.02, etf: 0.01, reit: 0, crypto: 0 },
+    { text: '🍜 日本食ブームが海外で拡大。食品輸出が好調。', stock: 0.03, etf: 0.02, reit: 0, crypto: 0.01 },
 
-  { text: '🌍 世界景気が回復。市場全体が上昇。', stock: 0.05, etf: 0.03, reit: 0.02, crypto: 0.04 },
-  { text: '😐 大きなニュースはなかった。', stock: 0, etf: 0, reit: 0, crypto: 0 }
-]
+    // 🚆 交通・インフラ
+    { text: '🚆 鉄道利用者が過去最高を記録。', stock: 0.02, etf: 0.01, reit: 0.02, crypto: 0 },
+    { text: '🛣️ 高速道路の大規模改修計画が始動。', stock: 0.03, etf: 0.02, reit: 0.02, crypto: 0 },
+    { text: '🚧 老朽化インフラ問題が深刻化。', stock: -0.03, etf: -0.02, reit: -0.03, crypto: 0 },
+    { text: '🏗️ 全国で再開発プロジェクトが相次ぐ。', stock: 0.03, etf: 0.02, reit: 0.05, crypto: 0 },
+
+    // 🏠 住宅・生活設備
+    { text: '🛁 高機能バス設備が人気。住宅関連市場が活況。', stock: 0.01, etf: 0.01, reit: 0.02, crypto: 0 },
+    { text: '🚿 節水設備の普及が急拡大。', stock: 0.01, etf: 0.01, reit: 0.01, crypto: 0 },
+    { text: '🏡 中古住宅リフォーム需要が急増。', stock: 0.02, etf: 0.01, reit: 0.04, crypto: 0 },
+    { text: '📉 住宅価格が急落。不動産市場に警戒感。', stock: -0.02, etf: -0.01, reit: -0.07, crypto: -0.01 },
+
+    // 🌊 自然・地理
+    { text: '🌊 海洋資源開発プロジェクトが始動。', stock: 0.03, etf: 0.02, reit: 0, crypto: 0.01 },
+    { text: '🏞️ 河川整備への大型予算が決定。', stock: 0.02, etf: 0.01, reit: 0.02, crypto: 0 },
+    { text: '⛰️ 山岳観光が大ブーム。地方経済が活性化。', stock: 0.02, etf: 0.01, reit: 0.02, crypto: 0 },
+    { text: '🏜️ 世界的な干ばつで農作物価格が上昇。', stock: -0.03, etf: -0.02, reit: 0, crypto: 0 },
+    { text: '🌴 熱帯地域で感染症が拡大。市場に警戒感。', stock: -0.04, etf: -0.02, reit: -0.01, crypto: -0.02 },
+
+    // 🌧 災害
+    { text: '🌨️ 大雪で交通網が麻痺。物流に大きな影響。', stock: -0.03, etf: -0.02, reit: -0.02, crypto: 0 },
+    { text: '🏔️ 雪崩が発生。観光地に大きな被害。', stock: -0.02, etf: -0.01, reit: -0.03, crypto: 0 },
+    { text: '⛰️ 大規模な地滑りで道路網が寸断。', stock: -0.03, etf: -0.02, reit: -0.04, crypto: 0 },
+    { text: '🌊 河川氾濫で住宅地に被害。', stock: -0.04, etf: -0.02, reit: -0.06, crypto: -0.01 },
+
+    // 🕵️ 治安・安全保障
+    { text: '🕵️ 国際的なスパイ事件が発覚。外交関係が悪化。', stock: -0.04, etf: -0.02, reit: -0.01, crypto: -0.02 },
+    { text: '🚔 大規模な治安対策が実施される。', stock: 0.01, etf: 0.01, reit: 0.01, crypto: 0 },
+    { text: '🪖 防衛関連予算が大幅に増額された。', stock: 0.03, etf: 0.02, reit: 0, crypto: 0.01 },
+    { text: '🇯🇵 自衛隊の災害派遣体制が強化された。', stock: 0.01, etf: 0.01, reit: 0.01, crypto: 0 },
+    { text: '⚠️ 反社会的組織による事件が相次ぎ、治安不安が高まる。', stock: -0.03, etf: -0.02, reit: -0.03, crypto: -0.01 },
+    { text: '🛡️ 地域の防犯活動が強化される。', stock: 0.01, etf: 0, reit: 0.01, crypto: 0 },
+
+    // 🎌 アニメ・文化
+    { text: '🎌 日本アニメが世界的ブーム。関連企業が好調。', stock: 0.03, etf: 0.02, reit: 0, crypto: 0.02 },
+    { text: '🎮 世界的ゲームタイトルが大ヒット。', stock: 0.04, etf: 0.02, reit: 0, crypto: 0.03 },
+    { text: '🎥 動画サイト発の作品が映画化され大ヒット。', stock: 0.02, etf: 0.01, reit: 0, crypto: 0.02 },
+    { text: '🍱 日本の食文化が海外で再評価される。', stock: 0.02, etf: 0.01, reit: 0, crypto: 0 },
+
+    // 🌌 宇宙
+    { text: '🌕 月面基地建設計画が正式決定。', stock: 0.05, etf: 0.03, reit: 0, crypto: 0.03 },
+    { text: '🛰️ 衛星通信網が世界規模で拡大。', stock: 0.04, etf: 0.02, reit: 0, crypto: 0.02 },
+    { text: '🚀 ロケット打ち上げ失敗。宇宙関連株が下落。', stock: -0.03, etf: -0.01, reit: 0, crypto: -0.01 },
+    { text: '☄️ 彗星の地球接近が話題となり宇宙産業への関心が急上昇。', stock: 0.02, etf: 0.01, reit: 0, crypto: 0.02 },
+
+    // 🌡 気候変動
+    { text: '🌡️ 世界平均気温が過去最高を更新。', stock: -0.02, etf: -0.01, reit: -0.02, crypto: 0 },
+    { text: '🔥 猛暑で電力需要が急増。', stock: -0.01, etf: 0, reit: -0.01, crypto: 0 },
+    { text: '🌬️ 異常気象が世界各地で相次ぐ。', stock: -0.04, etf: -0.03, reit: -0.03, crypto: -0.01 },
+    { text: '🌱 気候対策への巨額投資が決定。', stock: 0.03, etf: 0.02, reit: 0.01, crypto: 0.01 },
+       // 🏛️ 政治・選挙
+    { text: '🗳️ 政権交代が決定。新たな経済政策への期待が高まる。', stock: 0.03, etf: 0.02, reit: 0.01, crypto: 0.02 },
+    { text: '🏛️ 大規模な経済対策が発表された。', stock: 0.05, etf: 0.03, reit: 0.03, crypto: 0.03 },
+    { text: '💸 大型減税が決定。個人消費の拡大に期待。', stock: 0.04, etf: 0.02, reit: 0.02, crypto: 0.02 },
+    { text: '📜 法改正への不透明感から市場が下落。', stock: -0.03, etf: -0.02, reit: -0.01, crypto: -0.03 },
+    { text: '🌎 大統領選挙をめぐる混乱が長期化。', stock: -0.05, etf: -0.03, reit: -0.02, crypto: -0.04 },
+    { text: '🚨 国家指導者を狙った暗殺事件が発生。世界市場に緊張が走る。', stock: -0.08, etf: -0.05, reit: -0.03, crypto: -0.07 },
+
+    // 🏦 金融・景気
+    { text: '📈 世界経済が予想を上回る成長を記録。', stock: 0.06, etf: 0.04, reit: 0.03, crypto: 0.05 },
+    { text: '📉 世界的な景気後退への懸念が強まる。', stock: -0.06, etf: -0.04, reit: -0.03, crypto: -0.06 },
+    { text: '🏦 大手銀行の経営不安が表面化。', stock: -0.07, etf: -0.05, reit: -0.04, crypto: -0.05 },
+    { text: '💥 金融危機が発生。世界市場が急落。', stock: -0.15, etf: -0.10, reit: -0.12, crypto: -0.18 },
+    { text: '💹 金融危機からの回復期待で市場が急反発。', stock: 0.10, etf: 0.07, reit: 0.06, crypto: 0.12 },
+    { text: '💴 インフレ率が低下。市場に安心感が広がる。', stock: 0.03, etf: 0.02, reit: 0.03, crypto: 0.03 },
+    { text: '🔥 インフレが急加速。生活費が上昇。', stock: -0.04, etf: -0.03, reit: -0.03, crypto: -0.02 },
+
+    // 🌾 農業・食料
+    { text: '🌾 世界的な小麦豊作。食料価格が下落。', stock: 0.02, etf: 0.01, reit: 0, crypto: 0 },
+    { text: '🍚 米不足が発生。店頭価格が急騰。', stock: -0.02, etf: -0.01, reit: 0, crypto: 0 },
+    { text: '🌱 大豆が歴史的な豊作。食品企業に追い風。', stock: 0.02, etf: 0.01, reit: 0, crypto: 0 },
+    { text: '🚜 スマート農業が急速に普及。生産性が向上。', stock: 0.03, etf: 0.02, reit: 0.01, crypto: 0.01 },
+    { text: '🐟 漁業資源が回復。水産業の業績改善に期待。', stock: 0.02, etf: 0.01, reit: 0, crypto: 0 },
+    { text: '🌊 海水温上昇で漁場が大きく変化。', stock: -0.02, etf: -0.01, reit: 0, crypto: 0 },
+
+    // ⚡ エネルギー
+    { text: '⚡ 電力不足が深刻化。企業活動に影響。', stock: -0.04, etf: -0.02, reit: -0.02, crypto: -0.03 },
+    { text: '☀️ 太陽光発電コストが大幅に低下。', stock: 0.03, etf: 0.02, reit: 0.01, crypto: 0 },
+    { text: '🌊 次世代水力発電技術の実用化に成功。', stock: 0.03, etf: 0.02, reit: 0, crypto: 0.01 },
+    { text: '🔥 火力発電の燃料価格が急騰。', stock: -0.03, etf: -0.02, reit: -0.01, crypto: 0 },
+    { text: '☢️ 原子力発電所でトラブル。電力供給への不安が広がる。', stock: -0.05, etf: -0.03, reit: -0.02, crypto: -0.02 },
+    { text: '🔋 革新的な蓄電池の量産化に成功。', stock: 0.05, etf: 0.03, reit: 0.01, crypto: 0.02 },
+
+    // 🛢️ 石油・資源
+    { text: '🛢️ 主要産油国が原油の大幅減産を決定。', stock: -0.04, etf: -0.02, reit: -0.01, crypto: 0 },
+    { text: '🛢️ 大規模油田が新たに発見された。', stock: 0.03, etf: 0.02, reit: 0.01, crypto: 0 },
+    { text: '⛏️ レアメタル不足でハイテク製品の生産が減少。', stock: -0.04, etf: -0.03, reit: 0, crypto: 0.01 },
+
+    // 🪖 安全保障
+    { text: '🪖 各国が防衛費を大幅に増額。防衛産業が活況。', stock: 0.03, etf: 0.02, reit: -0.01, crypto: 0.01 },
+    { text: '🚢 海上輸送ルートで緊張が高まる。物流費が急騰。', stock: -0.05, etf: -0.03, reit: -0.01, crypto: -0.02 },
+    { text: '🕊️ 各国が和平協定に署名。世界市場が上昇。', stock: 0.07, etf: 0.05, reit: 0.03, crypto: 0.05 },
+    { text: '🚔 犯罪件数が大幅に減少。地域経済に安心感。', stock: 0.01, etf: 0.01, reit: 0.02, crypto: 0 },
+    { text: '🕵️ 機密情報の流出事件が発覚。国際関係が緊張。', stock: -0.04, etf: -0.02, reit: -0.01, crypto: -0.03 },
+
+    // 👶 人口・社会
+    { text: '👶 少子化がさらに加速。将来の国内消費に懸念。', stock: -0.02, etf: -0.01, reit: -0.02, crypto: 0 },
+    { text: '👴 高齢者人口が過去最高を更新。', stock: -0.01, etf: 0, reit: -0.01, crypto: 0 },
+    { text: '🏥 医療技術の進歩で平均寿命がさらに伸びる。', stock: 0.02, etf: 0.01, reit: 0.01, crypto: 0 },
+    { text: '🏘️ 地方への移住ブームが発生。地方不動産に注目が集まる。', stock: 0.01, etf: 0.01, reit: 0.04, crypto: 0 },
+    { text: '🏙️ 都市部への人口集中がさらに進む。', stock: 0.01, etf: 0.01, reit: 0.03, crypto: 0 },
+
+    // ⚽ スポーツ
+    { text: '⚽ サッカー世界大会が開幕。関連消費が拡大。', stock: 0.02, etf: 0.01, reit: 0.01, crypto: 0 },
+    { text: '⚾ 野球の世界大会で日本代表が優勝。', stock: 0.02, etf: 0.01, reit: 0, crypto: 0 },
+    { text: '🏃 世界的スポーツ大会の国内開催が決定。', stock: 0.03, etf: 0.02, reit: 0.04, crypto: 0.01 },
+    { text: '🏟️ 全国で大型スタジアム建設が相次ぐ。', stock: 0.02, etf: 0.01, reit: 0.03, crypto: 0 },
+
+    // 🎭 エンタメ
+    { text: '🎬 日本映画が世界興行収入の記録を更新。', stock: 0.03, etf: 0.02, reit: 0, crypto: 0.01 },
+    { text: '📺 動画配信市場が急成長。テレビ離れが加速。', stock: 0.03, etf: 0.02, reit: 0, crypto: 0.02 },
+    { text: '🎨 日本のアニメ市場が過去最大規模に成長。', stock: 0.04, etf: 0.02, reit: 0, crypto: 0.02 },
+    { text: '🎮 eスポーツ市場が急拡大。', stock: 0.03, etf: 0.02, reit: 0, crypto: 0.03 },
+
+    // 💣 超大型イベント（低確率で出ると面白い）
+    { text: '🌐 世界同時株高。投資家心理が一気に改善。', stock: 0.12, etf: 0.08, reit: 0.05, crypto: 0.10 },
+    { text: '💥 世界的な市場暴落が発生。金融市場が混乱。', stock: -0.18, etf: -0.12, reit: -0.10, crypto: -0.20 },
+    { text: '🚀 革命的な新技術が実用化。世界経済への期待が急上昇。', stock: 0.10, etf: 0.06, reit: 0.02, crypto: 0.08 },
+    { text: '🌍 世界経済が長期好景気に突入。', stock: 0.08, etf: 0.05, reit: 0.05, crypto: 0.07 },
+    // 何もない月
+    { text: '📰 大きなニュースはなかった。', stock: 0, etf: 0, reit: 0, crypto: 0 }
+ ]
 
   return newsList[Math.floor(Math.random() * newsList.length)]
 }
