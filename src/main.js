@@ -16,10 +16,14 @@ let bgmOn = true
 function toggleBgm() {
   bgmOn = !bgmOn
 
+  const btn = document.querySelector('#bgmBtn')
+
   if (bgmOn) {
     bgm.play().catch(() => {})
+    if (btn) btn.innerHTML = '🔊<br>BGM'
   } else {
     bgm.pause()
+    if (btn) btn.innerHTML = '🔇<br>BGM'
   }
 }
 
