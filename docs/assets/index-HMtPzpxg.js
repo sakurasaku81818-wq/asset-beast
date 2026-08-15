@@ -227,10 +227,10 @@
       <button id="nextMonth">寝る / 次の月へ</button>
       <button id="backTown">街へ戻る</button>
     </div>
-  `,document.querySelector(`#nextMonth`).onclick=M,document.querySelector(`#backTown`).onclick=y}function M(){let e=o.job.income*o.region.salaryRate,t=o.house.cost*o.region.costRate+7e4,n=o.stock*.002+o.etf*.0015+o.reit*.003;if(o.propertyValue>0&&o.house){if(o.house.name===`戸建て`&&(o.propertyValue*=.997),o.house.name===`マンション`){let e=.998+Math.random()*.007;o.propertyValue*=e}if(o.house.name===`アパート`){let e=.995+Math.random()*.013;o.propertyValue*=e}o.propertyValue=Math.floor(o.propertyValue)}let r=F(),i=I(),a=L();if(o.cash+=e+n,o.cash-=t,o.stock*=1+P(-.05,.08)+r.stock,o.etf*=1+P(-.03,.05)+r.etf,o.reit*=1+P(-.02,.04)+r.reit,o.crypto*=1+P(-.15,.2)+r.crypto,o.cash+=i.cash,o.job.income+=i.income,o.month+=1,o.month>12&&(o.month=1,o.age+=1),o.news=r.text,o.log=`
+  `,document.querySelector(`#nextMonth`).onclick=M,document.querySelector(`#backTown`).onclick=y}function M(){let e=o.job.income*o.region.salaryRate,t=o.house.cost*o.region.costRate+7e4,n=o.stock*.002+o.etf*.0015+o.reit*.003,r=.92+Math.random()*.16,i=.95+Math.random()*.1,a=.96+Math.random()*.08,s=.85+Math.random()*.3;if(o.stock*=r,o.etf*=i,o.reit*=a,o.crypto*=s,o.stock=Math.round(o.stock),o.etf=Math.round(o.etf),o.reit=Math.round(o.reit),o.crypto=Math.round(o.crypto),o.log=`📈 市場変動：株 ${((r-1)*100).toFixed(1)}% / ETF ${((i-1)*100).toFixed(1)}% / REIT ${((a-1)*100).toFixed(1)}% / 仮想通貨 ${((s-1)*100).toFixed(1)}%`,o.propertyValue>0&&o.house){if(o.house.name===`戸建て`&&(o.propertyValue*=.997),o.house.name===`マンション`){let e=.998+Math.random()*.007;o.propertyValue*=e}if(o.house.name===`アパート`){let e=.995+Math.random()*.013;o.propertyValue*=e}o.propertyValue=Math.floor(o.propertyValue)}let c=F(),l=I(),u=L();if(o.cash+=e+n,o.cash-=t,o.stock*=1+P(-.05,.08)+c.stock,o.etf*=1+P(-.03,.05)+c.etf,o.reit*=1+P(-.02,.04)+c.reit,o.crypto*=1+P(-.15,.2)+c.crypto,o.cash+=l.cash,o.job.income+=l.income,o.month+=1,o.month>12&&(o.month=1,o.age+=1),o.news=c.text,o.log=`
 💰 給料 ${d(e)} / 生活費 ${d(t)} / 配当 ${d(n)}<br>
-💬 格言：${a}<br>
-📰 ${i.text}
+💬 格言：${u}<br>
+📰 ${l.text}
 `,o.age>=50){R();return}y()}window.nextMonth=M;function N(){let t=e[Math.floor(Math.random()*e.length)];a.innerHTML=`
     <div class="screen">
       <h2>🎓 FPクイズ</h2>

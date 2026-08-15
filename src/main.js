@@ -691,8 +691,30 @@ function nextMonth() {
     player.stock * 0.002 +
     player.etf * 0.0015 +
     player.reit * 0.003
-    
-// 不動産価格の変動
+
+  // 投資資産の月次価格変動
+  const stockRate = 0.92 + Math.random() * 0.16   // -8% ～ +8%
+  const etfRate = 0.95 + Math.random() * 0.10     // -5% ～ +5%
+  const reitRate = 0.96 + Math.random() * 0.08    // -4% ～ +4%
+  const cryptoRate = 0.85 + Math.random() * 0.30  // -15% ～ +15%
+
+  player.stock *= stockRate
+  player.etf *= etfRate
+  player.reit *= reitRate
+  player.crypto *= cryptoRate
+
+  player.stock = Math.round(player.stock)
+  player.etf = Math.round(player.etf)
+  player.reit = Math.round(player.reit)
+  player.crypto = Math.round(player.crypto)
+  const stockPct = ((stockRate - 1) * 100).toFixed(1)
+  const etfPct = ((etfRate - 1) * 100).toFixed(1)
+  const reitPct = ((reitRate - 1) * 100).toFixed(1)
+  const cryptoPct = ((cryptoRate - 1) * 100).toFixed(1)
+
+  player.log =
+    `📈 市場変動：株 ${stockPct}% / ETF ${etfPct}% / REIT ${reitPct}% / 仮想通貨 ${cryptoPct}%`
+  // 不動産価格の変動
 if (player.propertyValue > 0 && player.house) {
 
   if (player.house.name === '戸建て') {
