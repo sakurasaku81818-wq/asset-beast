@@ -576,3 +576,12 @@ button:disabled {
   background-position: center;
   background-repeat: no-repeat;
 }
+/* スマホ：ニュース・コメント欄を広げる */
+@media (max-width: 600px) {
+  .message {
+    min-height: 145px;
+    max-height: none;
+    overflow: visible;
+    line-height: 1.35;
+  }
+}
