@@ -761,7 +761,8 @@ if (player.propertyValue > 0 && player.house) {
 
   player.news = news.text
 
-  player.log = `
+player.log = `
+📈 市場変動：株 ${stockPct}% / ETF ${etfPct}% / REIT ${reitPct}% / 仮想通貨 ${cryptoPct}%<br>
 💰 給料 ${yen(salary)} / 生活費 ${yen(livingCost)} / 配当 ${yen(dividend)}<br>
 💬 格言：${quote}<br>
 📰 ${lifeEvent.text}
