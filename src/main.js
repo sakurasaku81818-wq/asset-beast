@@ -640,7 +640,7 @@ function renderWork() {
 
       <p><strong>${player.job.name}</strong>として働いている。</p>
       <p>月収：${yen(player.job.income * player.region.salaryRate)}</p>
-
+      <p>⭐ 仕事評価：${player.workScore} / 5</p>
       <hr>
 
       <h3>今日も仕事をしよう！</h3>

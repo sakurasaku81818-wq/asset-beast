@@ -202,7 +202,7 @@ ${o.log}<br>
 
       <p><strong>${o.job.name}</strong>として働いている。</p>
       <p>月収：${d(o.job.income*o.region.salaryRate)}</p>
-
+      <p>⭐ 仕事評価：${o.workScore} / 5</p>
       <hr>
 
       <h3>今日も仕事をしよう！</h3>
