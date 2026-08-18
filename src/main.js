@@ -636,15 +636,76 @@ function renderWork() {
   app.innerHTML = `
     <div class="screen">
       <h2>🏢 仕事</h2>
-      <p>${player.job.name}として働いている。</p>
+
+      <p><strong>${player.job.name}</strong>として働いている。</p>
       <p>月収：${yen(player.job.income * player.region.salaryRate)}</p>
+
+      <hr>
+
+      <h3>今日も仕事をしよう！</h3>
+      <p>仕事を成功させるとボーナスを獲得できます。</p>
+
+      <button id="startWork">💼 仕事をする</button>
       <button id="backTown">街へ戻る</button>
     </div>
   `
 
+  document.querySelector('#startWork').onclick = startWorkGame
   document.querySelector('#backTown').onclick = renderTown
 }
+function startWorkGame() {
+  app.innerHTML = `
+    <div class="screen">
+      <h2>💼 お仕事チャレンジ</h2>
 
+      <p>今日の仕事が始まった！</p>
+      <p><strong>${player.job.name}</strong>として成果を出そう。</p>
+
+      <button id="workChallenge">🔥 仕事に挑戦する</button>
+      <button id="backWork">仕事場へ戻る</button>
+    </div>
+  `
+
+  document.querySelector('#workChallenge').onclick = () => {
+  if (player.job.name === '会社員') {
+    renderOfficeWorkerGame()
+  } else {
+    alert(`${player.job.name}の仕事ゲームは準備中！`)
+  }
+}
+
+  document.querySelector('#backWork').onclick = renderWork
+}
+function renderOfficeWorkerGame() {
+  app.innerHTML = `
+    <div class="screen">
+      <h2>🧑‍💼 会社員チャレンジ</h2>
+
+      <p>上司から急ぎの仕事を頼まれた！</p>
+      <p>あなたならどうする？</p>
+
+      <button id="workA">A：すぐに取り掛かる</button><br>
+      <button id="workB">B：同僚に丸投げする</button><br>
+      <button id="workC">C：明日に回す</button><br>
+
+      <button id="backWork">仕事場へ戻る</button>
+    </div>
+  `
+
+  document.querySelector('#workA').onclick = () => {
+    alert('成功！上司からの評価が上がった！')
+  }
+
+  document.querySelector('#workB').onclick = () => {
+    alert('失敗！同僚からの信頼が下がった…。')
+  }
+
+  document.querySelector('#workC').onclick = () => {
+    alert('失敗！締め切りに間に合わなかった…。')
+  }
+
+  document.querySelector('#backWork').onclick = renderWork
+}
 function renderSchool() {
   app.innerHTML = `
     <div class="screen">
