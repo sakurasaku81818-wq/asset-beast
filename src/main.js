@@ -46,6 +46,7 @@ let player = {
   crypto: 0,
   propertyValue: 0,
   propertyType: null,
+  workScore: 0,
   log: 'AssetBeastの人生が始まった。',
   news: '平和な1日だった。'
 }
@@ -693,8 +694,17 @@ function renderOfficeWorkerGame() {
   `
 
   document.querySelector('#workA').onclick = () => {
-    alert('成功！上司からの評価が上がった！')
-  }
+  player.cash += 10000
+  player.workScore += 1
+
+  alert(`成功！
+
+ 上司からの評価が上がった！
+ 💰 ボーナス +10,000円
+ ⭐ 仕事評価 ${player.workScore}`)
+
+  renderWork()
+}
 
   document.querySelector('#workB').onclick = () => {
     alert('失敗！同僚からの信頼が下がった…。')
