@@ -55,9 +55,10 @@ let currentPlace = null
 
 const jobs = [
   { name: '会社員', income: 280000 },
-  { name: '公務員', income: 260000 },
-  { name: 'エンジニア', income: 320000 },
-  { name: 'フリーター', income: 180000 }
+{ name: '公務員', income: 260000 },
+{ name: 'エンジニア', income: 320000 },
+{ name: 'フリーター', income: 180000 },
+{ name: '自営業', income: 220000 }
 ]
 
 const regions = [
@@ -145,14 +146,67 @@ function renderJobSelect() {
     </div>
   `
 
-  document.querySelectorAll('[data-i]').forEach(btn => {
+ document.querySelectorAll('[data-i]').forEach(btn => {
+  btn.onclick = () => {
+    player.job = jobs[btn.dataset.i]
+
+    if (player.job.name === '自営業') {
+      renderBusinessTypeSelect()
+    } else {
+      renderRegionSelect()
+    }
+  }
+})
+}
+function renderBusinessTypeSelect() {
+  const businessTypes = [
+    { name: '飲食店', icon: '🍜', sales: 300000, expenses: 100000 },
+    { name: 'ネットショップ', icon: '📦', sales: 250000, expenses: 60000 },
+    { name: '個人サービス', icon: '🛠️', sales: 230000, expenses: 50000 },
+    { name: '小売店', icon: '🏪', sales: 280000, expenses: 90000 }
+  ]
+
+  app.innerHTML = `
+    <div class="screen">
+      <h2>🏢 自営業の業種を選ぶ</h2>
+      <p>どんな事業を始める？</p>
+
+      <div class="card-list">
+        ${businessTypes.map((business, i) => `
+          <div class="card">
+            <h3>${business.icon} ${business.name}</h3>
+            <p>初期月商：${yen(business.sales)}</p>
+            <p>毎月経費：${yen(business.expenses)}</p>
+            <p>初期利益：${yen(business.sales - business.expenses)}</p>
+            <button data-business="${i}">この事業を始める</button>
+          </div>
+        `).join('')}
+      </div>
+
+      <button id="backJob">職業を選び直す</button>
+    </div>
+  `
+
+  document.querySelectorAll('[data-business]').forEach(btn => {
     btn.onclick = () => {
-      player.job = jobs[btn.dataset.i]
+      const business = businessTypes[btn.dataset.business]
+
+      player.business = {
+        type: business.name,
+        sales: business.sales,
+        expenses: business.expenses,
+        reputation: 1,
+        employees: 0
+      }
+
+      player.job.income = business.sales - business.expenses
+
       renderRegionSelect()
     }
   })
-}
 
+  document.querySelector('#backJob').onclick = renderJobSelect
+}
 function renderRegionSelect() {
   app.innerHTML = `
     <div class="screen">
@@ -668,11 +722,19 @@ function startWorkGame() {
   `
 
   document.querySelector('#workChallenge').onclick = () => {
-  if (player.job.name === '会社員') {
-    renderOfficeWorkerGame()
-  } else {
-    alert(`${player.job.name}の仕事ゲームは準備中！`)
-  }
+if (player.job.name === '会社員') {
+  renderOfficeWorkerGame()
+} else if (player.job.name === '公務員') {
+  renderPublicWorkerGame()
+} else if (player.job.name === 'エンジニア') {
+  renderEngineerGame()
+} else if (player.job.name === 'フリーター') {
+  renderFreeterGame()
+} else if (player.job.name === '自営業') {
+  renderSelfEmployedGame()
+} else {
+  alert(`${player.job.name}の仕事ゲームは準備中！`)
+}
 }
 
   document.querySelector('#backWork').onclick = renderWork
@@ -781,6 +843,349 @@ function renderOfficeWorkerGame() {
   document.querySelector('#workA').onclick = () => answerWork(shuffledChoices[0])
   document.querySelector('#workB').onclick = () => answerWork(shuffledChoices[1])
   document.querySelector('#workC').onclick = () => answerWork(shuffledChoices[2])
+
+  document.querySelector('#backWork').onclick = renderWork
+}
+function renderPublicWorkerGame() {
+  const questions = [
+    {
+      question: '住民から手続きについて質問された！',
+      choices: [
+        '制度を確認して丁寧に案内する',
+        '分からないので適当に答える',
+        '他の窓口へ行くように伝える'
+      ],
+      correct: 0
+    },
+    {
+      question: '書類に記入ミスを発見した！',
+      choices: [
+        'そのまま処理する',
+        '内容を確認して修正をお願いする',
+        '書類を捨てる'
+      ],
+      correct: 1
+    },
+    {
+      question: '窓口が混雑して住民が困っている！',
+      choices: [
+        '自分のペースだけを優先する',
+        '休憩に行く',
+        '状況を見て周囲と協力して対応する'
+      ],
+      correct: 2
+    },
+    {
+      question: '個人情報が書かれた書類を見つけた！',
+      choices: [
+        '適切な場所に保管して報告する',
+        '机の上に置いておく',
+        '写真を撮る'
+      ],
+      correct: 0
+    },
+    {
+      question: '新しい制度が始まることになった！',
+      choices: [
+        '今まで通りの方法だけで仕事する',
+        '内容を確認して必要な知識を身につける',
+        '誰かが教えてくれるまで何もしない'
+      ],
+      correct: 1
+    }
+  ]
+
+  const q = questions[Math.floor(Math.random() * questions.length)]
+
+  const shuffledChoices = q.choices.map((text, index) => ({
+    text,
+    correct: index === q.correct
+  }))
+
+  shuffledChoices.sort(() => Math.random() - 0.5)
+
+  app.innerHTML = `
+    <div class="screen">
+      <h2>🏛️ 公務員チャレンジ</h2>
+
+      <p>${q.question}</p>
+      <p>あなたならどうする？</p>
+
+      <button id="workA">A：${shuffledChoices[0].text}</button><br>
+      <button id="workB">B：${shuffledChoices[1].text}</button><br>
+      <button id="workC">C：${shuffledChoices[2].text}</button><br>
+
+      <button id="backWork">仕事場へ戻る</button>
+    </div>
+  `
+
+  function answerPublicWork(choice) {
+    if (choice.correct) {
+      player.cash += 10000
+      player.workScore += 1
+
+      if (player.workScore >= 5) {
+        player.job.income += 20000
+        player.workScore = 0
+
+        alert(`🎉 昇給！
+
+🏛️ 公務員として高い評価を獲得した！
+💰 ボーナス +10,000円
+📈 月収 +20,000円
+💼 新しい月収 ${yen(player.job.income * player.region.salaryRate)}`)
+      } else {
+        alert(`✅ 適切な対応！
+
+💰 ボーナス +10,000円
+⭐ 仕事評価 ${player.workScore} / 5`)
+      }
+    } else {
+      alert('😣 今回は評価を獲得できなかった...')
+    }
+
+    renderWork()
+  }
+
+  document.querySelector('#workA').onclick = () => answerPublicWork(shuffledChoices[0])
+  document.querySelector('#workB').onclick = () => answerPublicWork(shuffledChoices[1])
+  document.querySelector('#workC').onclick = () => answerPublicWork(shuffledChoices[2])
+
+  document.querySelector('#backWork').onclick = renderWork
+}
+function renderEngineerGame() {
+  const questions = [
+    {
+      question: 'リリース直前に重大なバグを発見した！',
+      choices: [
+        '原因を確認してチームに報告する',
+        '気づかなかったことにする',
+        'とりあえずリリースする'
+      ],
+      correct: 0
+    },
+    {
+      question: 'プログラムが突然動かなくなった！',
+      choices: [
+        '全部最初から作り直す',
+        'エラーログを確認して原因を調べる',
+        'パソコンを閉じる'
+      ],
+      correct: 1
+    },
+    {
+      question: '納期が迫っているが作業が遅れている！',
+      choices: [
+        '進捗と問題点をチームに共有する',
+        '黙って徹夜する',
+        '完成したことにする'
+      ],
+      correct: 0
+    },
+    {
+      question: '知らない技術が必要になった！',
+      choices: [
+        'できないと断る',
+        '適当にコードを書く',
+        '調べながら小さく試して学ぶ'
+      ],
+      correct: 2
+    },
+    {
+      question: '同僚からコードレビューをお願いされた！',
+      choices: [
+        '動けばいいのでOKを出す',
+        '目的を理解して改善点を伝える',
+        '全部自分の書き方に直させる'
+      ],
+      correct: 1
+    }
+  ]
+
+  const q = questions[Math.floor(Math.random() * questions.length)]
+
+  const shuffledChoices = q.choices.map((text, index) => ({
+    text,
+    correct: index === q.correct
+  }))
+
+  shuffledChoices.sort(() => Math.random() - 0.5)
+
+  app.innerHTML = `
+    <div class="screen">
+      <h2>💻 エンジニアチャレンジ</h2>
+
+      <p>${q.question}</p>
+      <p>あなたならどうする？</p>
+
+      <button id="workA">A：${shuffledChoices[0].text}</button><br>
+      <button id="workB">B：${shuffledChoices[1].text}</button><br>
+      <button id="workC">C：${shuffledChoices[2].text}</button><br>
+
+      <button id="backWork">仕事場へ戻る</button>
+    </div>
+  `
+
+  function answerEngineerWork(choice) {
+    if (choice.correct) {
+      player.cash += 10000
+      player.workScore += 1
+
+      if (player.workScore >= 5) {
+        player.job.income += 20000
+        player.workScore = 0
+
+        alert(`🎉 スキルアップ！
+
+💻 エンジニアとして高い評価を獲得した！
+💰 ボーナス +10,000円
+📈 月収 +20,000円
+💼 新しい月収 ${yen(player.job.income * player.region.salaryRate)}`)
+      } else {
+        alert(`✅ GOOD JOB！
+
+💰 ボーナス +10,000円
+⭐ 仕事評価 ${player.workScore} / 5`)
+      }
+    } else {
+      alert('🐛 バグ発生！今回は評価を獲得できなかった...')
+    }
+
+    renderWork()
+  }
+
+  document.querySelector('#workA').onclick = () => answerEngineerWork(shuffledChoices[0])
+  document.querySelector('#workB').onclick = () => answerEngineerWork(shuffledChoices[1])
+  document.querySelector('#workC').onclick = () => answerEngineerWork(shuffledChoices[2])
+
+  document.querySelector('#backWork').onclick = renderWork
+}
+function renderFreeterGame() {
+  const jobs = [
+    {
+      place: '🏪 コンビニ',
+      question: 'レジが混雑して長い列ができた！',
+      choices: [
+        '落ち着いて素早くレジ対応する',
+        '気にせず品出しを続ける',
+        'バックヤードに逃げる'
+      ],
+      correct: 0,
+      pay: 7000
+    },
+    {
+      place: '💊 ドラッグストア',
+      question: 'お客さんから商品の場所を聞かれた！',
+      choices: [
+        '分からないので適当に教える',
+        '売り場を確認して案内する',
+        '他のお客さんに聞いてもらう'
+      ],
+      correct: 1,
+      pay: 7500
+    },
+    {
+      place: '📦 日雇い・引越し',
+      question: '重い荷物を運ぶことになった！',
+      choices: [
+        '無理して一人で持つ',
+        '持ち方を確認して必要なら二人で運ぶ',
+        '見なかったことにする'
+      ],
+      correct: 1,
+      pay: 10000
+    },
+    {
+      place: '🍔 飲食店',
+      question: 'ランチタイムで注文が一気に入った！',
+      choices: [
+        '優先順位を確認して仲間と連携する',
+        '自分の担当だけゆっくり進める',
+        '休憩に入る'
+      ],
+      correct: 0,
+      pay: 8000
+    },
+    {
+      place: '🏭 倉庫',
+      question: '出荷直前の商品に間違いを発見した！',
+      choices: [
+        '時間がないのでそのまま出荷する',
+        '誰にも言わず棚に戻す',
+        '出荷を止めて確認・報告する'
+      ],
+      correct: 2,
+      pay: 9000
+    }
+  ]
+
+  const job = jobs[Math.floor(Math.random() * jobs.length)]
+
+  const shuffledChoices = job.choices.map((text, index) => ({
+    text,
+    correct: index === job.correct
+  }))
+
+  shuffledChoices.sort(() => Math.random() - 0.5)
+
+  app.innerHTML = `
+    <div class="screen">
+      <h2>🧢 フリーターチャレンジ</h2>
+
+      <h3>今日のバイト先：${job.place}</h3>
+      <p>${job.question}</p>
+      <p>あなたならどうする？</p>
+
+      <button id="workA">A：${shuffledChoices[0].text}</button><br>
+      <button id="workB">B：${shuffledChoices[1].text}</button><br>
+      <button id="workC">C：${shuffledChoices[2].text}</button><br>
+
+      <button id="backWork">仕事場へ戻る</button>
+    </div>
+  `
+
+  function answerFreeterWork(choice) {
+    if (choice.correct) {
+      player.cash += job.pay
+      player.workScore += 1
+
+      if (player.workScore >= 3) {
+        player.cash += 15000
+        player.workScore = 0
+
+        alert(`🎉 バイト評価UP！
+
+${job.place}で大活躍！
+💰 日給 +${yen(job.pay)}
+🔥 3回成功ボーナス +15,000円`)
+      } else {
+        alert(`✅ バイト成功！
+
+${job.place}
+💰 日給 +${yen(job.pay)}
+⭐ バイト評価 ${player.workScore} / 3`)
+      }
+    } else {
+      player.cash += 3000
+
+      alert(`😣 仕事でミスしてしまった…
+
+${job.place}
+💰 最低日給 +3,000円
+⭐ 評価は上がらなかった`)
+    }
+
+    renderWork()
+  }
+
+  document.querySelector('#workA').onclick = () =>
+    answerFreeterWork(shuffledChoices[0])
+
+  document.querySelector('#workB').onclick = () =>
+    answerFreeterWork(shuffledChoices[1])
+
+  document.querySelector('#workC').onclick = () =>
+    answerFreeterWork(shuffledChoices[2])
 
   document.querySelector('#backWork').onclick = renderWork
 }
