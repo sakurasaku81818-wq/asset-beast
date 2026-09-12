@@ -1189,6 +1189,266 @@ ${job.place}
 
   document.querySelector('#backWork').onclick = renderWork
 }
+function renderSelfEmployedGame() {
+  const business = player.business
+
+  if (!business) {
+    alert('事業データがありません')
+    renderWork()
+    return
+  }
+
+  const profit = business.sales - business.expenses
+
+  const stars =
+    '★'.repeat(Math.min(business.reputation, 5)) +
+    '☆'.repeat(Math.max(5 - business.reputation, 0))
+
+  app.innerHTML = `
+    <div class="screen">
+      <h2>🏢 ${business.type} 経営</h2>
+
+      <h3>📊 現在の経営状況</h3>
+
+      <p>💰 月商：${yen(business.sales)}</p>
+      <p>💸 毎月経費：${yen(business.expenses)}</p>
+      <p>📈 月間利益：${yen(profit)}</p>
+      <p>⭐ 評判：${stars}</p>
+      <p>👥 従業員：${business.employees}人</p>
+
+      <hr>
+
+      <h3>今月の経営判断</h3>
+
+      <button id="businessAd">📣 広告を出す</button><br>
+      <button id="businessEquipment">🔧 設備投資</button><br>
+      <button id="businessProduct">🆕 新商品・サービス開発</button><br>
+      <button id="businessPrice">💴 値上げする</button><br>
+      <button id="businessHire">👥 従業員を雇う</button><br>
+      <button id="businessNormal">🏪 通常営業</button><br>
+
+      <button id="backWork">仕事場へ戻る</button>
+    </div>
+  `
+
+  document.querySelector('#businessAd').onclick = () => {
+  const cost = 30000
+
+  if (player.cash < cost) {
+    alert('❌ 現金が足りません。広告には30,000円必要です。')
+    return
+  }
+
+  player.cash -= cost
+
+  let minRate = 1.08
+  let maxRate = 1.18
+
+  if (business.type === 'ネットショップ') {
+    minRate = 1.12
+    maxRate = 1.22
+  }
+
+  const rate = minRate + Math.random() * (maxRate - minRate)
+  const oldSales = business.sales
+
+  business.sales = Math.round(business.sales * rate)
+
+  if (Math.random() < 0.25 && business.reputation < 5) {
+    business.reputation += 1
+  }
+
+  player.job.income = business.sales - business.expenses
+
+  alert(`📣 広告キャンペーン成功！
+
+広告費：-30,000円
+月商：${yen(oldSales)} → ${yen(business.sales)}
+評判：${business.reputation} / 5`)
+
+  renderSelfEmployedGame()
+}
+
+
+document.querySelector('#businessEquipment').onclick = () => {
+  const cost = 80000
+
+  if (player.cash < cost) {
+    alert('❌ 現金が足りません。設備投資には80,000円必要です。')
+    return
+  }
+
+  player.cash -= cost
+
+  const oldSales = business.sales
+  const oldExpenses = business.expenses
+
+  let salesRate = 1.08
+  let expenseRate = 0.97
+
+  if (business.type === '飲食店' || business.type === '小売店') {
+    salesRate = 1.12
+    expenseRate = 0.95
+  }
+
+  business.sales = Math.round(business.sales * salesRate)
+  business.expenses = Math.round(business.expenses * expenseRate)
+
+  player.job.income = business.sales - business.expenses
+
+  alert(`🔧 設備投資を実行！
+
+投資額：-80,000円
+月商：${yen(oldSales)} → ${yen(business.sales)}
+経費：${yen(oldExpenses)} → ${yen(business.expenses)}`)
+
+  renderSelfEmployedGame()
+}
+
+
+document.querySelector('#businessProduct').onclick = () => {
+  const cost = 100000
+
+  if (player.cash < cost) {
+    alert('❌ 現金が足りません。開発には100,000円必要です。')
+    return
+  }
+
+  player.cash -= cost
+
+  const successRate =
+    business.type === '個人サービス' ? 0.75 : 0.6
+
+  if (Math.random() < successRate) {
+    const oldSales = business.sales
+    const growth = 1.20 + Math.random() * 0.15
+
+    business.sales = Math.round(business.sales * growth)
+
+    if (business.reputation < 5) {
+      business.reputation += 1
+    }
+
+    player.job.income = business.sales - business.expenses
+
+    alert(`🆕 新商品・サービス開発成功！
+
+開発費：-100,000円
+月商：${yen(oldSales)} → ${yen(business.sales)}
+評判：${business.reputation} / 5`)
+  } else {
+    alert(`😣 開発失敗…
+
+開発費100,000円を失った。
+今回は売上への効果なし。`)
+  }
+
+  renderSelfEmployedGame()
+}
+
+
+document.querySelector('#businessPrice').onclick = () => {
+  const oldSales = business.sales
+
+  if (Math.random() < 0.65) {
+    business.sales = Math.round(
+      business.sales * (1.05 + Math.random() * 0.07)
+    )
+
+    player.job.income = business.sales - business.expenses
+
+    alert(`💴 値上げ成功！
+
+価格改定が受け入れられた。
+月商：${yen(oldSales)} → ${yen(business.sales)}`)
+  } else {
+    business.sales = Math.round(business.sales * 0.92)
+
+    if (business.reputation > 1) {
+      business.reputation -= 1
+    }
+
+    player.job.income = business.sales - business.expenses
+
+    alert(`📉 値上げで客離れ！
+
+月商：${yen(oldSales)} → ${yen(business.sales)}
+評判：${business.reputation} / 5`)
+  }
+
+  renderSelfEmployedGame()
+}
+
+
+document.querySelector('#businessHire').onclick = () => {
+  const hiringCost = 50000
+
+  if (player.cash < hiringCost) {
+    alert('❌ 現金が足りません。採用には50,000円必要です。')
+    return
+  }
+
+  if (business.employees >= 5) {
+    alert('👥 現在は5人まで雇えます。')
+    return
+  }
+
+  player.cash -= hiringCost
+
+  const oldSales = business.sales
+  const oldExpenses = business.expenses
+
+  business.employees += 1
+  business.expenses += 40000
+
+  let salesRate = 1.12
+
+  if (business.type === '小売店') {
+    salesRate = 1.18
+  } else if (business.type === '飲食店') {
+    salesRate = 1.16
+  }
+
+  business.sales = Math.round(business.sales * salesRate)
+
+  player.job.income = business.sales - business.expenses
+
+  alert(`👥 従業員を1人採用！
+
+採用費：-50,000円
+従業員：${business.employees}人
+月商：${yen(oldSales)} → ${yen(business.sales)}
+経費：${yen(oldExpenses)} → ${yen(business.expenses)}`)
+
+  renderSelfEmployedGame()
+}
+
+
+document.querySelector('#businessNormal').onclick = () => {
+  const oldSales = business.sales
+
+  const rate = 0.97 + Math.random() * 0.06
+  business.sales = Math.round(business.sales * rate)
+
+  if (Math.random() < 0.15 && business.reputation < 5) {
+    business.reputation += 1
+  }
+
+  player.job.income = business.sales - business.expenses
+
+  const change = business.sales - oldSales
+
+  alert(`🏪 通常営業終了！
+
+月商：${yen(oldSales)} → ${yen(business.sales)}
+変化：${change >= 0 ? '+' : ''}${yen(change)}
+評判：${business.reputation} / 5`)
+
+  renderSelfEmployedGame()
+}
+
+  document.querySelector('#backWork').onclick = renderWork
+}
 function renderSchool() {
   app.innerHTML = `
     <div class="screen">
@@ -1229,6 +1489,167 @@ function renderHome() {
 }
 
 function nextMonth() {
+  const economyEvents = [
+  {
+    text: '📈 景気回復！個人消費が伸びている',
+
+    businessEffects: {
+      '飲食店': {
+        salesRate: 1.15,
+        expenseRate: 1.03
+      },
+
+      'ネットショップ': {
+        salesRate: 1.12,
+        expenseRate: 1.02
+      },
+
+      '個人サービス': {
+        salesRate: 1.08,
+        expenseRate: 1.01
+      },
+
+      '小売店': {
+        salesRate: 1.13,
+        expenseRate: 1.03
+      }
+    }
+  },
+
+  {
+    text: '🔥 物価上昇！原材料価格が高騰',
+
+    businessEffects: {
+      '飲食店': {
+        salesRate: 1.02,
+        expenseRate: 1.15
+      },
+
+      'ネットショップ': {
+        salesRate: 1.00,
+        expenseRate: 1.08
+      },
+
+      '個人サービス': {
+        salesRate: 1.00,
+        expenseRate: 1.03
+      },
+
+      '小売店': {
+        salesRate: 1.01,
+        expenseRate: 1.12
+      }
+    }
+  },
+
+  {
+    text: '📉 景気後退。消費者の節約志向が強まる',
+
+    businessEffects: {
+      '飲食店': {
+        salesRate: 0.88,
+        expenseRate: 0.99
+      },
+
+      'ネットショップ': {
+        salesRate: 0.90,
+        expenseRate: 1.00
+      },
+
+      '個人サービス': {
+        salesRate: 0.94,
+        expenseRate: 1.00
+      },
+
+      '小売店': {
+        salesRate: 0.89,
+        expenseRate: 0.99
+      }
+    }
+  },
+
+  {
+    text: '💴 円安が進行。輸入コストが上昇',
+
+    businessEffects: {
+      '飲食店': {
+        salesRate: 1.00,
+        expenseRate: 1.10
+      },
+
+      'ネットショップ': {
+        salesRate: 1.05,
+        expenseRate: 1.12
+      },
+
+      '個人サービス': {
+        salesRate: 1.00,
+        expenseRate: 1.02
+      },
+
+      '小売店': {
+        salesRate: 1.02,
+        expenseRate: 1.08
+      }
+    }
+  },
+
+  {
+    text: '😌 経済は安定。大きな変化なし',
+
+    businessEffects: {
+      '飲食店': {
+        salesRate: 1.00,
+        expenseRate: 1.00
+      },
+
+      'ネットショップ': {
+        salesRate: 1.00,
+        expenseRate: 1.00
+      },
+
+      '個人サービス': {
+        salesRate: 1.00,
+        expenseRate: 1.00
+      },
+
+      '小売店': {
+        salesRate: 1.00,
+        expenseRate: 1.00
+      }
+    }
+  }
+]
+const economy =
+  economyEvents[Math.floor(Math.random() * economyEvents.length)]
+
+if (player.job.name === '自営業' && player.business) {
+  const oldSales = player.business.sales
+  const oldExpenses = player.business.expenses
+
+  const effect = economy.businessEffects?.[player.business.type]
+
+  const salesRate =
+    effect?.salesRate ??
+    economy.salesRate ??
+    1
+
+  const expenseRate =
+    effect?.expenseRate ??
+    economy.expenseRate ??
+    1
+
+  player.business.sales = Math.round(
+    oldSales * salesRate
+  )
+
+  player.business.expenses = Math.round(
+    oldExpenses * expenseRate
+  )
+
+  player.job.income =
+    player.business.sales - player.business.expenses
+}
   const salary = player.job.income * player.region.salaryRate
   const livingCost = player.house.cost * player.region.costRate + 70000
 
@@ -1304,7 +1725,17 @@ if (player.propertyValue > 0 && player.house) {
     player.age += 1
   }
 
-  player.news = news.text
+  if (player.job.name === '自営業' && player.business) {
+  player.news = `
+${economy.text}<br>
+🏢 ${player.business.type}<br>
+💰 月商：${yen(player.business.sales)}<br>
+💸 経費：${yen(player.business.expenses)}<br>
+📰 ${news.text}
+`
+} else {
+  player.news = `${economy.text}<br>${news.text}`
+}
 
 player.log = `
 📈 市場変動：株 ${stockPct}% / ETF ${etfPct}% / REIT ${reitPct}% / 仮想通貨 ${cryptoPct}%<br>
