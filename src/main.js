@@ -47,6 +47,7 @@ let player = {
   propertyValue: 0,
   propertyType: null,
   workScore: 0,
+  businessActionDone: false,
   log: 'AssetBeastの人生が始まった。',
   news: '平和な1日だった。'
 }
@@ -1189,6 +1190,18 @@ ${job.place}
 
   document.querySelector('#backWork').onclick = renderWork
 }
+function canDoBusinessAction() {
+  if (player.businessActionDone) {
+    alert('📅 今月の経営判断はすでに実行済みです。\n次の月へ進んでください。')
+    return false
+  }
+
+  return true
+}
+
+function finishBusinessAction() {
+  player.businessActionDone = true
+}
 function renderSelfEmployedGame() {
   const business = player.business
 
@@ -1232,6 +1245,8 @@ function renderSelfEmployedGame() {
   `
 
   document.querySelector('#businessAd').onclick = () => {
+  if (!canDoBusinessAction()) return
+
   const cost = 30000
 
   if (player.cash < cost) {
@@ -1241,13 +1256,22 @@ function renderSelfEmployedGame() {
 
   player.cash -= cost
 
-  let minRate = 1.08
-  let maxRate = 1.18
+let minRate = 1.05
+let maxRate = 1.15
 
-  if (business.type === 'ネットショップ') {
-    minRate = 1.12
-    maxRate = 1.22
-  }
+if (business.type === 'ネットショップ') {
+  minRate = 1.12
+  maxRate = 1.22
+} else if (business.type === '飲食店') {
+  minRate = 1.06
+  maxRate = 1.16
+} else if (business.type === '個人サービス') {
+  minRate = 1.08
+  maxRate = 1.18
+} else if (business.type === '小売店') {
+  minRate = 1.07
+  maxRate = 1.17
+}
 
   const rate = minRate + Math.random() * (maxRate - minRate)
   const oldSales = business.sales
@@ -1266,11 +1290,14 @@ function renderSelfEmployedGame() {
 月商：${yen(oldSales)} → ${yen(business.sales)}
 評判：${business.reputation} / 5`)
 
+  finishBusinessAction()
   renderSelfEmployedGame()
 }
 
 
 document.querySelector('#businessEquipment').onclick = () => {
+  if (!canDoBusinessAction()) return
+
   const cost = 80000
 
   if (player.cash < cost) {
@@ -1283,13 +1310,22 @@ document.querySelector('#businessEquipment').onclick = () => {
   const oldSales = business.sales
   const oldExpenses = business.expenses
 
-  let salesRate = 1.08
-  let expenseRate = 0.97
+let salesRate = 1.06
+let expenseRate = 0.98
 
-  if (business.type === '飲食店' || business.type === '小売店') {
-    salesRate = 1.12
-    expenseRate = 0.95
-  }
+if (business.type === '飲食店') {
+  salesRate = 1.14
+  expenseRate = 0.94
+} else if (business.type === '小売店') {
+  salesRate = 1.12
+  expenseRate = 0.95
+} else if (business.type === 'ネットショップ') {
+  salesRate = 1.08
+  expenseRate = 0.97
+} else if (business.type === '個人サービス') {
+  salesRate = 1.06
+  expenseRate = 0.98
+}
 
   business.sales = Math.round(business.sales * salesRate)
   business.expenses = Math.round(business.expenses * expenseRate)
@@ -1301,12 +1337,14 @@ document.querySelector('#businessEquipment').onclick = () => {
 投資額：-80,000円
 月商：${yen(oldSales)} → ${yen(business.sales)}
 経費：${yen(oldExpenses)} → ${yen(business.expenses)}`)
-
+  finishBusinessAction() 
   renderSelfEmployedGame()
 }
 
 
 document.querySelector('#businessProduct').onclick = () => {
+  if (!canDoBusinessAction()) return
+
   const cost = 100000
 
   if (player.cash < cost) {
@@ -1316,12 +1354,33 @@ document.querySelector('#businessProduct').onclick = () => {
 
   player.cash -= cost
 
-  const successRate =
-    business.type === '個人サービス' ? 0.75 : 0.6
+
+let successRate = 0.55
+let minGrowth = 1.18
+let maxGrowth = 1.30
+
+if (business.type === '個人サービス') {
+  successRate = 0.80
+  minGrowth = 1.22
+  maxGrowth = 1.38
+} else if (business.type === 'ネットショップ') {
+  successRate = 0.70
+  minGrowth = 1.20
+  maxGrowth = 1.35
+} else if (business.type === '飲食店') {
+  successRate = 0.65
+  minGrowth = 1.18
+  maxGrowth = 1.32
+} else if (business.type === '小売店') {
+  successRate = 0.60
+  minGrowth = 1.18
+  maxGrowth = 1.30
+}
 
   if (Math.random() < successRate) {
     const oldSales = business.sales
-    const growth = 1.20 + Math.random() * 0.15
+    const growth =
+  minGrowth + Math.random() * (maxGrowth - minGrowth)
 
     business.sales = Math.round(business.sales * growth)
 
@@ -1342,18 +1401,45 @@ document.querySelector('#businessProduct').onclick = () => {
 開発費100,000円を失った。
 今回は売上への効果なし。`)
   }
-
+  finishBusinessAction()
   renderSelfEmployedGame()
 }
 
 
 document.querySelector('#businessPrice').onclick = () => {
-  const oldSales = business.sales
+  if (!canDoBusinessAction()) return
 
-  if (Math.random() < 0.65) {
-    business.sales = Math.round(
-      business.sales * (1.05 + Math.random() * 0.07)
-    )
+  const oldSales = business.sales
+let priceSuccessRate = 0.60
+let priceMinGrowth = 1.04
+let priceMaxGrowth = 1.10
+
+if (business.type === '小売店') {
+  priceSuccessRate = 0.75
+  priceMinGrowth = 1.06
+  priceMaxGrowth = 1.12
+} else if (business.type === '飲食店') {
+  priceSuccessRate = 0.65
+  priceMinGrowth = 1.05
+  priceMaxGrowth = 1.11
+} else if (business.type === '個人サービス') {
+  priceSuccessRate = 0.70
+  priceMinGrowth = 1.06
+  priceMaxGrowth = 1.13
+} else if (business.type === 'ネットショップ') {
+  priceSuccessRate = 0.55
+  priceMinGrowth = 1.04
+  priceMaxGrowth = 1.09
+}
+  if (Math.random() < priceSuccessRate) {
+
+  const priceGrowth =
+    priceMinGrowth +
+    Math.random() * (priceMaxGrowth - priceMinGrowth)
+
+  business.sales = Math.round(
+    business.sales * priceGrowth
+  )
 
     player.job.income = business.sales - business.expenses
 
@@ -1375,12 +1461,14 @@ document.querySelector('#businessPrice').onclick = () => {
 月商：${yen(oldSales)} → ${yen(business.sales)}
 評判：${business.reputation} / 5`)
   }
-
+  finishBusinessAction()
   renderSelfEmployedGame()
 }
 
 
 document.querySelector('#businessHire').onclick = () => {
+  if (!canDoBusinessAction()) return
+
   const hiringCost = 50000
 
   if (player.cash < hiringCost) {
@@ -1401,13 +1489,17 @@ document.querySelector('#businessHire').onclick = () => {
   business.employees += 1
   business.expenses += 40000
 
-  let salesRate = 1.12
+let salesRate = 1.08
 
-  if (business.type === '小売店') {
-    salesRate = 1.18
-  } else if (business.type === '飲食店') {
-    salesRate = 1.16
-  }
+if (business.type === '飲食店') {
+  salesRate = 1.20
+} else if (business.type === '小売店') {
+  salesRate = 1.18
+} else if (business.type === '個人サービス') {
+  salesRate = 1.12
+} else if (business.type === 'ネットショップ') {
+  salesRate = 1.08
+}
 
   business.sales = Math.round(business.sales * salesRate)
 
@@ -1420,17 +1512,42 @@ document.querySelector('#businessHire').onclick = () => {
 月商：${yen(oldSales)} → ${yen(business.sales)}
 経費：${yen(oldExpenses)} → ${yen(business.expenses)}`)
 
+  finishBusinessAction()
   renderSelfEmployedGame()
 }
 
 
 document.querySelector('#businessNormal').onclick = () => {
-  const oldSales = business.sales
+  if (!canDoBusinessAction()) return
 
-  const rate = 0.97 + Math.random() * 0.06
+  const oldSales = business.sales
+  let minRate = 0.97
+let maxRate = 1.03
+let reputationChance = 0.15
+
+if (business.type === '飲食店') {
+  minRate = 0.96
+  maxRate = 1.04
+  reputationChance = 0.20
+} else if (business.type === 'ネットショップ') {
+  minRate = 0.98
+  maxRate = 1.03
+  reputationChance = 0.10
+} else if (business.type === '個人サービス') {
+  minRate = 0.98
+  maxRate = 1.04
+  reputationChance = 0.25
+} else if (business.type === '小売店') {
+  minRate = 0.97
+  maxRate = 1.04
+  reputationChance = 0.15
+}
+
+ const rate =
+ minRate + Math.random() * (maxRate - minRate)
   business.sales = Math.round(business.sales * rate)
 
-  if (Math.random() < 0.15 && business.reputation < 5) {
+  if (Math.random() < reputationChance && business.reputation < 5) {
     business.reputation += 1
   }
 
@@ -1444,6 +1561,7 @@ document.querySelector('#businessNormal').onclick = () => {
 変化：${change >= 0 ? '+' : ''}${yen(change)}
 評判：${business.reputation} / 5`)
 
+  finishBusinessAction()
   renderSelfEmployedGame()
 }
 
@@ -1719,6 +1837,7 @@ if (player.propertyValue > 0 && player.house) {
   player.job.income += lifeEvent.income
 
   player.month += 1
+  player.businessActionDone = false
 
   if (player.month > 12) {
     player.month = 1
