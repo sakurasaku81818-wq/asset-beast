@@ -44,6 +44,7 @@ let player = {
   etf: 0,
   reit: 0,
   crypto: 0,
+  bond: 0,
   propertyValue: 0,
   propertyType: null,
   workScore: 0,
@@ -553,19 +554,42 @@ function renderSecurities() {
       <h2>🏦 証券会社</h2>
       <p>金融資産に投資できます。</p>
 
-      <button id="buyStock">株を10万円買う</button>
-      <button id="sellStock">株を10万円売る</button>
+     <div class="asset-trade">
+  <h3>📈 株</h3>
+  <input id="stockAmount" type="number" min="10000" step="10000" placeholder="金額を入力">
+  <button id="buyStock">買う</button>
+  <button id="sellStock">売る</button>
+</div>
 
-      <button id="buyEtf">ETFを10万円買う</button>
-      <button id="sellEtf">ETFを10万円売る</button>
+<div class="asset-trade">
+  <h3>🌐 ETF</h3>
+  <input id="etfAmount" type="number" min="10000" step="10000" placeholder="金額を入力">
+  <button id="buyEtf">買う</button>
+  <button id="sellEtf">売る</button>
+</div>
 
-      <button id="buyReit">REITを10万円買う</button>
-      <button id="sellReit">REITを10万円売る</button>
+<div class="asset-trade">
+  <h3>🏢 REIT</h3>
+  <input id="reitAmount" type="number" min="10000" step="10000" placeholder="金額を入力">
+  <button id="buyReit">買う</button>
+  <button id="sellReit">売る</button>
+</div>
 
-      <button id="buyCrypto">仮想通貨を10万円買う</button>
-      <button id="sellCrypto">仮想通貨を10万円売る</button>
+<div class="asset-trade">
+  <h3>₿ 仮想通貨</h3>
+  <input id="cryptoAmount" type="number" min="10000" step="10000" placeholder="金額を入力">
+  <button id="buyCrypto">買う</button>
+  <button id="sellCrypto">売る</button>
+</div>
 
-      <p>株：成長狙い / ETF：分散 / REIT：不動産投資 / 仮想通貨：高リスク</p>
+<div class="asset-trade">
+  <h3>🪙 債券</h3>
+  <input id="bondAmount" type="number" min="10000" step="10000" placeholder="金額を入力">
+  <button id="buyBond">買う</button>
+  <button id="sellBond">売る</button>
+</div>
+
+      <p>株：成長 / ETF：分散 / REIT：不動産 / 仮想通貨：高リスク / 債券：守り</p>
 
       <button id="backTown">街へ戻る</button>
     </div>
@@ -582,22 +606,62 @@ function renderSecurities() {
 
       document.querySelector('#buyCrypto').onclick = () => buyAsset('crypto')
       document.querySelector('#sellCrypto').onclick = () => sellAsset('crypto')
+
+      document.querySelector('#buyBond').onclick = () => buyAsset('bond')
+      document.querySelector('#sellBond').onclick = () => sellAsset('bond')
+     
       document.querySelector('#backTown').onclick = renderTown
 }
 
+function getTradeAmount(type) {
+  const input = document.querySelector(`#${type}Amount`)
+  const amount = Number(input?.value)
+
+  if (!amount || amount < 10000) {
+    alert('10,000円以上の金額を入力してください。')
+    return null
+  }
+
+  if (amount % 10000 !== 0) {
+    alert('10,000円単位で入力してください。')
+    return null
+  }
+
+  return amount
+}
+
+
 function buyAsset(type) {
-  if (player.cash < 100000) {
-    alert('現金が足りない')
+  const amount = getTradeAmount(type)
+
+  if (amount === null) return
+
+  if (player.cash < amount) {
+    alert('現金が足りません')
     return
   }
 
-  player.cash -= 100000
-  player[type] += 100000
-  player.log = '10万円分の資産を購入した。'
+  player.cash -= amount
+  player[type] += amount
+
+  const names = {
+    stock: '株',
+    etf: 'ETF',
+    reit: 'REIT',
+    crypto: '仮想通貨',
+    bond: '債券'
+  }
+
+  player.log = `${names[type]}を${yen(amount)}購入しました。`
+
   renderSecurities()
 }
+
+
 function sellAsset(type) {
-  const amount = 100000
+  const amount = getTradeAmount(type)
+
+  if (amount === null) return
 
   if (player[type] < amount) {
     alert('保有額が足りません')
@@ -611,13 +675,16 @@ function sellAsset(type) {
     stock: '株',
     etf: 'ETF',
     reit: 'REIT',
-    crypto: '仮想通貨'
+    crypto: '仮想通貨',
+    bond: '債券'
   }
 
-  player.log = `${names[type]}を10万円売却しました。`
+  player.log = `${names[type]}を${yen(amount)}売却しました。`
 
   renderSecurities()
 }
+
+ 
 function renderRealEstate() {
   app.innerHTML = `
     <div class="screen shop-screen">
